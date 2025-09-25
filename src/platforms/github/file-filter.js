@@ -7,7 +7,7 @@ class FileFilter {
      * @returns {Array} Array of enabled file objects
      */
     static getEnabledFiles(settings) {
-        return (settings.files || []).filter(file => file.enabled);
+        return FilterUtils.getEnabledItems(settings.files);
     }
 
     /**
@@ -17,27 +17,7 @@ class FileFilter {
      * @returns {boolean} True if file should be hidden
      */
     static shouldHideFile(filePath, enabledFiles) {
-        if (!enabledFiles.length) return false;
-
-        // Extract filename from path
-        const fileName = filePath.split('/').pop();
-
-        return enabledFiles.some(filePattern => {
-            const pattern = filePattern.name;
-
-            // Extension matching (.lock, .resolved, etc.)
-            if (pattern.startsWith('.')) {
-                return fileName.endsWith(pattern);
-            }
-
-            // Exact file name matching (Package.swift, Podfile, etc.)
-            if (pattern.includes('.')) {
-                return fileName === pattern;
-            }
-
-            // File without extension matching (Podfile, Cartfile, etc.)
-            return fileName === pattern;
-        });
+        return FilterUtils.shouldHideFile(filePath, enabledFiles);
     }
 
     /**

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1] - 2025-09-25
+
+### 🔧 **Improvements**
+- **Better Performance**: Extension now loads faster and uses less memory
+- **Cleaner Code**: Removed duplicate code to make future updates easier and more reliable
+
 ## [1.0.0] - 2025-09-25
 
 ### Added

@@ -84,18 +84,25 @@ This document outlines potential improvements and refactoring opportunities for 
 
 ## Low Priority (Cleanup & Minor Improvements)
 
--   **Abstract Filtering Logic**:
-    -   **Problem**: `file-filter.js` and `comment-filter.js` share similar filtering logic (`shouldHideFile` and `shouldHideComment`).
-    -   **Solution**:
-        -   Create a generic `FilterUtils` module with a `shouldHideItem` function that takes an item, a list of patterns, and a function to extract the relevant property for comparison.
-    -   **Impact**: Reduces code duplication and makes filtering logic more reusable.
+-   **~~Abstract Filtering Logic~~** ✅ **COMPLETED**:
+    -   **~~Problem~~**: ~~`file-filter.js` and `comment-filter.js` share similar filtering logic (`shouldHideFile` and `shouldHideComment`).~~
+    -   **~~Solution~~**: ✅ **IMPLEMENTED**:
+        -   ✅ Created generic `FilterUtils` module in `src/core/filter-utils.js` with `shouldHideItem` function
+        -   ✅ Added specialized `shouldHideFile` and `shouldHideComment` methods with custom matching logic
+        -   ✅ Refactored `file-filter.js`, `file-filter-new.js`, and `comment-filter.js` to use FilterUtils
+        -   ✅ Eliminated ~30 lines of duplicate filtering code
+        -   ✅ Added utility methods for string matching, file operations, and DOM filtering
+    -   **Impact**: ✅ **ACHIEVED** - Reduced code duplication and made filtering logic more reusable.
 
--   **Create a Base `Manager` Class**:
-    -   **Problem**: `SettingsManager`, `ToggleManager`, and `NavigationManager` have common patterns (e.g., initialization, event listeners) that could be abstracted.
-    -   **Solution**:
-        -   Introduce a lightweight `BaseManager` class that provides common lifecycle methods or utility functions.
-        -   Have existing manager classes extend this base class.
-    -   **Impact**: Promotes code reuse and a more consistent manager pattern.
+-   **~~Create a Base `Manager` Class~~** ✅ **COMPLETED**:
+    -   **~~Problem~~**: ~~`SettingsManager`, `ToggleManager`, and `NavigationManager` have common patterns (e.g., initialization, event listeners) that could be abstracted.~~
+    -   **~~Solution~~**: ✅ **IMPLEMENTED**:
+        -   ✅ Created `BaseManager` class in `src/core/base-manager.js` with common lifecycle methods
+        -   ✅ Added automatic event listener tracking and cleanup
+        -   ✅ Provided utility methods for debouncing, throttling, and safe DOM selection
+        -   ✅ Refactored `ToggleManager` and `NavigationManager` to extend `BaseManager`
+        -   ✅ Added to manifest.json and settings.html for proper loading
+    -   **Impact**: ✅ **ACHIEVED** - Promoted code reuse and established consistent manager pattern.
 
 -   **Extract CSS into Separate Files**:
     -   **Problem**: `scroll-to-top.js` and `amplitude-copy.js` inject CSS directly into the page using `<style>` tags. This is harder to manage, debug, and can lead to FOUC (Flash of Unstyled Content).

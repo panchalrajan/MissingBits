@@ -35,6 +35,8 @@
         "src/core/toast.js",
         "src/core/modal.js",
         "src/core/button-factory.js",
+        "src/core/base-manager.js",
+        "src/core/filter-utils.js",
         "src/core/keyboard-shortcut.js",
         "src/core/clipboard-helper.js",
         "src/core/template-processor.js",

@@ -1,16 +1,22 @@
 // Navigation Manager Module for Missing Bits Extension
-class NavigationManager {
+class NavigationManager extends BaseManager {
     constructor() {
+        super();
         this.currentSection = 'file-filter';
         this.sections = new Map();
     }
 
     /**
-     * Initialize navigation
+     * Setup configurations - override from BaseManager
      */
-    initialize() {
+    setupConfigs() {
         this.setupSections();
-        this.setupEventListeners();
+    }
+
+    /**
+     * Called after initialization is complete - override from BaseManager
+     */
+    onInitialized() {
         this.setActiveSection(this.currentSection);
     }
 
