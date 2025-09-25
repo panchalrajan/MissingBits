@@ -13,7 +13,7 @@ class ScrollToTop {
         if (this.button) return;
 
         this.button = document.createElement('button');
-        this.button.className = 'github-helper-scroll-to-top';
+        this.button.className = `github-helper-scroll-to-top ${position}`;
         this.button.setAttribute('aria-label', 'Scroll to top');
         this.button.setAttribute('title', 'Scroll to top');
 
@@ -23,8 +23,7 @@ class ScrollToTop {
             </svg>
         `;
 
-        // Add the CSS styles
-        this.addStyles(position);
+        // CSS styles are now loaded from external file
 
         // Add scroll listener
         this.setupScrollListener();
@@ -43,92 +42,6 @@ class ScrollToTop {
         document.body.appendChild(this.button);
     }
 
-    /**
-     * Adds CSS styles for the scroll to top button
-     * @param {string} position - Position setting ('bottom-right' or 'bottom-left')
-     */
-    addStyles(position) {
-        // Remove existing styles if they exist
-        const existingStyle = document.getElementById('github-helper-scroll-to-top-styles');
-        if (existingStyle) {
-            existingStyle.remove();
-        }
-
-        const style = document.createElement('style');
-        style.id = 'github-helper-scroll-to-top-styles';
-        const positionStyle = position === 'bottom-left' ? 'left: 20px;' : 'right: 20px;';
-
-        style.textContent = `
-            .github-helper-scroll-to-top {
-                position: fixed;
-                bottom: 20px;
-                ${positionStyle}
-                width: 40px;
-                height: 40px;
-                background-color: #21262d;
-                border: 1px solid #30363d;
-                border-radius: 6px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                opacity: 0;
-                visibility: hidden;
-                transform: translateY(10px);
-                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-                z-index: 1000;
-            }
-
-            .github-helper-scroll-to-top.visible {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);
-            }
-
-            .github-helper-scroll-to-top:hover {
-                background-color: #30363d;
-                border-color: #484f58;
-                transform: translateY(-2px);
-                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
-            }
-
-            .github-helper-scroll-to-top:active {
-                transform: translateY(0);
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            }
-
-            .github-helper-scroll-to-top svg {
-                width: 16px;
-                height: 16px;
-                fill: #f0f6fc;
-                pointer-events: none;
-            }
-
-            .github-helper-scroll-to-top:focus {
-                outline: 2px solid #0969da;
-                outline-offset: 2px;
-            }
-
-            @media (prefers-color-scheme: light) {
-                .github-helper-scroll-to-top {
-                    background-color: #ffffff;
-                    border-color: #d0d7de;
-                }
-
-                .github-helper-scroll-to-top:hover {
-                    background-color: #f6f8fa;
-                    border-color: #afb8c1;
-                }
-
-                .github-helper-scroll-to-top svg {
-                    fill: #656d76;
-                }
-            }
-        `;
-
-        document.head.appendChild(style);
-    }
 
     /**
      * Sets up scroll listener to show/hide button
@@ -188,11 +101,7 @@ class ScrollToTop {
             this.button = null;
         }
 
-        // Remove styles
-        const existingStyle = document.getElementById('github-helper-scroll-to-top-styles');
-        if (existingStyle) {
-            existingStyle.remove();
-        }
+        // Styles are now loaded from external CSS file
     }
 
     /**

@@ -24,6 +24,10 @@
         "https://*.atlassian.net/*",
         "https://*.amplitude.com/*"
       ],
+      "css": [
+        "src/styles/scroll-to-top.css",
+        "src/styles/amplitude-toast.css"
+      ],
       "js": [
         "src/core/settings-manager.js",
         "src/core/dom-utils.js",
