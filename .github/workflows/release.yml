@@ -1,0 +1,188 @@
+name: Auto Release Extension
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  release:
+    # Only run on merged PRs from release or hotfix branches
+    if: github.event.pull_request.merged == true && (startsWith(github.head_ref, 'release_') || startsWith(github.head_ref, 'hotfix_'))
+    
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Required for creating releases and tags
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for proper tagging
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install minification tools
+        run: |
+          npm install -g terser clean-css-cli html-minifier-terser
+          
+      - name: Extract version and name from manifest
+        id: version
+        run: |
+          VERSION=$(node -p "require('./manifest.json').version")
+          NAME=$(node -p "require('./manifest.json').name")
+          SAFE_NAME=$(echo "$NAME" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "safe_name=$SAFE_NAME" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "Extension name: $NAME"
+          echo "Extension version: $VERSION"
+          
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Tag v${{ steps.version.outputs.version }} already exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Tag v${{ steps.version.outputs.version }} does not exist"
+          fi
+          
+      - name: Create build directory
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          mkdir -p build
+          
+      - name: Copy and minify files
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          # Copy icons and other assets as-is
+          cp -r icons build/ 2>/dev/null || echo "No icons directory found"
+          
+          # Minify and copy HTML files
+          echo "Minifying HTML files..."
+          find . -name "*.html" -not -path "./build/*" -not -path "./.git/*" -not -path "./node_modules/*" | while read html_file; do
+            if [ -f "$html_file" ]; then
+              echo "Processing $html_file"
+              rel_path="${html_file#./}"
+              mkdir -p "build/$(dirname "$rel_path")"
+              html-minifier-terser \
+                --collapse-whitespace \
+                --remove-comments \
+                --remove-optional-tags \
+                --remove-redundant-attributes \
+                --remove-script-type-attributes \
+                --remove-tag-whitespace \
+                --use-short-doctype \
+                --minify-css true \
+                --minify-js true \
+                --output "build/$rel_path" \
+                "$html_file"
+            fi
+          done
+          
+          # Minify and copy JavaScript files
+          echo "Minifying JavaScript files..."
+          find . -name "*.js" -not -path "./build/*" -not -path "./.git/*" -not -path "./node_modules/*" | while read js_file; do
+            if [ -f "$js_file" ]; then
+              echo "Processing $js_file"
+              rel_path="${js_file#./}"
+              mkdir -p "build/$(dirname "$rel_path")"
+              terser "$js_file" --compress --mangle --output "build/$rel_path"
+            fi
+          done
+          
+          # Minify and copy CSS files
+          echo "Minifying CSS files..."
+          find . -name "*.css" -not -path "./build/*" -not -path "./.git/*" -not -path "./node_modules/*" | while read css_file; do
+            if [ -f "$css_file" ]; then
+              echo "Processing $css_file"
+              rel_path="${css_file#./}"
+              mkdir -p "build/$(dirname "$rel_path")"
+              cleancss -o "build/$rel_path" "$css_file"
+            fi
+          done
+          
+          # Minify and copy JSON files (excluding manifest.json)
+          echo "Minifying JSON files..."
+          find . -name "*.json" -not -name "manifest.json" -not -path "./build/*" -not -path "./.git/*" -not -path "./node_modules/*" | while read json_file; do
+            if [ -f "$json_file" ]; then
+              echo "Processing $json_file"
+              rel_path="${json_file#./}"
+              mkdir -p "build/$(dirname "$rel_path")"
+              node -e "
+                const fs = require('fs');
+                const data = fs.readFileSync('$json_file', 'utf8');
+                const minified = JSON.stringify(JSON.parse(data));
+                fs.writeFileSync('build/$rel_path', minified);
+              "
+            fi
+          done
+          
+          # Copy manifest.json as-is (no minification)
+          echo "Copying manifest.json..."
+          cp manifest.json build/
+          
+      - name: Create extension ZIP
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          cd build
+          zip -r "../${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip" .
+          cd ..
+          echo "Created ZIP: ${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip"
+          
+      - name: Display build contents
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          echo "Build directory contents:"
+          find build -type f -exec ls -la {} \;
+          echo "ZIP file size:"
+          ls -la *.zip
+          
+      - name: Create Git tag
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag "${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+          
+      - name: Create GitHub Release with Asset
+        if: steps.check_tag.outputs.exists == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" \
+            --title "${{ steps.version.outputs.name }} ${{ steps.version.outputs.tag }}" \
+            --notes "## ${{ steps.version.outputs.name }} ${{ steps.version.outputs.tag }}
+
+            ### 🔧 Technical Details
+            - **Version**: ${{ steps.version.outputs.version }}
+            - **Build Date**: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+            - **Commit**: ${{ github.sha }}
+
+            ---
+            *Auto-generated release - description will be updated manually*" \
+            --latest \
+            "${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip"
+          
+      - name: Release created successfully
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          echo "✅ Release ${{ steps.version.outputs.tag }} created successfully!"
+          echo "📦 ZIP file: ${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip"
+          echo "🔗 Check the release at: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.version.outputs.tag }}"
+          
+      - name: Skip duplicate release
+        if: steps.check_tag.outputs.exists == 'true'
+        run: |
+          echo "⚠️ Release ${{ steps.version.outputs.tag }} already exists, skipping..."
+          echo "If you want to create a new release, update the version in manifest.json"

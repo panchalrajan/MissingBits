@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Bits - Settings</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <div class="settings-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="../icons/icon-48.png" alt="Missing Bits" class="logo">
+                <h2>Settings</h2>
+            </div>
+            <ul class="nav-menu">
+                <!-- GitHub Section -->
+                <li class="nav-header">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    GitHub
+                </li>
+                <li class="nav-item active" data-section="file-filter">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3h18v18L3 3z"></path>
+                        <path d="M3 9l9-6 9 6"></path>
+                        <path d="M8 21l4-7 4 7"></path>
+                    </svg>
+                    PR File Filter
+                </li>
+                <li class="nav-item" data-section="expand-conversations">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        <path d="M8 9h8"></path>
+                        <path d="M8 13h6"></path>
+                    </svg>
+                    PR Conversation Pagination
+                </li>
+                <li class="nav-item" data-section="view-resolved">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                    </svg>
+                    View Resolved Comments
+                </li>
+                <li class="nav-item" data-section="comment-filter">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        <path d="M14 8H7"></path>
+                        <path d="M14 12H7"></path>
+                    </svg>
+                    PR Comment Filter
+                </li>
+                <li class="nav-item" data-section="scroll-to-top">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 15l-6-6-6 6"></path>
+                        <rect x="3" y="19" width="18" height="2"></rect>
+                    </svg>
+                    Scroll to Top
+                </li>
+
+                <!-- Jira Section -->
+                <li class="nav-header">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                        <path d="M4 22v-7"></path>
+                    </svg>
+                    Jira
+                </li>
+                <li class="nav-item" data-section="jira-copy-primary">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                    Copy - Primary
+                </li>
+                <li class="nav-item" data-section="jira-copy-dropdown">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3h18v18L3 3z"></path>
+                        <path d="M3 9l9-6 9 6"></path>
+                        <path d="M8 21l4-7 4 7"></path>
+                    </svg>
+                    Copy - Dropdown
+                </li>
+
+                <!-- Amplitude Section -->
+                <li class="nav-header">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3v18h18"></path>
+                        <path d="M7 12l4-4 4 4 6-6"></path>
+                    </svg>
+                    Amplitude
+                </li>
+                <li class="nav-item" data-section="copy-json">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                    Copy Json
+                </li>
+            </ul>
+
+            <!-- Reset to Defaults Button -->
+            <div class="sidebar-footer">
+                <button class="reset-button" id="reset-defaults">
+                    <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3,6 5,6 21,6"></polyline>
+                        <path d="M19,6V20a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6M8,6V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2V6"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                    Reset to Defaults
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- PR File Filter Section -->
+            <div class="content-section active" id="file-filter-section">
+                <div class="section-header">
+                    <h1>PR File Filter</h1>
+                    <p>Configure custom file filtering for pull requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Visibility</h3>
+                        <p>Control whether the filter button appears in pull requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show PR File Filter Button</div>
+                                <div class="toggle-description">Display the custom filter button in pull request toolbars</div>
+                            </div>
+                            <div class="toggle-switch" id="file-filter-enabled">
+                                <input type="checkbox" id="file-filter-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Configuration</h3>
+                        <p>Set the filter button title and behavior</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="button-title">Button Title</label>
+                        <input type="text" id="button-title" class="form-input" placeholder="Use custom filter" maxlength="30">
+                        <small class="form-hint">Maximum 30 characters</small>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Files to Hide</h3>
+                        <p>Manage files and extensions to hide when the filter is enabled</p>
+                    </div>
+
+                    <div class="file-list" id="files-list">
+                        <!-- Files will be populated by JavaScript -->
+                    </div>
+
+                    <div class="add-item-section">
+                        <button class="add-button" id="add-file-btn">
+                            <svg class="add-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add File or Extension
+                        </button>
+                        <small class="form-hint">Add file extensions (.lock), file names (Podfile), or full file names with extensions (Package.swift)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PR Conversation Pagination Section -->
+            <div class="content-section" id="expand-conversations-section">
+                <div class="section-header">
+                    <h1>PR Conversation Pagination</h1>
+                    <p>Auto-expand paginated conversation items in pull requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Visibility</h3>
+                        <p>Control whether the conversation pagination button appears in pull requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Conversation Pagination Button</div>
+                                <div class="toggle-description">Display the expand all conversations button in pull request sidebars</div>
+                            </div>
+                            <div class="toggle-switch" id="expand-conversations-enabled">
+                                <input type="checkbox" id="expand-all-enabled" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Configuration</h3>
+                        <p>Customize the conversation pagination button</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="expand-button-title">Button Title</label>
+                        <input type="text" id="expand-button-title" class="form-input" placeholder="Expand All Conversations" maxlength="30">
+                        <small class="form-hint">Maximum 30 characters</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Resolved Comments Section -->
+            <div class="content-section" id="view-resolved-section">
+                <div class="section-header">
+                    <h1>View Resolved Comments</h1>
+                    <p>Toggle visibility of resolved comment threads in pull requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Visibility</h3>
+                        <p>Control whether the view resolved comments button appears in pull requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show View Resolved Comments Button</div>
+                                <div class="toggle-description">Display the toggle resolved comments button in pull request sidebars</div>
+                            </div>
+                            <div class="toggle-switch" id="view-resolved-enabled">
+                                <input type="checkbox" id="view-resolved-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Configuration</h3>
+                        <p>Customize the resolved comments button</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="view-resolved-button-title">Button Title</label>
+                        <input type="text" id="view-resolved-button-title" class="form-input" placeholder="Toggle Resolved Comments" maxlength="30">
+                        <small class="form-hint">Maximum 30 characters</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PR Comment Filter Section -->
+            <div class="content-section" id="comment-filter-section">
+                <div class="section-header">
+                    <h1>PR Comment Filter</h1>
+                    <p>Filter comments by GitHub username in pull requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Visibility</h3>
+                        <p>Control whether the comment filter button appears in pull requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show PR Comment Filter Button</div>
+                                <div class="toggle-description">Display the comment filter button in pull request sidebars</div>
+                            </div>
+                            <div class="toggle-switch" id="comment-filter-enabled">
+                                <input type="checkbox" id="comment-filter-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Configuration</h3>
+                        <p>Set the comment filter button title</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment-filter-button-title">Button Title</label>
+                        <input type="text" id="comment-filter-button-title" class="form-input" placeholder="Filter Custom Comments" maxlength="30">
+                        <small class="form-hint">Maximum 30 characters</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Hide resolved comments</div>
+                                <div class="toggle-description">Automatically hide comments that are part of resolved conversations</div>
+                            </div>
+                            <div class="toggle-switch" id="comment-filter-hide-resolved-comments">
+                                <input type="checkbox" id="comment-filter-hide-resolved-comments-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Clean timeline</div>
+                                <div class="toggle-description">Hide events from the timeline like 'added this to the project', 'milestoned this', etc.</div>
+                            </div>
+                            <div class="toggle-switch" id="comment-filter-clean-timeline">
+                                <input type="checkbox" id="comment-filter-clean-timeline-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Usernames to Filter</h3>
+                        <p>Manage GitHub usernames whose comments will be hidden when the filter is enabled</p>
+                    </div>
+
+                    <div class="file-list" id="usernames-list">
+                        <!-- Usernames will be populated by JavaScript -->
+                    </div>
+
+                    <div class="add-item-section">
+                        <button class="add-button" id="add-username-btn">
+                            <svg class="add-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Username
+                        </button>
+                        <small class="form-hint">Add GitHub usernames whose comments you want to filter out</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll to Top Section -->
+            <div class="content-section" id="scroll-to-top-section">
+                <div class="section-header">
+                    <h1>Scroll to Top</h1>
+                    <p>Quick scroll to top functionality across GitHub pages</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Visibility</h3>
+                        <p>Control where the scroll to top button appears</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show scroll to top everywhere</div>
+                                <div class="toggle-description">Display scroll to top button on all GitHub pages (overrides specific settings)</div>
+                            </div>
+                            <div class="toggle-switch" id="scroll-to-top-everywhere">
+                                <input type="checkbox" id="scroll-to-top-everywhere-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                        <div class="toggle-item" style="margin-top: 16px;">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show scroll to top at PR</div>
+                                <div class="toggle-description">Display scroll to top button on pull request pages</div>
+                            </div>
+                            <div class="toggle-switch" id="scroll-to-top-pr">
+                                <input type="checkbox" id="scroll-to-top-pr-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                        <div class="toggle-item" style="margin-top: 16px;">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show scroll to top at Issue</div>
+                                <div class="toggle-description">Display scroll to top button on issue pages</div>
+                            </div>
+                            <div class="toggle-switch" id="scroll-to-top-issue">
+                                <input type="checkbox" id="scroll-to-top-issue-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Position</h3>
+                        <p>Choose where the scroll to top button appears</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">Bottom Right</div>
+                                <div class="radio-description">Position the scroll to top button in the bottom right corner</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="scroll-to-top-position-right" name="scroll-to-top-position" value="bottom-right" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">Bottom Left</div>
+                                <div class="radio-description">Position the scroll to top button in the bottom left corner</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="scroll-to-top-position-left" name="scroll-to-top-position" value="bottom-left" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jira Copy Primary Section -->
+            <div class="content-section" id="jira-copy-primary-section">
+                <div class="section-header">
+                    <h1>Copy - Primary</h1>
+                    <p>Configure the main copy button functionality and keyboard shortcuts</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the primary copy button in Jira issues</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Enable Primary Copy Button</div>
+                                <div class="toggle-description">Show the main copy button on Jira issue pages</div>
+                            </div>
+                            <div class="toggle-switch" id="jira-copy-primary-enabled">
+                                <input type="checkbox" id="jira-copy-primary-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Keyboard Shortcut</h3>
+                        <p>Set a keyboard shortcut to quickly copy the current Jira issue</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="keyboard-shortcut">Keyboard Shortcut</label>
+                        <div class="shortcut-input-container">
+                            <input type="text" id="keyboard-shortcut" class="form-input shortcut-input" placeholder="Click to set shortcut" readonly>
+                            <button type="button" id="clear-shortcut" class="clear-shortcut-btn" title="Clear shortcut">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <small class="form-hint">Use Ctrl+Key, Ctrl+Shift+Key, or Shift+Key combinations. Alt key is not supported.</small>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Copy Template</h3>
+                        <p>Customize what gets copied when the button is clicked</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="template-controls">
+                            <button type="button" class="edit-template-btn" id="edit-template-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                Edit Template
+                            </button>
+                        </div>
+
+                        <div class="template-previews">
+                            <h4>Preview Output:</h4>
+
+                            <div class="preview-format" id="plain-preview">
+                                <div class="format-label">Plain Text</div>
+                                <div class="preview-output">
+                                    <code id="plain-preview-text">[JRA-456] - [iOS] Implement advanced search filters</code>
+                                </div>
+                            </div>
+
+                            <div class="preview-format" id="html-preview">
+                                <div class="format-label">HTML</div>
+                                <div class="preview-output">
+                                    <code id="html-preview-text">&lt;a href="..."&gt;[JRA-456] - [iOS] Implement advanced search filters&lt;/a&gt;</code>
+                                </div>
+                            </div>
+
+                            <div class="preview-format" id="markdown-preview" style="display: none;">
+                                <div class="format-label">Markdown</div>
+                                <div class="preview-output">
+                                    <code id="markdown-preview-text">[JRA-456 - [iOS] Implement advanced search filters](...)</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jira Copy Dropdown Section -->
+            <div class="content-section" id="jira-copy-dropdown-section">
+                <div class="section-header">
+                    <h1>Copy - Dropdown</h1>
+                    <p>Configure dropdown menu options for different copy formats</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the dropdown menu with additional copy options</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="dependency-notice" id="dropdown-dependency-notice" style="display: none; margin-bottom: 16px; padding: 12px; background-color: #f6f8fa; border: 1px solid #d1d9e0; border-radius: 6px; color: #656d76;">
+                            <strong>Primary Copy Required:</strong> Enable the Primary Copy feature to access dropdown menu options
+                        </div>
+                        <div class="toggle-item" id="jira-dropdown-toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Enable Copy Dropdown Menu</div>
+                                <div class="toggle-description">Show dropdown arrow and menu with additional copy formats</div>
+                            </div>
+                            <div class="toggle-switch" id="jira-copy-dropdown-enabled">
+                                <input type="checkbox" id="jira-copy-dropdown-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card" id="jira-dropdown-options-card">
+                    <div class="card-header">
+                        <h3>Dropdown Options</h3>
+                        <p>Manage the dropdown menu options for different copy formats</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="dropdown-options-container">
+                            <div class="dropdown-options-list" id="dropdown-options-list">
+                                <!-- Dropdown options will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="add-item-section" style="margin-top: 24px;">
+                            <button class="add-button" id="add-dropdown-option-btn">
+                                <svg class="add-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Add Dropdown Option
+                            </button>
+                            <small class="form-hint">Add custom dropdown options with templates for different copy formats</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copy Json Section -->
+            <div class="content-section" id="copy-json-section">
+                <div class="section-header">
+                    <h1>Copy Json</h1>
+                    <p>Copy raw JSON data from Amplitude Analytics event details</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Visibility</h3>
+                        <p>Control whether the copy JSON button appears in Amplitude event details</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Copy Json Button</div>
+                                <div class="toggle-description">Display the copy JSON button in Amplitude event details pages</div>
+                            </div>
+                            <div class="toggle-switch" id="copy-json-enabled">
+                                <input type="checkbox" id="copy-json-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../modules/dom-utils.js"></script>
+    <script src="../modules/toggle-manager.js"></script>
+    <script src="../modules/navigation-manager.js"></script>
+    <script src="../modules/settings-form-handler.js"></script>
+    <!-- Template Editor Modal -->
+    <div class="modal-overlay" id="template-editor-modal">
+        <div class="modal-content template-editor-modal">
+            <div class="modal-header">
+                <div class="button-name-container" style="display: flex; align-items: center; gap: 8px;">
+                    <h2 id="modal-button-name-display" class="editable-button-name" contenteditable="false" style="margin: 0;">Copy</h2>
+                    <button type="button" class="edit-name-btn" id="edit-button-name" title="Edit button name"
+                            style="background: none; border: none; padding: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 4px; opacity: 0.7; transition: opacity 0.2s;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <button type="button" class="close-btn" id="close-template-editor">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="editor-layout">
+                    <!-- Template Elements Palette -->
+                    <div class="elements-palette">
+                        <h3>Template Elements</h3>
+                        <p>Drag elements into your template</p>
+
+                        <div class="element-category">
+                            <h4>Basic Elements</h4>
+                            <div class="draggable-element" data-template="{{ticket_id}}">
+                                <span class="element-icon">🎫</span>
+                                <span class="element-label">Ticket ID</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{ticket_title}}">
+                                <span class="element-icon">📝</span>
+                                <span class="element-label">Ticket Title</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{ticket_url}}">
+                                <span class="element-icon">🔗</span>
+                                <span class="element-label">Ticket URL</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{ticket_type}}">
+                                <span class="element-icon">📋</span>
+                                <span class="element-label">Ticket Type</span>
+                            </div>
+                        </div>
+
+                        <div class="element-category">
+                            <h4>People</h4>
+                            <div class="draggable-element" data-template="{{reporter_name}}">
+                                <span class="element-icon">👤</span>
+                                <span class="element-label">Reporter</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{assignee_name}}">
+                                <span class="element-icon">👥</span>
+                                <span class="element-label">Assignee</span>
+                            </div>
+                        </div>
+
+                        <div class="element-category">
+                            <h4>Metadata</h4>
+                            <div class="draggable-element" data-template="{{priority}}">
+                                <span class="element-icon">⚡</span>
+                                <span class="element-label">Priority</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{status}}">
+                                <span class="element-icon">✅</span>
+                                <span class="element-label">Status</span>
+                            </div>
+                        </div>
+
+                        <div class="element-category">
+                            <h4>Links</h4>
+                            <div class="draggable-element" data-template="{{hyperlink_start}}">
+                                <span class="element-icon">🔗</span>
+                                <span class="element-label">Hyperlink Start</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{hyperlink_end}}">
+                                <span class="element-icon">🔗</span>
+                                <span class="element-label">Hyperlink End</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{markdown_start}}">
+                                <span class="element-icon">📝</span>
+                                <span class="element-label">Markdown Start</span>
+                            </div>
+                            <div class="draggable-element" data-template="{{markdown_end}}">
+                                <span class="element-icon">📝</span>
+                                <span class="element-label">Markdown End</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Template Builder -->
+                    <div class="template-builder">
+                        <div class="builder-header">
+                            <h3>Template Builder</h3>
+                            <div class="builder-controls">
+                                <button type="button" class="clear-template-btn" id="clear-template">Clear</button>
+                                <button type="button" class="reset-template-btn" id="reset-template">Reset to Default</button>
+                            </div>
+                        </div>
+
+                        <div class="template-workspace" id="template-workspace">
+                            <textarea class="template-editor-input" id="modal-template-input"
+                                placeholder="{{hyperlink_start}}[{{ticket_id:default}}] - {{ticket_title:default}}{{hyperlink_end}}"></textarea>
+                        </div>
+
+                        <div class="format-options" id="format-options" style="display: none;">
+                            <h4>Format Options for: <span id="selected-element"></span></h4>
+                            <p class="format-help">Click a format to insert the variable with that case style</p>
+                            <div class="format-buttons" id="format-buttons">
+                                <!-- Format options will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Preview -->
+                    <div class="live-preview">
+                        <h3>Live Preview</h3>
+
+                        <div class="modal-previews">
+                            <div class="modal-preview-format" id="modal-plain-preview">
+                                <div class="format-label">Plain Text</div>
+                                <div class="preview-output-modal">
+                                    <code id="modal-plain-preview-text">[JRA-456] - [iOS] Implement advanced search filters</code>
+                                </div>
+                            </div>
+
+                            <div class="modal-preview-format" id="modal-html-preview">
+                                <div class="format-label">HTML</div>
+                                <div class="preview-output-modal">
+                                    <code id="modal-html-preview-text">&lt;a href="..."&gt;[JRA-456] - [iOS] Implement advanced search filters&lt;/a&gt;</code>
+                                </div>
+                            </div>
+
+                            <div class="modal-preview-format" id="modal-markdown-preview" style="display: none;">
+                                <div class="format-label">Markdown</div>
+                                <div class="preview-output-modal">
+                                    <code id="modal-markdown-preview-text">[JRA-456 - [iOS] Implement advanced search filters](...)</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-data">
+                            <h4>Using Example Data:</h4>
+                            <ul>
+                                <li><strong>Ticket ID:</strong> JRA-456</li>
+                                <li><strong>Title:</strong> [iOS] Implement advanced search filters</li>
+                                <li><strong>Type:</strong> Task</li>
+                                <li><strong>Reporter:</strong> Sarah Wilson</li>
+                                <li><strong>Assignee:</strong> Alex Chen</li>
+                                <li><strong>Priority:</strong> High</li>
+                                <li><strong>Status:</strong> Done</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="cancel-btn" id="cancel-template-editor">Cancel</button>
+                <button type="button" class="save-btn" id="save-template">Save Template</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/core/settings-manager.js"></script>
+    <script src="../src/core/dom-utils.js"></script>
+    <script src="../src/core/custom-confirm.js"></script>
+    <script src="../src/core/toast.js"></script>
+    <script src="../src/core/keyboard-shortcut.js"></script>
+    <script src="../src/core/ui-components.js"></script>
+    <script src="../src/core/settings-form-handler.js"></script>
+    <script src="../src/shared/toggle-manager.js"></script>
+    <script src="components/template-formatter.js"></script>
+    <script src="components/template-renderer.js"></script>
+    <script src="components/template-editor.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>
