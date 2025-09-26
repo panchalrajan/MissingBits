@@ -3,7 +3,7 @@
 > All-in-one productivity toolkit for GitHub, Jira, and Amplitude - streamlining your development workflow
 
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue)](https://chrome.google.com/webstore)
-[![Version](https://img.shields.io/badge/version-1.0.0-green)](#changelog)
+[![Version](https://img.shields.io/badge/version-1.1.0-green)](#changelog)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 
 ## 🚀 Features
@@ -26,13 +26,20 @@
 
 ## 📦 Installation
 
-### From Chrome Web Store
-1. Visit the [~~Chrome Web Store~~](https://chrome.google.com/webstore) [Coming Soon] 
+### 🍎 Safari (macOS)
+1. Download the Safari version from [GitHub Releases](https://github.com/panchalrajan/MissingBits/releases)
+2. Extract the ZIP file and double-click the `.app` file
+3. Open Safari → Preferences → Extensions
+4. Enable "Missing Bits" extension
+
+### 🌐 Chrome/Firefox
+#### From Chrome Web Store
+1. Visit the [~~Chrome Web Store~~](https://chrome.google.com/webstore) [Coming Soon]
 2. Click "Add to Chrome"
 3. Grant necessary permissions
 
-### Manual Installation
-1. Download the latest release from [GitHub Releases](https://github.com/panchalrajan/MissingBits/releases)
+#### Manual Installation
+1. Download the Chrome version from [GitHub Releases](https://github.com/panchalrajan/MissingBits/releases)
 2. Open Chrome and go to `chrome://extensions/`
 3. Enable "Developer mode"
 4. Click "Load unpacked" and select the downloaded folder
@@ -86,22 +93,24 @@ Configure which files to hide in GitHub pull requests:
 
 ## 🏗️ Architecture
 
-### Core Modules
+### Core Architecture (v1.1.0+)
+- **Base Manager Classes**: Inherited foundation for all platform managers
+- **Button Factory**: Centralized button creation with consistent styling
+- **UI Components**: Reusable UI components across platforms
 - **Settings Manager**: Centralized configuration management
-- **DOM Utils**: Utility functions for DOM manipulation
-- **Button Utils**: Reusable button creation and management
-- **Toast System**: User feedback notifications
+- **Navigation Manager**: Routing and navigation logic
+- **Filter Utilities**: Shared filtering functionality
+- **Toggle Manager**: Unified state management system
 
 ### Platform Integrations
 - **GitHub Module**: PR/Issue enhancements and file filtering
 - **Jira Module**: Issue management and data extraction
 - **Amplitude Module**: Analytics data handling
 
-### UI Components
-- **File Filter**: Smart filtering for GitHub files
-- **Comment Filter**: GitHub comment management
-- **Scroll to Top**: Navigation enhancement
-- **Toggle Manager**: State management for UI toggles
+### Cross-Platform Support
+- **🍎 Safari Extension**: Native macOS Safari support
+- **🌐 Chrome/Firefox**: Cross-browser compatibility
+- **🤖 Automated Builds**: GitHub Actions creates both versions
 
 ## 🛠️ Development
 

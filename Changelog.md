@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.1] - 2025-09-25
+## [1.1.0] - 2025-09-26
 
-### 🔧 **Improvements**
-- **Better Performance**: Extension now loads faster and uses less memory
-- **Cleaner Code**: Removed duplicate code to make future updates easier and more reliable
+### ✨ **New Features**
+- **🍎 Safari Extension Support**: Extension now works on Safari (macOS) in addition to Chrome/Firefox
+- **🤖 Automated Safari Builds**: GitHub workflow automatically creates both Chrome and Safari versions
+
+### 🔧 **Major Refactoring**
+- **🎨 UI Components**: Centralized UI component system for better maintainability
+- **🧩 Base Manager Classes**: Common functionality abstracted into reusable base classes
+- **⚡ Better Performance**: Extension now loads faster and uses less memory
+- **🧹 Cleaner Code**: Removed duplicate code and CSS-in-JS patterns for easier maintenance
 
 ## [1.0.0] - 2025-09-25
 
