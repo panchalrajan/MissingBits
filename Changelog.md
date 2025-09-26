@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2025-09-26
+
+### 🔧 **Fix**
+- **Safari Build**: Fixed automated Safari extension build script for macOS-only distribution
+
 ## [1.1.0] - 2025-09-26
 
 ### ✨ **New Features**
