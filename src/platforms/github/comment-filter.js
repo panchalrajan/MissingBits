@@ -6,7 +6,7 @@ class CommentFilter {
      * @returns {Array} Array of enabled username objects
      */
     static getEnabledUsernames(settings) {
-        return (settings.usernames || []).filter(username => username.enabled);
+        return FilterUtils.getEnabledItems(settings.usernames);
     }
 
     /**
@@ -16,17 +16,7 @@ class CommentFilter {
      * @returns {boolean} True if comment should be hidden
      */
     static shouldHideComment(commentContainer, enabledUsernames) {
-        if (!enabledUsernames.length) return false;
-
-        // Find the author link in the comment
-        const authorLink = commentContainer.querySelector('.author');
-        if (!authorLink) return false;
-
-        const authorUsername = authorLink.textContent.trim();
-
-        return enabledUsernames.some(usernamePattern => {
-            return authorUsername === usernamePattern.name;
-        });
+        return FilterUtils.shouldHideComment(commentContainer, enabledUsernames);
     }
 
     /**

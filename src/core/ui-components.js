@@ -71,128 +71,33 @@ class UIComponents {
 
     // Add File Modal
     static createAddFileModal(onAdd, itemType = 'File', modalTitle = 'Add File or Extension', placeholder = 'Package.swift, Podfile, .xcworkspace', hint = 'Examples:<br>• Extensions: .lock, .resolved, .xcworkspace<br>• Files without extension: Podfile, Cartfile<br>• Files with extension: Package.swift, Podfile.lock', maxLength = 100) {
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-
-        modal.innerHTML = `
-            <div class="modal-dialog">
-                <div class="modal-header">
-                    <h3>${modalTitle}</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="new-file">${itemType}</label>
-                        <input type="text" id="new-file" class="form-input" placeholder="${placeholder}" maxlength="${maxLength}">
-                        <small class="form-hint">${hint}</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-btn modal-btn-secondary" id="modal-cancel">Cancel</button>
-                    <button class="modal-btn modal-btn-primary" id="modal-add">Add ${itemType}</button>
-                </div>
-            </div>
-        `;
-
-        const input = modal.querySelector('#new-file');
-        const cancelBtn = modal.querySelector('#modal-cancel');
-        const addBtn = modal.querySelector('#modal-add');
-
-        const cleanup = () => {
-            modal.remove();
-        };
-
-        cancelBtn.addEventListener('click', cleanup);
-
-        addBtn.addEventListener('click', async () => {
-            const fileName = input.value.trim();
-            if (fileName) {
-                const success = await onAdd(fileName);
-                if (success !== false) {
-                    cleanup();
-                }
-            } else {
-                toast.error('Please enter a valid file name or extension');
-            }
+        const modal = Modal.createInputModal({
+            title: modalTitle,
+            label: itemType,
+            placeholder: placeholder,
+            hint: hint,
+            maxLength: maxLength,
+            onSave: onAdd,
+            saveText: `Add ${itemType}`,
+            isEdit: false
         });
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                addBtn.click();
-            } else if (e.key === 'Escape') {
-                cleanup();
-            }
-        });
-
-        document.body.appendChild(modal);
-        setTimeout(() => {
-            modal.classList.add('show');
-            input.focus();
-        }, 100);
-
-        return modal;
+        return modal.modalElement;
     }
 
     // Edit File Modal
     static createEditFileModal(currentName, onSave, itemType = 'File', modalTitle = 'Edit File or Extension', placeholder = 'Package.swift, Podfile, .xcworkspace', hint = 'Examples:<br>• Extensions: .lock, .resolved, .xcworkspace<br>• Files without extension: Podfile, Cartfile<br>• Files with extension: Package.swift, Podfile.lock', maxLength = 100) {
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-
-        modal.innerHTML = `
-            <div class="modal-dialog">
-                <div class="modal-header">
-                    <h3>${modalTitle}</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="edit-file">${itemType}</label>
-                        <input type="text" id="edit-file" class="form-input" value="${currentName}" maxlength="${maxLength}" placeholder="${placeholder}">
-                        <small class="form-hint">${hint}</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-btn modal-btn-secondary" id="modal-cancel">Cancel</button>
-                    <button class="modal-btn modal-btn-primary" id="modal-save">Save Changes</button>
-                </div>
-            </div>
-        `;
-
-        const input = modal.querySelector('#edit-file');
-        const cancelBtn = modal.querySelector('#modal-cancel');
-        const saveBtn = modal.querySelector('#modal-save');
-
-        const cleanup = () => {
-            modal.remove();
-        };
-
-        cancelBtn.addEventListener('click', cleanup);
-
-        saveBtn.addEventListener('click', async () => {
-            const fileName = input.value.trim();
-            if (fileName) {
-                const success = await onSave(fileName);
-                if (success !== false) {
-                    cleanup();
-                }
-            } else {
-                toast.error('Please enter a valid file name or extension');
-            }
+        const modal = Modal.createInputModal({
+            title: modalTitle,
+            label: itemType,
+            placeholder: placeholder,
+            value: currentName,
+            hint: hint,
+            maxLength: maxLength,
+            onSave: onSave,
+            saveText: 'Save Changes',
+            isEdit: true
         });
-
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                saveBtn.click();
-            } else if (e.key === 'Escape') {
-                cleanup();
-            }
-        });
-
-        document.body.appendChild(modal);
-        setTimeout(() => {
-            input.focus();
-            input.select();
-        }, 100);
-
-        return modal;
+        return modal.modalElement;
     }
 
     // Keyboard Shortcut Input Component

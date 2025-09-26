@@ -1,17 +1,17 @@
 // Toggle Manager Module for GitHub Helper Extension
-class ToggleManager {
+class ToggleManager extends BaseManager {
     constructor() {
+        super();
         this.toggleConfigs = new Map();
         this.radioConfigs = new Map();
     }
 
     /**
-     * Initialize toggle manager
+     * Setup configurations - override from BaseManager
      */
-    initialize() {
+    setupConfigs() {
         this.setupToggleConfigs();
         this.setupRadioConfigs();
-        this.setupEventListeners();
     }
 
     /**

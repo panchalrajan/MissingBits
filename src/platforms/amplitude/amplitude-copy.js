@@ -3,7 +3,6 @@ class AmplitudeCopy {
     constructor() {
         this.observer = null;
         this.isInitialized = false;
-        this.stylesInjected = false;
     }
 
     /**
@@ -146,86 +145,6 @@ class AmplitudeCopy {
         existingButtons.forEach(button => button.remove());
     }
 
-    /**
-     * Inject toast CSS styles for content script
-     */
-    injectToastStyles() {
-        if (this.stylesInjected) {
-            return;
-        }
-
-        const style = document.createElement('style');
-        style.textContent = `
-            .toast-container {
-                position: fixed;
-                top: 24px;
-                right: 24px;
-                z-index: 10000;
-                pointer-events: none;
-            }
-            .toast {
-                background: #ffffff;
-                border-radius: 8px;
-                padding: 12px 16px;
-                margin-bottom: 12px;
-                box-shadow: 0 4px 12px rgba(9, 30, 66, 0.15);
-                border-left: 4px solid;
-                min-width: 280px;
-                max-width: 400px;
-                opacity: 0;
-                transform: translateX(100%);
-                transition: all 0.3s ease;
-                pointer-events: auto;
-            }
-            .toast-show {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            .toast-content {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
-            .toast-message {
-                font-size: 14px;
-                color: #172b4d;
-                line-height: 1.4;
-                font-weight: 500;
-            }
-            .toast-icon {
-                width: 20px;
-                height: 20px;
-                flex-shrink: 0;
-            }
-            .toast-success {
-                border-left-color: #00875a;
-            }
-            .toast-success .toast-icon {
-                color: #00875a;
-            }
-            .toast-error {
-                border-left-color: #de350b;
-            }
-            .toast-error .toast-icon {
-                color: #de350b;
-            }
-            .toast-info {
-                border-left-color: #0052cc;
-            }
-            .toast-info .toast-icon {
-                color: #0052cc;
-            }
-            .toast-spinner {
-                animation: toast-spin 1s linear infinite;
-            }
-            @keyframes toast-spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
-        this.stylesInjected = true;
-    }
 
     /**
      * Initialize the amplitude copy functionality
@@ -240,8 +159,7 @@ class AmplitudeCopy {
             return;
         }
 
-        // Inject toast styles for content script
-        this.injectToastStyles();
+        // Toast styles are now loaded from external CSS file
 
         this.observePageChanges();
         this.isInitialized = true;

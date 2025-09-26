@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Missing Bits",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "All-in-one productivity toolkit for GitHub, Jira, and Amplitude - streamlining your development workflow",
   "author": "Rajan Panchal",
   "homepage_url": "https://github.com/panchalrajan/MissingBits",
@@ -24,11 +24,19 @@
         "https://*.atlassian.net/*",
         "https://*.amplitude.com/*"
       ],
+      "css": [
+        "src/styles/scroll-to-top.css",
+        "src/styles/amplitude-toast.css"
+      ],
       "js": [
         "src/core/settings-manager.js",
         "src/core/dom-utils.js",
         "src/core/button-utils.js",
         "src/core/toast.js",
+        "src/core/modal.js",
+        "src/core/button-factory.js",
+        "src/core/base-manager.js",
+        "src/core/filter-utils.js",
         "src/core/keyboard-shortcut.js",
         "src/core/clipboard-helper.js",
         "src/core/template-processor.js",
