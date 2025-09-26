@@ -12,7 +12,7 @@ jobs:
     # Only run on merged PRs from release or hotfix branches
     if: github.event.pull_request.merged == true && (startsWith(github.head_ref, 'release_') || startsWith(github.head_ref, 'hotfix_'))
     
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     
     permissions:
       contents: write  # Required for creating releases and tags
@@ -146,6 +146,92 @@ jobs:
           find build -type f -exec ls -la {} \;
           echo "ZIP file size:"
           ls -la *.zip
+
+      - name: Create Safari Extension manifest
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          echo "Creating Safari-compatible manifest..."
+          mkdir -p safari-build
+          cp -r build/* safari-build/
+
+          # Create Safari-compatible manifest
+          node -e "
+            const fs = require('fs');
+            const manifest = JSON.parse(fs.readFileSync('safari-build/manifest.json', 'utf8'));
+
+            // Add Safari-specific fields
+            manifest.browser_specific_settings = {
+              safari: {
+                strict_min_version: '14.0'
+              }
+            };
+
+            // Safari prefers browser.* API over chrome.*
+            if (manifest.permissions) {
+              manifest.permissions = manifest.permissions.map(p => p);
+            }
+
+            fs.writeFileSync('safari-build/manifest.json', JSON.stringify(manifest, null, 2));
+            console.log('Safari manifest created');
+          "
+
+      - name: Convert to Safari Extension
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          echo "Converting to Safari extension..."
+
+          # Use Safari Web Extension Converter
+          xcrun safari-web-extension-converter safari-build \
+            --project-location safari-project \
+            --app-name "${{ steps.version.outputs.name }}" \
+            --bundle-identifier "com.github.${{ github.repository_owner }}.${{ steps.version.outputs.safe_name }}" \
+            --swift \
+            --copy-resources
+
+          echo "Safari extension project created"
+
+      - name: Build Safari Extension
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          echo "Building Safari extension..."
+          cd safari-project
+
+          # Find the .xcodeproj file
+          PROJECT_FILE=$(find . -name "*.xcodeproj" -type d | head -1)
+
+          if [ -n "$PROJECT_FILE" ]; then
+            echo "Building project: $PROJECT_FILE"
+            xcodebuild -project "$PROJECT_FILE" \
+              -scheme "${{ steps.version.outputs.name }}" \
+              -configuration Release \
+              -derivedDataPath DerivedData \
+              build
+
+            # Find the built app
+            APP_PATH=$(find DerivedData -name "*.app" -type d | head -1)
+
+            if [ -n "$APP_PATH" ]; then
+              echo "Safari app built at: $APP_PATH"
+              cp -r "$APP_PATH" "../${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.app"
+            else
+              echo "Warning: Safari app not found in build output"
+            fi
+          else
+            echo "Warning: No .xcodeproj file found"
+          fi
+
+      - name: Package Safari Extension
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          if [ -d "${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.app" ]; then
+            echo "Creating Safari app archive..."
+            zip -r "${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.zip" \
+              "${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.app"
+            echo "Safari extension packaged successfully"
+            ls -la *Safari*.zip
+          else
+            echo "Safari app not found, skipping Safari packaging"
+          fi
           
       - name: Create Git tag
         if: steps.check_tag.outputs.exists == 'false'
@@ -155,14 +241,35 @@ jobs:
           git tag "${{ steps.version.outputs.tag }}"
           git push origin "${{ steps.version.outputs.tag }}"
           
-      - name: Create GitHub Release with Asset
+      - name: Create GitHub Release with Assets
         if: steps.check_tag.outputs.exists == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Prepare release assets
+          ASSETS=("${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip")
+
+          # Add Safari extension if it exists
+          if [ -f "${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.zip" ]; then
+            ASSETS+=("${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.zip")
+            SAFARI_NOTES="
+
+            ### 🍎 Safari Extension
+            - Download the \`-Safari-\` version for macOS Safari
+            - Requires macOS 10.14+ and Safari 14+
+            - Double-click the .app to install"
+          else
+            SAFARI_NOTES=""
+          fi
+
+          # Create release
           gh release create "${{ steps.version.outputs.tag }}" \
             --title "${{ steps.version.outputs.name }} ${{ steps.version.outputs.tag }}" \
             --notes "## ${{ steps.version.outputs.name }} ${{ steps.version.outputs.tag }}
+
+            ### 📦 Downloads
+            - **Chrome/Firefox**: Download the main ZIP file
+            - **Safari (macOS)**: Download the Safari ZIP file${SAFARI_NOTES}
 
             ### 🔧 Technical Details
             - **Version**: ${{ steps.version.outputs.version }}
@@ -172,13 +279,20 @@ jobs:
             ---
             *Auto-generated release - description will be updated manually*" \
             --latest \
-            "${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip"
+            "${ASSETS[@]}"
           
       - name: Release created successfully
         if: steps.check_tag.outputs.exists == 'false'
         run: |
           echo "✅ Release ${{ steps.version.outputs.tag }} created successfully!"
-          echo "📦 ZIP file: ${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip"
+          echo "📦 Chrome/Firefox ZIP: ${{ steps.version.outputs.safe_name }}-v${{ steps.version.outputs.version }}.zip"
+
+          if [ -f "${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.zip" ]; then
+            echo "🍎 Safari Extension: ${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.zip"
+          else
+            echo "⚠️ Safari extension build failed or skipped"
+          fi
+
           echo "🔗 Check the release at: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.version.outputs.tag }}"
           
       - name: Skip duplicate release
