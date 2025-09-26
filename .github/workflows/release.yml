@@ -180,12 +180,13 @@ jobs:
         run: |
           echo "Converting to Safari extension..."
 
-          # Use Safari Web Extension Converter
+          # Use Safari Web Extension Converter (macOS only)
           xcrun safari-web-extension-converter safari-build \
             --project-location safari-project \
             --app-name "${{ steps.version.outputs.name }}" \
             --bundle-identifier "com.github.${{ github.repository_owner }}.${{ steps.version.outputs.safe_name }}" \
             --swift \
+            --macos-only \
             --copy-resources
 
           echo "Safari extension project created"
@@ -200,21 +201,36 @@ jobs:
           PROJECT_FILE=$(find . -name "*.xcodeproj" -type d | head -1)
 
           if [ -n "$PROJECT_FILE" ]; then
-            echo "Building project: $PROJECT_FILE"
-            xcodebuild -project "$PROJECT_FILE" \
-              -scheme "${{ steps.version.outputs.name }}" \
-              -configuration Release \
-              -derivedDataPath DerivedData \
-              build
+            echo "Found project: $PROJECT_FILE"
 
-            # Find the built app
-            APP_PATH=$(find DerivedData -name "*.app" -type d | head -1)
+            # List available schemes
+            echo "Available schemes:"
+            xcodebuild -project "$PROJECT_FILE" -list
 
-            if [ -n "$APP_PATH" ]; then
-              echo "Safari app built at: $APP_PATH"
-              cp -r "$APP_PATH" "../${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.app"
+            # Get the first available scheme
+            SCHEME=$(xcodebuild -project "$PROJECT_FILE" -list | grep -A 100 "Schemes:" | grep -v "Schemes:" | head -1 | xargs)
+
+            if [ -n "$SCHEME" ]; then
+              echo "Using scheme: $SCHEME"
+              xcodebuild -project "$PROJECT_FILE" \
+                -scheme "$SCHEME" \
+                -configuration Release \
+                -derivedDataPath DerivedData \
+                build
+
+              # Find the built app
+              APP_PATH=$(find DerivedData -name "*.app" -type d | head -1)
+
+              if [ -n "$APP_PATH" ]; then
+                echo "Safari app built at: $APP_PATH"
+                cp -r "$APP_PATH" "../${{ steps.version.outputs.safe_name }}-Safari-v${{ steps.version.outputs.version }}.app"
+              else
+                echo "Warning: Safari app not found in build output"
+                echo "DerivedData contents:"
+                find DerivedData -type f -name "*.app" || echo "No .app files found"
+              fi
             else
-              echo "Warning: Safari app not found in build output"
+              echo "Warning: No schemes found in project"
             fi
           else
             echo "Warning: No .xcodeproj file found"
