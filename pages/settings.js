@@ -128,6 +128,15 @@ class SettingsPageController {
                 teamCopyButtonTitleInput.value = this.currentSettings.teamCopyButtonTitle;
             }
 
+            const teamCopyModeRadios = document.querySelectorAll('input[name="team-copy-mode"]');
+            if (teamCopyModeRadios.length > 0) {
+                const mode = this.currentSettings.teamCopyMode || 'both';
+                teamCopyModeRadios.forEach(radio => {
+                    radio.checked = radio.value === mode;
+                });
+                this.updateRadioButtonsVisualState('team-copy-mode');
+            }
+
             // Jira settings
 
             const jiraCopyPrimaryCheckbox = document.getElementById('jira-copy-primary-enabled-checkbox');
@@ -323,6 +332,18 @@ class SettingsPageController {
                 this.debouncedSave();
             });
         }
+
+        // Team copy mode radio buttons
+        const teamCopyModeRadios = document.querySelectorAll('input[name="team-copy-mode"]');
+        teamCopyModeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.teamCopyMode = e.target.value;
+                    this.updateRadioButtonsVisualState('team-copy-mode');
+                    this.autoSave();
+                }
+            });
+        });
 
         // Reset button
         const resetButton = document.getElementById('reset-defaults');
@@ -852,6 +873,15 @@ class SettingsPageController {
         const teamCopyButtonTitleInput = document.getElementById('team-copy-button-title');
         if (teamCopyButtonTitleInput) {
             teamCopyButtonTitleInput.value = this.currentSettings.teamCopyButtonTitle;
+        }
+
+        const teamCopyModeRadios = document.querySelectorAll('input[name="team-copy-mode"]');
+        if (teamCopyModeRadios.length > 0) {
+            const mode = this.currentSettings.teamCopyMode || 'both';
+            teamCopyModeRadios.forEach(radio => {
+                radio.checked = radio.value === mode;
+            });
+            this.updateRadioButtonsVisualState('team-copy-mode');
         }
 
         // Update Jira settings

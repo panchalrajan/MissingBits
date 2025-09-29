@@ -148,7 +148,7 @@ class GitHubTeamCopy extends BaseManager {
         const originalText = settings.teamCopyButtonTitle;
 
         try {
-            const teamData = this.extractTeamData();
+            const teamData = this.extractTeamData(settings);
 
             if (teamData.members.length === 0) {
                 ButtonUtils.updateButtonText(this.copyButton, 'No members found', originalText);
@@ -172,9 +172,10 @@ class GitHubTeamCopy extends BaseManager {
     /**
      * Extract team data (name and members) from the page
      */
-    extractTeamData() {
+    extractTeamData(settings) {
         const teamName = this.getTeamName();
         const members = [];
+        const copyMode = settings.teamCopyMode || 'both';
 
         // Find all member list items using multiple possible selectors
         let memberItems = document.querySelectorAll('.member-listing .member-list-item');
@@ -188,6 +189,15 @@ class GitHubTeamCopy extends BaseManager {
             // Get username from data attribute
             const username = item.getAttribute('data-bulk-actions-id') || '';
 
+            // If copy mode is username-only, just use the username
+            if (copyMode === 'username-only') {
+                if (username) {
+                    members.push(username);
+                }
+                return;
+            }
+
+            // For 'both' mode, try to get display name
             let displayName = '';
 
             // Try multiple strategies to find the display name
@@ -256,7 +266,7 @@ class GitHubTeamCopy extends BaseManager {
                 }
             }
 
-            // Format the output
+            // Format the output based on copy mode
             let memberText = '';
             if (displayName && username && displayName !== username) {
                 memberText = `${displayName} (${username})`;

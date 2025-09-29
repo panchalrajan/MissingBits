@@ -332,7 +332,7 @@ if (isExtensionContextValid()) {
         }
 
         // Initialize team copy feature if settings changed
-        if (changes.teamCopyEnabled || changes.teamCopyButtonTitle) {
+        if (changes.teamCopyEnabled || changes.teamCopyButtonTitle || changes.teamCopyMode) {
           if (teamCopyInstance) {
             teamCopyInstance.updateButtonVisibility();
           }
