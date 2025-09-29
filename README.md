@@ -2,8 +2,8 @@
 
 > All-in-one productivity toolkit for GitHub, Jira, and Amplitude - streamlining your development workflow
 
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue)](https://chrome.google.com/webstore)
-[![Version](https://img.shields.io/badge/version-1.1.0-green)](#changelog)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue)](https://chromewebstore.google.com/detail/missing-bits/aoamccioffindnejoppjmiboeicigaif)
+[![Version](https://img.shields.io/badge/version-1.2.0-green)](#changelog)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 
 ## 🚀 Features
@@ -17,6 +17,7 @@
 
 ### Jira Integration
 - **📋 Smart Copy**: Copy issue details with customizable templates
+- **🚀 Quick Navigation**: Type `j + TAB` in address bar to quickly navigate to Jira tickets
 - **🔗 Quick Actions**: Streamlined workflow for issue management
 - **📊 Data Extraction**: Extract and format issue information
 
@@ -34,7 +35,7 @@
 
 ### 🌐 Chrome/Firefox
 #### From Chrome Web Store
-1. Visit the [~~Chrome Web Store~~](https://chrome.google.com/webstore) [Coming Soon]
+1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/missing-bits/aoamccioffindnejoppjmiboeicigaif)
 2. Click "Add to Chrome"
 3. Grant necessary permissions
 

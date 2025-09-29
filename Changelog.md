@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2025-09-29
+
+### ✨ **New Features**
+- **🚀 Jira Quick Navigation**: Type `j + TAB` in browser address bar to quickly navigate to Jira tickets
+- **📋 Dependency Notices**: Clear visual indicators when features have dependencies or limitations
+
+### 🎨 **UI Improvements**
+- **📜 Scrollable Sidebar**: Navigation menu now scrolls smoothly while keeping "Reset to Defaults" button fixed
+- **🔔 Consistent Notices**: Unified yellow styling for all dependency and limitation notices
+
+### 🔧 **Technical**
+- **🌐 Omnibox Integration**: Chrome extension omnibox keyword support with domain configuration
+
 ## [1.1.1] - 2025-09-26
 
 ### 🔧 **Fix**
