@@ -46,6 +46,9 @@ class SettingsManager {
             copyIssueButtonTitle: "Copy",
             customTemplate: "{{hyperlink_start}}[{{ticket_id:default}}] - {{ticket_title:default}}{{hyperlink_end}}",
             keyboardShortcut: "",
+            // Jira Omnibox settings
+            jiraOmniboxEnabled: true,
+            jiraDomain: "yourcompany",
             dropdownOptions: [
                 { id: "ticket-id", text: "Copy Ticket ID", enabled: true, template: "{{ticket_id}}" },
                 { id: "ticket-title", text: "Copy Ticket Title", enabled: true, template: "{{ticket_title}}" },

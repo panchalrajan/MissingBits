@@ -257,6 +257,136 @@ body {
     font-size: 12px;
 }
 
+/* Input with prefix/suffix styling */
+.input-with-prefix {
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+    border: 2px solid #dfe1e6;
+    border-radius: 6px;
+    background: #ffffff;
+    transition: border-color 0.2s ease;
+}
+
+.input-with-prefix:focus-within {
+    border-color: #0052cc;
+    box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+}
+
+.input-prefix, .input-suffix {
+    padding: 12px 8px;
+    background: #f4f5f7;
+    color: #5e6c84;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.input-prefix {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-right: 1px solid #dfe1e6;
+}
+
+.input-suffix {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left: 1px solid #dfe1e6;
+}
+
+.input-with-prefix .form-input {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    flex: 1;
+    max-width: none;
+}
+
+.input-with-prefix .form-input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+/* Usage example styling */
+.usage-example {
+    background: #f8f9fa;
+    border: 1px solid #dfe1e6;
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.usage-example h4 {
+    color: #172b4d;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.usage-example ol {
+    padding-left: 20px;
+    color: #5e6c84;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.usage-example li {
+    margin-bottom: 4px;
+}
+
+.usage-example code {
+    background: #ffffff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 12px;
+    color: #172b4d;
+    border: 1px solid #dfe1e6;
+}
+
+.usage-example kbd {
+    background: #ffffff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 12px;
+    color: #172b4d;
+    border: 1px solid #dfe1e6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Shortcut display styling */
+.shortcut-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f4f5f7;
+    border: 2px solid #dfe1e6;
+    border-radius: 6px;
+    max-width: 400px;
+}
+
+.shortcut-key {
+    background: #ffffff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: #172b4d;
+    border: 1px solid #dfe1e6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    min-width: 40px;
+    text-align: center;
+}
+
+.shortcut-note {
+    color: #5e6c84;
+    font-size: 14px;
+    font-style: italic;
+}
+
 /* Checkbox Styles */
 .form-checkbox {
     display: flex;

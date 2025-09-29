@@ -30,8 +30,10 @@ class NavigationManager extends BaseManager {
             { name: 'view-resolved', navSelector: '[data-section="view-resolved"]', contentSelector: '#view-resolved-section' },
             { name: 'comment-filter', navSelector: '[data-section="comment-filter"]', contentSelector: '#comment-filter-section' },
             { name: 'scroll-to-top', navSelector: '[data-section="scroll-to-top"]', contentSelector: '#scroll-to-top-section' },
-            { name: 'jira-placeholder', navSelector: '[data-section="jira-placeholder"]', contentSelector: '#jira-placeholder-section' },
-            { name: 'amplitude-placeholder', navSelector: '[data-section="amplitude-placeholder"]', contentSelector: '#amplitude-placeholder-section' }
+            { name: 'jira-copy-primary', navSelector: '[data-section="jira-copy-primary"]', contentSelector: '#jira-copy-primary-section' },
+            { name: 'jira-copy-dropdown', navSelector: '[data-section="jira-copy-dropdown"]', contentSelector: '#jira-copy-dropdown-section' },
+            { name: 'jira-omnibox', navSelector: '[data-section="jira-omnibox"]', contentSelector: '#jira-omnibox-section' },
+            { name: 'copy-json', navSelector: '[data-section="copy-json"]', contentSelector: '#copy-json-section' }
         ];
 
         sectionConfigs.forEach(config => {

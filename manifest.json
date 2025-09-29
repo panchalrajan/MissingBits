@@ -9,6 +9,9 @@
     "storage",
     "activeTab"
   ],
+  "omnibox": {
+    "keyword": "j"
+  },
   "background": {
     "service_worker": "background.js"
   },

@@ -131,6 +131,20 @@ class SettingsPageController {
                 this.updateToggleSwitch('jira-copy-dropdown-enabled', this.currentSettings.jiraCopyDropdownEnabled);
             }
 
+            const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+            if (jiraOmniboxCheckbox) {
+                jiraOmniboxCheckbox.checked = this.currentSettings.jiraOmniboxEnabled;
+                this.updateToggleSwitch('jira-omnibox-enabled', this.currentSettings.jiraOmniboxEnabled);
+            }
+
+            const jiraDomainInput = document.getElementById('jira-domain');
+            if (jiraDomainInput) {
+                jiraDomainInput.value = this.currentSettings.jiraDomain || 'yourcompany';
+            }
+
+            // Update demo examples
+            this.updateOmniboxDemoExamples();
+
             // Handle the master toggle logic on load
             this.handleScrollToTopEverywhereChange(this.currentSettings.scrollToTopEverywhere);
 
@@ -375,6 +389,27 @@ class SettingsPageController {
                 this.autoSave();
             });
         }
+
+        // Jira omnibox checkbox
+        const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+        if (jiraOmniboxCheckbox) {
+            jiraOmniboxCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.jiraOmniboxEnabled = e.target.checked;
+                this.updateToggleSwitch('jira-omnibox-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        // Jira domain input
+        const jiraDomainInput = document.getElementById('jira-domain');
+        if (jiraDomainInput) {
+            jiraDomainInput.addEventListener('input', (e) => {
+                this.currentSettings.jiraDomain = e.target.value || 'yourcompany';
+                this.updateOmniboxDemoExamples();
+                this.autoSave();
+            });
+        }
+
 
         // Edit template button
         const editTemplateBtn = document.getElementById('edit-template-btn');
@@ -678,6 +713,8 @@ class SettingsPageController {
         // Jira settings
         const jiraCopyPrimaryCheckbox = document.getElementById('jira-copy-primary-enabled-checkbox');
         const jiraCopyDropdownCheckbox = document.getElementById('jira-copy-dropdown-enabled-checkbox');
+        const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+        const jiraDomainInput = document.getElementById('jira-domain');
 
         if (buttonTitleInput) {
             buttonTitleInput.value = this.currentSettings.buttonTitle;
@@ -770,6 +807,18 @@ class SettingsPageController {
             jiraCopyDropdownCheckbox.checked = this.currentSettings.jiraCopyDropdownEnabled;
             this.updateToggleSwitch('jira-copy-dropdown-enabled', this.currentSettings.jiraCopyDropdownEnabled);
         }
+
+        if (jiraOmniboxCheckbox) {
+            jiraOmniboxCheckbox.checked = this.currentSettings.jiraOmniboxEnabled;
+            this.updateToggleSwitch('jira-omnibox-enabled', this.currentSettings.jiraOmniboxEnabled);
+        }
+
+        if (jiraDomainInput) {
+            jiraDomainInput.value = this.currentSettings.jiraDomain || 'yourcompany';
+        }
+
+        // Update demo examples
+        this.updateOmniboxDemoExamples();
 
         // Handle the Jira primary dependency logic
         this.handleJiraPrimaryChange(this.currentSettings.jiraCopyPrimaryEnabled);
@@ -1205,6 +1254,16 @@ class SettingsPageController {
         const notice = document.getElementById('clean-timeline-dependency-notice');
         if (notice) {
             notice.style.display = 'none';
+        }
+    }
+
+    updateOmniboxDemoExamples() {
+        const domain = this.currentSettings.jiraDomain || 'yourcompany';
+
+        // Update domain demo
+        const domainDemo = document.getElementById('domain-demo');
+        if (domainDemo) {
+            domainDemo.textContent = `https://${domain}.atlassian.net/browse/NC-3423`;
         }
     }
 }
