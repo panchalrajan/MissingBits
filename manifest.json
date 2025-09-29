@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Missing Bits",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "All-in-one productivity toolkit for GitHub, Jira, and Amplitude - streamlining your development workflow",
   "author": "Rajan Panchal",
   "homepage_url": "https://github.com/panchalrajan/MissingBits",
@@ -9,6 +9,9 @@
     "storage",
     "activeTab"
   ],
+  "omnibox": {
+    "keyword": "j"
+  },
   "background": {
     "service_worker": "background.js"
   },

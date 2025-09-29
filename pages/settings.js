@@ -131,6 +131,22 @@ class SettingsPageController {
                 this.updateToggleSwitch('jira-copy-dropdown-enabled', this.currentSettings.jiraCopyDropdownEnabled);
             }
 
+            const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+            if (jiraOmniboxCheckbox) {
+                jiraOmniboxCheckbox.checked = true; // Always enabled due to Chrome limitation
+                this.updateToggleSwitch('jira-omnibox-enabled', true);
+                // Disable the toggle since it cannot be changed
+                this.disableOmniboxToggle();
+            }
+
+            const jiraDomainInput = document.getElementById('jira-domain');
+            if (jiraDomainInput) {
+                jiraDomainInput.value = this.currentSettings.jiraDomain || 'yourcompany';
+            }
+
+            // Update demo examples
+            this.updateOmniboxDemoExamples();
+
             // Handle the master toggle logic on load
             this.handleScrollToTopEverywhereChange(this.currentSettings.scrollToTopEverywhere);
 
@@ -376,6 +392,29 @@ class SettingsPageController {
             });
         }
 
+        // Jira omnibox checkbox - disabled due to Chrome limitation
+        const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+        if (jiraOmniboxCheckbox) {
+            jiraOmniboxCheckbox.addEventListener('change', (e) => {
+                // Prevent changes - always keep enabled
+                e.target.checked = true;
+                this.currentSettings.jiraOmniboxEnabled = true;
+                this.updateToggleSwitch('jira-omnibox-enabled', true);
+                this.autoSave();
+            });
+        }
+
+        // Jira domain input
+        const jiraDomainInput = document.getElementById('jira-domain');
+        if (jiraDomainInput) {
+            jiraDomainInput.addEventListener('input', (e) => {
+                this.currentSettings.jiraDomain = e.target.value || 'yourcompany';
+                this.updateOmniboxDemoExamples();
+                this.autoSave();
+            });
+        }
+
+
         // Edit template button
         const editTemplateBtn = document.getElementById('edit-template-btn');
         if (editTemplateBtn) {
@@ -390,6 +429,7 @@ class SettingsPageController {
         const issueToggleSwitch = document.getElementById('scroll-to-top-issue');
         const prToggleItem = prToggleSwitch?.closest('.toggle-item');
         const issueToggleItem = issueToggleSwitch?.closest('.toggle-item');
+        const dependencyNotice = document.getElementById('scroll-to-top-dependency-notice');
 
         if (isEverywhereEnabled) {
             // When master is enabled, auto-enable the other toggles and gray them out
@@ -419,6 +459,11 @@ class SettingsPageController {
                 issueToggleItem.style.opacity = '0.5';
                 issueToggleItem.style.pointerEvents = 'none';
             }
+
+            // Show dependency notice
+            if (dependencyNotice) {
+                dependencyNotice.style.display = 'block';
+            }
         } else {
             // When master is disabled, restore normal functionality
             if (prToggleItem) {
@@ -428,6 +473,11 @@ class SettingsPageController {
             if (issueToggleItem) {
                 issueToggleItem.style.opacity = '1';
                 issueToggleItem.style.pointerEvents = 'auto';
+            }
+
+            // Hide dependency notice
+            if (dependencyNotice) {
+                dependencyNotice.style.display = 'none';
             }
         }
     }
@@ -678,6 +728,8 @@ class SettingsPageController {
         // Jira settings
         const jiraCopyPrimaryCheckbox = document.getElementById('jira-copy-primary-enabled-checkbox');
         const jiraCopyDropdownCheckbox = document.getElementById('jira-copy-dropdown-enabled-checkbox');
+        const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+        const jiraDomainInput = document.getElementById('jira-domain');
 
         if (buttonTitleInput) {
             buttonTitleInput.value = this.currentSettings.buttonTitle;
@@ -770,6 +822,19 @@ class SettingsPageController {
             jiraCopyDropdownCheckbox.checked = this.currentSettings.jiraCopyDropdownEnabled;
             this.updateToggleSwitch('jira-copy-dropdown-enabled', this.currentSettings.jiraCopyDropdownEnabled);
         }
+
+        if (jiraOmniboxCheckbox) {
+            jiraOmniboxCheckbox.checked = true; // Always enabled due to Chrome limitation
+            this.updateToggleSwitch('jira-omnibox-enabled', true);
+            this.disableOmniboxToggle();
+        }
+
+        if (jiraDomainInput) {
+            jiraDomainInput.value = this.currentSettings.jiraDomain || 'yourcompany';
+        }
+
+        // Update demo examples
+        this.updateOmniboxDemoExamples();
 
         // Handle the Jira primary dependency logic
         this.handleJiraPrimaryChange(this.currentSettings.jiraCopyPrimaryEnabled);
@@ -1194,7 +1259,7 @@ class SettingsPageController {
         notice = document.createElement('div');
         notice.id = 'clean-timeline-dependency-notice';
         notice.className = 'dependency-notice';
-        notice.style.cssText = 'margin-bottom: 16px; padding: 12px; background-color: #f6f8fa; border: 1px solid #d1d9e0; border-radius: 6px; color: #656d76;';
+        notice.style.cssText = 'margin-bottom: 16px; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;';
         notice.innerHTML = `<strong>Clean Timeline Dependency:</strong> This setting is automatically enabled because Clean Timeline is active. Disable Clean Timeline to toggle this setting.`;
 
         // Insert the notice at the beginning of the form group, before the toggle-item
@@ -1205,6 +1270,24 @@ class SettingsPageController {
         const notice = document.getElementById('clean-timeline-dependency-notice');
         if (notice) {
             notice.style.display = 'none';
+        }
+    }
+
+    updateOmniboxDemoExamples() {
+        const domain = this.currentSettings.jiraDomain || 'yourcompany';
+
+        // Update domain demo
+        const domainDemo = document.getElementById('domain-demo');
+        if (domainDemo) {
+            domainDemo.textContent = `https://${domain}.atlassian.net/browse/NC-3423`;
+        }
+    }
+
+    disableOmniboxToggle() {
+        const toggleItem = document.getElementById('jira-omnibox-toggle-item');
+        if (toggleItem) {
+            toggleItem.style.opacity = '0.5';
+            toggleItem.style.pointerEvents = 'none';
         }
     }
 }

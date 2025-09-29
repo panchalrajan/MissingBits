@@ -84,6 +84,13 @@
                     </svg>
                     Copy - Dropdown
                 </li>
+                <li class="nav-item" data-section="jira-omnibox">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4m-6 0H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <path d="M10 17l5-5-5-5"></path>
+                    </svg>
+                    Quick Navigation
+                </li>
 
                 <!-- Amplitude Section -->
                 <li class="nav-header">
@@ -358,6 +365,9 @@
                                 <input type="checkbox" id="scroll-to-top-everywhere-checkbox" class="toggle-input">
                             </div>
                         </div>
+                        <div class="dependency-notice" id="scroll-to-top-dependency-notice" style="display: none; margin: 16px 0; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;">
+                            <strong>Master Toggle Override:</strong> Individual page settings are automatically enabled because "Show scroll to top everywhere" is active. Disable the master toggle to control individual pages.
+                        </div>
                         <div class="toggle-item" style="margin-top: 16px;">
                             <div class="toggle-content">
                                 <div class="toggle-label">Show scroll to top at PR</div>
@@ -511,7 +521,7 @@
                         <p>Enable or disable the dropdown menu with additional copy options</p>
                     </div>
                     <div class="form-group">
-                        <div class="dependency-notice" id="dropdown-dependency-notice" style="display: none; margin-bottom: 16px; padding: 12px; background-color: #f6f8fa; border: 1px solid #d1d9e0; border-radius: 6px; color: #656d76;">
+                        <div class="dependency-notice" id="dropdown-dependency-notice" style="display: none; margin-bottom: 16px; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;">
                             <strong>Primary Copy Required:</strong> Enable the Primary Copy feature to access dropdown menu options
                         </div>
                         <div class="toggle-item" id="jira-dropdown-toggle-item">
@@ -547,6 +557,77 @@
                                 Add Dropdown Option
                             </button>
                             <small class="form-hint">Add custom dropdown options with templates for different copy formats</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jira Quick Navigation Section -->
+            <div class="content-section" id="jira-omnibox-section">
+                <div class="section-header">
+                    <h1>Quick Navigation</h1>
+                    <p>Navigate to Jira tickets quickly using browser address bar shortcuts</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable quick navigation via browser address bar</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="dependency-notice" id="omnibox-limitation-notice" style="margin-bottom: 16px; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;">
+                            <strong>Chrome Extension Limitation:</strong> This feature cannot be disabled due to Chrome's omnibox keyword requirements. The "j" keyword is always active when the extension is installed.
+                        </div>
+                        <div class="toggle-item" id="jira-omnibox-toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Enable Quick Navigation</div>
+                                <div class="toggle-description">Type shortcut + TAB in address bar, then ticket ID to navigate to Jira</div>
+                            </div>
+                            <div class="toggle-switch" id="jira-omnibox-enabled">
+                                <input type="checkbox" id="jira-omnibox-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Jira Domain</h3>
+                        <p>Configure your Jira domain for quick navigation</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="jira-domain">Domain Name</label>
+                        <div class="input-with-prefix">
+                            <span class="input-prefix">https://</span>
+                            <input type="text" id="jira-domain" class="form-input" placeholder="yourcompany" maxlength="50">
+                            <span class="input-suffix">.atlassian.net</span>
+                        </div>
+                        <small class="form-hint">Enter only the domain part (e.g., "yourcompany" for yourcompany.atlassian.net)</small>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Keyboard Shortcut</h3>
+                        <p>The shortcut key for quick navigation (fixed by Chrome)</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="jira-shortcut">Shortcut Key</label>
+                        <div class="shortcut-display">
+                            <span class="shortcut-key">j</span>
+                            <span class="shortcut-note">Fixed shortcut - cannot be changed</span>
+                        </div>
+                        <small class="form-hint">Chrome extensions have fixed omnibox keywords. This extension uses "j" + TAB to activate.</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="usage-example">
+                            <h4>Usage Example:</h4>
+                            <ol>
+                                <li>In browser address bar, type: <code>j</code> + <kbd>TAB</kbd></li>
+                                <li>Address bar shows "Search Missing Bits"</li>
+                                <li>Type ticket ID: <code>NC-3423</code></li>
+                                <li>Press <kbd>Enter</kbd> → Opens <code id="domain-demo">https://yourcompany.atlassian.net/browse/NC-3423</code></li>
+                            </ol>
                         </div>
                     </div>
                 </div>
