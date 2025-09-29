@@ -133,8 +133,10 @@ class SettingsPageController {
 
             const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
             if (jiraOmniboxCheckbox) {
-                jiraOmniboxCheckbox.checked = this.currentSettings.jiraOmniboxEnabled;
-                this.updateToggleSwitch('jira-omnibox-enabled', this.currentSettings.jiraOmniboxEnabled);
+                jiraOmniboxCheckbox.checked = true; // Always enabled due to Chrome limitation
+                this.updateToggleSwitch('jira-omnibox-enabled', true);
+                // Disable the toggle since it cannot be changed
+                this.disableOmniboxToggle();
             }
 
             const jiraDomainInput = document.getElementById('jira-domain');
@@ -390,12 +392,14 @@ class SettingsPageController {
             });
         }
 
-        // Jira omnibox checkbox
+        // Jira omnibox checkbox - disabled due to Chrome limitation
         const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
         if (jiraOmniboxCheckbox) {
             jiraOmniboxCheckbox.addEventListener('change', (e) => {
-                this.currentSettings.jiraOmniboxEnabled = e.target.checked;
-                this.updateToggleSwitch('jira-omnibox-enabled', e.target.checked);
+                // Prevent changes - always keep enabled
+                e.target.checked = true;
+                this.currentSettings.jiraOmniboxEnabled = true;
+                this.updateToggleSwitch('jira-omnibox-enabled', true);
                 this.autoSave();
             });
         }
@@ -425,6 +429,7 @@ class SettingsPageController {
         const issueToggleSwitch = document.getElementById('scroll-to-top-issue');
         const prToggleItem = prToggleSwitch?.closest('.toggle-item');
         const issueToggleItem = issueToggleSwitch?.closest('.toggle-item');
+        const dependencyNotice = document.getElementById('scroll-to-top-dependency-notice');
 
         if (isEverywhereEnabled) {
             // When master is enabled, auto-enable the other toggles and gray them out
@@ -454,6 +459,11 @@ class SettingsPageController {
                 issueToggleItem.style.opacity = '0.5';
                 issueToggleItem.style.pointerEvents = 'none';
             }
+
+            // Show dependency notice
+            if (dependencyNotice) {
+                dependencyNotice.style.display = 'block';
+            }
         } else {
             // When master is disabled, restore normal functionality
             if (prToggleItem) {
@@ -463,6 +473,11 @@ class SettingsPageController {
             if (issueToggleItem) {
                 issueToggleItem.style.opacity = '1';
                 issueToggleItem.style.pointerEvents = 'auto';
+            }
+
+            // Hide dependency notice
+            if (dependencyNotice) {
+                dependencyNotice.style.display = 'none';
             }
         }
     }
@@ -809,8 +824,9 @@ class SettingsPageController {
         }
 
         if (jiraOmniboxCheckbox) {
-            jiraOmniboxCheckbox.checked = this.currentSettings.jiraOmniboxEnabled;
-            this.updateToggleSwitch('jira-omnibox-enabled', this.currentSettings.jiraOmniboxEnabled);
+            jiraOmniboxCheckbox.checked = true; // Always enabled due to Chrome limitation
+            this.updateToggleSwitch('jira-omnibox-enabled', true);
+            this.disableOmniboxToggle();
         }
 
         if (jiraDomainInput) {
@@ -1243,7 +1259,7 @@ class SettingsPageController {
         notice = document.createElement('div');
         notice.id = 'clean-timeline-dependency-notice';
         notice.className = 'dependency-notice';
-        notice.style.cssText = 'margin-bottom: 16px; padding: 12px; background-color: #f6f8fa; border: 1px solid #d1d9e0; border-radius: 6px; color: #656d76;';
+        notice.style.cssText = 'margin-bottom: 16px; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;';
         notice.innerHTML = `<strong>Clean Timeline Dependency:</strong> This setting is automatically enabled because Clean Timeline is active. Disable Clean Timeline to toggle this setting.`;
 
         // Insert the notice at the beginning of the form group, before the toggle-item
@@ -1264,6 +1280,14 @@ class SettingsPageController {
         const domainDemo = document.getElementById('domain-demo');
         if (domainDemo) {
             domainDemo.textContent = `https://${domain}.atlassian.net/browse/NC-3423`;
+        }
+    }
+
+    disableOmniboxToggle() {
+        const toggleItem = document.getElementById('jira-omnibox-toggle-item');
+        if (toggleItem) {
+            toggleItem.style.opacity = '0.5';
+            toggleItem.style.pointerEvents = 'none';
         }
     }
 }

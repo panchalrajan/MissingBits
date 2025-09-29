@@ -40,12 +40,7 @@ chrome.omnibox.onInputChanged.addListener((text, suggest) => {
 chrome.omnibox.onInputEntered.addListener(async (text, disposition) => {
   try {
     // Load settings to get Jira configuration
-    const settings = await chrome.storage.sync.get(['jiraOmniboxEnabled', 'jiraDomain', 'jiraDefaultProject']);
-
-    // Check if omnibox is enabled
-    if (!settings.jiraOmniboxEnabled) {
-      return;
-    }
+    const settings = await chrome.storage.sync.get(['jiraDomain', 'jiraDefaultProject']);
 
     const domain = settings.jiraDomain || 'yourcompany';
     const defaultProject = settings.jiraDefaultProject || 'PROJ';

@@ -365,6 +365,9 @@
                                 <input type="checkbox" id="scroll-to-top-everywhere-checkbox" class="toggle-input">
                             </div>
                         </div>
+                        <div class="dependency-notice" id="scroll-to-top-dependency-notice" style="display: none; margin: 16px 0; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;">
+                            <strong>Master Toggle Override:</strong> Individual page settings are automatically enabled because "Show scroll to top everywhere" is active. Disable the master toggle to control individual pages.
+                        </div>
                         <div class="toggle-item" style="margin-top: 16px;">
                             <div class="toggle-content">
                                 <div class="toggle-label">Show scroll to top at PR</div>
@@ -518,7 +521,7 @@
                         <p>Enable or disable the dropdown menu with additional copy options</p>
                     </div>
                     <div class="form-group">
-                        <div class="dependency-notice" id="dropdown-dependency-notice" style="display: none; margin-bottom: 16px; padding: 12px; background-color: #f6f8fa; border: 1px solid #d1d9e0; border-radius: 6px; color: #656d76;">
+                        <div class="dependency-notice" id="dropdown-dependency-notice" style="display: none; margin-bottom: 16px; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;">
                             <strong>Primary Copy Required:</strong> Enable the Primary Copy feature to access dropdown menu options
                         </div>
                         <div class="toggle-item" id="jira-dropdown-toggle-item">
@@ -572,7 +575,10 @@
                         <p>Enable or disable quick navigation via browser address bar</p>
                     </div>
                     <div class="form-group">
-                        <div class="toggle-item">
+                        <div class="dependency-notice" id="omnibox-limitation-notice" style="margin-bottom: 16px; padding: 12px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;">
+                            <strong>Chrome Extension Limitation:</strong> This feature cannot be disabled due to Chrome's omnibox keyword requirements. The "j" keyword is always active when the extension is installed.
+                        </div>
+                        <div class="toggle-item" id="jira-omnibox-toggle-item">
                             <div class="toggle-content">
                                 <div class="toggle-label">Enable Quick Navigation</div>
                                 <div class="toggle-description">Type shortcut + TAB in address bar, then ticket ID to navigate to Jira</div>
