@@ -36,6 +36,9 @@ class SettingsManager {
             scrollToTopIssue: true,
             scrollToTopPosition: "bottom-right",
             copyJsonEnabled: true,
+            // GitHub Team Copy settings
+            teamCopyEnabled: true,
+            teamCopyButtonTitle: "Copy Members Names",
             usernames: [
                 { id: "default1", name: "github-actions", enabled: true, deletable: true }
             ],

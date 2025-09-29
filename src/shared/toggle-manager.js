@@ -23,7 +23,8 @@ class ToggleManager extends BaseManager {
             { id: 'expand-conversations-enabled', inputId: 'expand-all-enabled' },
             { id: 'view-resolved-enabled', inputId: 'view-resolved-enabled-checkbox' },
             { id: 'comment-filter-enabled', inputId: 'comment-filter-enabled-checkbox' },
-            { id: 'scroll-to-top-enabled', inputId: 'scroll-to-top-enabled-checkbox' }
+            { id: 'scroll-to-top-enabled', inputId: 'scroll-to-top-enabled-checkbox' },
+            { id: 'team-copy-enabled', inputId: 'team-copy-enabled-checkbox' }
         ];
 
         configs.forEach(config => {

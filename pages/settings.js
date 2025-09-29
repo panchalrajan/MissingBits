@@ -117,6 +117,17 @@ class SettingsPageController {
                 this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
             }
 
+            const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
+            if (teamCopyCheckbox) {
+                teamCopyCheckbox.checked = this.currentSettings.teamCopyEnabled;
+                this.updateToggleSwitch('team-copy-enabled', this.currentSettings.teamCopyEnabled);
+            }
+
+            const teamCopyButtonTitleInput = document.getElementById('team-copy-button-title');
+            if (teamCopyButtonTitleInput) {
+                teamCopyButtonTitleInput.value = this.currentSettings.teamCopyButtonTitle;
+            }
+
             // Jira settings
 
             const jiraCopyPrimaryCheckbox = document.getElementById('jira-copy-primary-enabled-checkbox');
@@ -290,6 +301,26 @@ class SettingsPageController {
                 this.currentSettings.copyJsonEnabled = e.target.checked;
                 this.updateToggleSwitch('copy-json-enabled', e.target.checked);
                 this.autoSave();
+            });
+        }
+
+        // Team copy checkbox
+        const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
+        if (teamCopyCheckbox) {
+            teamCopyCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.teamCopyEnabled = e.target.checked;
+                this.updateToggleSwitch('team-copy-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        // Team copy button title input
+        const teamCopyButtonTitleInput = document.getElementById('team-copy-button-title');
+        if (teamCopyButtonTitleInput) {
+            teamCopyButtonTitleInput.addEventListener('input', (e) => {
+                const value = e.target.value.trim() || 'Copy Members Names';
+                this.currentSettings.teamCopyButtonTitle = value;
+                this.debouncedSave();
             });
         }
 
@@ -809,6 +840,18 @@ class SettingsPageController {
         if (copyJsonCheckbox) {
             copyJsonCheckbox.checked = this.currentSettings.copyJsonEnabled;
             this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
+        }
+
+        // Update Team Copy settings
+        const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
+        if (teamCopyCheckbox) {
+            teamCopyCheckbox.checked = this.currentSettings.teamCopyEnabled;
+            this.updateToggleSwitch('team-copy-enabled', this.currentSettings.teamCopyEnabled);
+        }
+
+        const teamCopyButtonTitleInput = document.getElementById('team-copy-button-title');
+        if (teamCopyButtonTitleInput) {
+            teamCopyButtonTitleInput.value = this.currentSettings.teamCopyButtonTitle;
         }
 
         // Update Jira settings

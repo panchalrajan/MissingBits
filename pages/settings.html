@@ -60,6 +60,14 @@
                     </svg>
                     Scroll to Top
                 </li>
+                <li class="nav-item" data-section="team-copy">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="m22 21-3-3m0 0-3-3m3 3 3-3m-3 3-3 3"></path>
+                    </svg>
+                    Team Copy
+                </li>
 
                 <!-- Jira Section -->
                 <li class="nav-header">
@@ -655,6 +663,44 @@
                                 <input type="checkbox" id="copy-json-enabled-checkbox" class="toggle-input">
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Copy Section -->
+            <div class="content-section" id="team-copy-section">
+                <div class="section-header">
+                    <h1>Team Copy</h1>
+                    <p>Copy GitHub team member names with one click</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Visibility</h3>
+                        <p>Control whether the copy team members button appears on GitHub team pages</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Team Copy Button</div>
+                                <div class="toggle-description">Display the copy members button on GitHub team pages</div>
+                            </div>
+                            <div class="toggle-switch" id="team-copy-enabled">
+                                <input type="checkbox" id="team-copy-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Button Configuration</h3>
+                        <p>Customize the team copy button</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="team-copy-button-title">Button Title</label>
+                        <input type="text" id="team-copy-button-title" class="form-input" placeholder="Copy Members Names" maxlength="30">
+                        <small class="form-hint">Maximum 30 characters</small>
                     </div>
                 </div>
             </div>

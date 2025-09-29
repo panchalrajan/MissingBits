@@ -55,6 +55,7 @@
         "src/platforms/github/comment-filter.js",
         "src/platforms/github/resolved-comments.js",
         "src/platforms/github/conversation-expansion.js",
+        "src/platforms/github/team-copy.js",
         "src/platforms/jira/jira-interface.js",
         "src/platforms/jira/jira-data-extractor.js",
         "src/platforms/jira/jira-issue.js",

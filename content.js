@@ -23,6 +23,9 @@ let amplitudeCopyInstance = null;
 // Jira copy functionality
 let jiraCopyInstance = null;
 
+// GitHub Team copy functionality
+let teamCopyInstance = null;
+
 function shouldShowScrollToTopButton(settings) {
   // If everywhere is enabled, show on all GitHub pages
   if (settings.scrollToTopEverywhere) {
@@ -328,6 +331,13 @@ if (isExtensionContextValid()) {
           }
         }
 
+        // Initialize team copy feature if settings changed
+        if (changes.teamCopyEnabled || changes.teamCopyButtonTitle) {
+          if (teamCopyInstance) {
+            teamCopyInstance.updateButtonVisibility();
+          }
+        }
+
         // If scroll to top position changed, recreate the button with new position
         if (changes.scrollToTopPosition) {
           if (scrollToTopInstance) {
@@ -414,6 +424,17 @@ async function initializeGitHubHelper() {
         jiraCopyInstance = new JiraCopy();
       }
       await jiraCopyInstance.initialize();
+    }
+
+    // Initialize GitHub Team copy functionality on GitHub pages
+    if (window.location.hostname.includes('github.com')) {
+      if (!teamCopyInstance) {
+        teamCopyInstance = new GitHubTeamCopy();
+        await teamCopyInstance.initialize();
+      } else {
+        // Handle page navigation updates
+        teamCopyInstance.handlePageUpdate();
+      }
     }
   } else {
     showContextInvalidatedNotification();
