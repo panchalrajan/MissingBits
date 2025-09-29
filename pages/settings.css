@@ -53,6 +53,18 @@ body {
 
 .nav-menu {
     list-style: none;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px; /* Add padding to prevent content from touching scrollbar area */
+
+    /* Hide scrollbar indicators */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+.nav-menu::-webkit-scrollbar {
+    display: none;
 }
 
 .nav-item {
