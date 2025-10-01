@@ -4,12 +4,42 @@ class JiraStatusRelocator {
         this.originalParent = null;
         this.originalNextSibling = null;
         this.movedElement = null;
+        this.pollInterval = null;
+        this.currentUrl = window.location.href;
     }
 
     async initialize() {
+        // Initial attempt
         setTimeout(() => {
             this.moveButton();
         }, 2000);
+
+        // Start continuous monitoring for overlays and URL changes
+        this.startPolling();
+    }
+
+    startPolling() {
+        if (this.pollInterval) return;
+
+        this.pollInterval = setInterval(() => {
+            // Check if URL changed (indicating navigation to new issue)
+            if (window.location.href !== this.currentUrl) {
+                this.currentUrl = window.location.href;
+                this.reset();
+                setTimeout(() => this.moveButton(), 1000);
+                return;
+            }
+
+            // Check if we find status buttons that haven't been processed
+            if (!this.isProcessed) {
+                this.moveButton();
+            }
+        }, 1000); // Check every second
+    }
+
+    reset() {
+        this.isProcessed = false;
+        // Keep position info for potential restoration
     }
 
     moveButton() {
@@ -40,6 +70,13 @@ class JiraStatusRelocator {
     }
 
     cleanup() {
+        // Stop polling
+        if (this.pollInterval) {
+            clearInterval(this.pollInterval);
+            this.pollInterval = null;
+        }
+
+        // Restore original position
         if (this.movedElement && this.originalParent) {
             this.movedElement.style.marginRight = '';
 

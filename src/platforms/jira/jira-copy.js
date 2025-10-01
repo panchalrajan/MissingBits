@@ -27,9 +27,12 @@ class JiraCopy {
 
             const copyAction = () => JiraInterface.issue?.copyToClipboard();
 
-            // Initialize status relocator
-            this.statusRelocator = new JiraStatusRelocator();
-            await this.statusRelocator.initialize();
+            // Initialize status relocator if enabled
+            const settings = await SettingsManager.load();
+            if (settings.jiraStatusRelocatorEnabled) {
+                this.statusRelocator = new JiraStatusRelocator();
+                await this.statusRelocator.initialize();
+            }
 
             // Setup notifications, keyboard shortcuts, and button observer
             JiraInterface.setupNotifications(copyAction);
