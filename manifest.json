@@ -59,6 +59,7 @@
         "src/platforms/jira/jira-interface.js",
         "src/platforms/jira/jira-data-extractor.js",
         "src/platforms/jira/jira-issue.js",
+        "src/platforms/jira/jira-status-relocator.js",
         "src/platforms/jira/jira-copy.js",
         "src/platforms/amplitude/amplitude-copy.js",
         "content.js"
