@@ -3,7 +3,7 @@
 > All-in-one productivity toolkit for GitHub, Jira, and Amplitude - streamlining your development workflow
 
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue)](https://chromewebstore.google.com/detail/missing-bits/aoamccioffindnejoppjmiboeicigaif)
-[![Version](https://img.shields.io/badge/version-1.3.0-green)](#changelog)
+[![Version](https://img.shields.io/badge/version-1.4.0-green)](#changelog)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 
 ## 🚀 Features
@@ -19,6 +19,7 @@
 ### Jira Integration
 - **📋 Smart Copy**: Copy issue details with customizable templates
 - **🚀 Quick Navigation**: Type `j + TAB` in address bar to quickly navigate to Jira tickets *(Chrome only)*
+- **🎯 Status Button Relocator**: Move ticket status button from sidebar to toolbar for easier access
 - **🔗 Quick Actions**: Streamlined workflow for issue management
 - **📊 Data Extraction**: Extract and format issue information
 
@@ -99,6 +100,7 @@ Configure which files to hide in GitHub pull requests:
 2. Use the copy buttons to extract issue information
 3. Customize templates in settings for your workflow
 4. **Quick Navigation** *(Chrome only)*: Type `j + TAB` in browser address bar, then enter ticket number
+5. **Status Button Relocator**: Enable in settings to move status button from sidebar to toolbar (restores old Jira behavior)
 
 ### Amplitude Analytics
 1. Navigate to Amplitude dashboards

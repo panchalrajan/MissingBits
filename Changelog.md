@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2025-10-02
+
+### ✨ **New Features**
+- **🎯 Jira Status Button Relocator**: Move ticket status button from sidebar to toolbar for easier access (restores old Jira behavior)
+
 ## [1.3.0] - 2025-10-01
 
 ### ✨ **New Features**
