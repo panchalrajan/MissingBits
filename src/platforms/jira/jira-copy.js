@@ -5,6 +5,7 @@ class JiraCopy {
         this.buttonId = "copy-issue-button";
         this.keyboardManager = null;
         this.addButtonTimeout = null;
+        this.statusRelocator = null;
     }
 
     /**
@@ -25,6 +26,13 @@ class JiraCopy {
             this.keyboardManager = new KeyboardShortcutManager();
 
             const copyAction = () => JiraInterface.issue?.copyToClipboard();
+
+            // Initialize status relocator if enabled
+            const settings = await SettingsManager.load();
+            if (settings.jiraStatusRelocatorEnabled) {
+                this.statusRelocator = new JiraStatusRelocator();
+                await this.statusRelocator.initialize();
+            }
 
             // Setup notifications, keyboard shortcuts, and button observer
             JiraInterface.setupNotifications(copyAction);
@@ -235,6 +243,12 @@ class JiraCopy {
         if (this.addButtonTimeout) {
             clearTimeout(this.addButtonTimeout);
             this.addButtonTimeout = null;
+        }
+
+        // Cleanup status relocator
+        if (this.statusRelocator) {
+            this.statusRelocator.cleanup();
+            this.statusRelocator = null;
         }
 
         // Remove any existing buttons

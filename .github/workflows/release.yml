@@ -147,10 +147,10 @@ jobs:
           echo "ZIP file size:"
           ls -la *.zip
 
-      - name: Create Safari Extension manifest
+      - name: Create Safari Extension manifest and background script
         if: steps.check_tag.outputs.exists == 'false'
         run: |
-          echo "Creating Safari-compatible manifest..."
+          echo "Creating Safari-compatible manifest and background script..."
           mkdir -p safari-build
           cp -r build/* safari-build/
 
@@ -166,13 +166,43 @@ jobs:
               }
             };
 
-            // Safari prefers browser.* API over chrome.*
-            if (manifest.permissions) {
-              manifest.permissions = manifest.permissions.map(p => p);
+            // Remove omnibox support for Safari (not well supported)
+            if (manifest.omnibox) {
+              delete manifest.omnibox;
+              console.log('Removed omnibox support for Safari compatibility');
             }
 
             fs.writeFileSync('safari-build/manifest.json', JSON.stringify(manifest, null, 2));
             console.log('Safari manifest created');
+          "
+
+          # Create Safari-compatible background script
+          echo "Creating Safari-compatible background script..."
+          node -e "
+            const fs = require('fs');
+            const backgroundScript = fs.readFileSync('safari-build/background.js', 'utf8');
+
+            // Create Safari-compatible version
+            let safariBackground = backgroundScript
+              // Replace chrome.* with browser.* for Safari compatibility
+              .replace(/chrome\\.runtime/g, 'browser.runtime')
+              .replace(/chrome\\.action/g, 'browser.action')
+              .replace(/chrome\\.storage/g, 'browser.storage')
+              .replace(/chrome\\.tabs/g, 'browser.tabs')
+              // Remove omnibox functionality entirely for Safari
+              .replace(/\/\/ Omnibox functionality[\s\S]*$/m, '// Omnibox functionality removed for Safari compatibility');
+
+            // Add fallback for browser API
+            const safariWrapper = \`// Safari-compatible background script
+// Fallback to chrome API if browser API is not available
+if (typeof browser === 'undefined' && typeof chrome !== 'undefined') {
+    globalThis.browser = chrome;
+}
+
+\${safariBackground}\`;
+
+            fs.writeFileSync('safari-build/background.js', safariWrapper);
+            console.log('Safari-compatible background script created');
           "
 
       - name: Convert to Safari Extension

@@ -99,6 +99,12 @@
                     </svg>
                     Quick Navigation
                 </li>
+                <li class="nav-item" data-section="jira-status-relocator">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                    </svg>
+                    Ticket Status Position
+                </li>
 
                 <!-- Amplitude Section -->
                 <li class="nav-header">
@@ -641,6 +647,32 @@
                 </div>
             </div>
 
+            <!-- Jira Status Relocator Section -->
+            <div class="content-section" id="jira-status-relocator-section">
+                <div class="section-header">
+                    <h1>Ticket Status Position</h1>
+                    <p>Move ticket status button to a more convenient location in the toolbar</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the status button relocation feature</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Move Ticket Status to Toolbar</div>
+                                <div class="toggle-description">Relocate the status button from sidebar to the main toolbar for easier access (restores old Jira behavior)</div>
+                            </div>
+                            <div class="toggle-switch" id="jira-status-relocator-enabled">
+                                <input type="checkbox" id="jira-status-relocator-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Copy Json Section -->
             <div class="content-section" id="copy-json-section">
                 <div class="section-header">
@@ -740,10 +772,6 @@
         </main>
     </div>
 
-    <script src="../modules/dom-utils.js"></script>
-    <script src="../modules/toggle-manager.js"></script>
-    <script src="../modules/navigation-manager.js"></script>
-    <script src="../modules/settings-form-handler.js"></script>
     <!-- Template Editor Modal -->
     <div class="modal-overlay" id="template-editor-modal">
         <div class="modal-content template-editor-modal">
@@ -912,17 +940,12 @@
         </div>
     </div>
 
+    <!-- Extension pages need their own script imports (content_scripts only apply to web pages) -->
     <script src="../src/core/settings-manager.js"></script>
-    <script src="../src/core/dom-utils.js"></script>
     <script src="../src/core/custom-confirm.js"></script>
     <script src="../src/core/toast.js"></script>
     <script src="../src/core/modal.js"></script>
-    <script src="../src/core/base-manager.js"></script>
-    <script src="../src/core/filter-utils.js"></script>
-    <script src="../src/core/keyboard-shortcut.js"></script>
     <script src="../src/core/ui-components.js"></script>
-    <script src="../src/core/settings-form-handler.js"></script>
-    <script src="../src/shared/toggle-manager.js"></script>
     <script src="components/template-formatter.js"></script>
     <script src="components/template-renderer.js"></script>
     <script src="components/template-editor.js"></script>

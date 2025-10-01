@@ -1,3 +1,5 @@
 personal-commit.sh
 .claude/
 extension_metadata.md
+build-safari-extension.sh
+*.app

@@ -159,6 +159,12 @@ class SettingsPageController {
                 this.disableOmniboxToggle();
             }
 
+            const jiraStatusRelocatorCheckbox = document.getElementById('jira-status-relocator-enabled-checkbox');
+            if (jiraStatusRelocatorCheckbox) {
+                jiraStatusRelocatorCheckbox.checked = this.currentSettings.jiraStatusRelocatorEnabled;
+                this.updateToggleSwitch('jira-status-relocator-enabled', this.currentSettings.jiraStatusRelocatorEnabled);
+            }
+
             const jiraDomainInput = document.getElementById('jira-domain');
             if (jiraDomainInput) {
                 jiraDomainInput.value = this.currentSettings.jiraDomain || 'yourcompany';
@@ -452,6 +458,16 @@ class SettingsPageController {
                 e.target.checked = true;
                 this.currentSettings.jiraOmniboxEnabled = true;
                 this.updateToggleSwitch('jira-omnibox-enabled', true);
+                this.autoSave();
+            });
+        }
+
+        // Jira status relocator enabled checkbox
+        const jiraStatusRelocatorCheckbox = document.getElementById('jira-status-relocator-enabled-checkbox');
+        if (jiraStatusRelocatorCheckbox) {
+            jiraStatusRelocatorCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.jiraStatusRelocatorEnabled = e.target.checked;
+                this.updateToggleSwitch('jira-status-relocator-enabled', e.target.checked);
                 this.autoSave();
             });
         }
@@ -781,6 +797,7 @@ class SettingsPageController {
         const jiraCopyPrimaryCheckbox = document.getElementById('jira-copy-primary-enabled-checkbox');
         const jiraCopyDropdownCheckbox = document.getElementById('jira-copy-dropdown-enabled-checkbox');
         const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+        const jiraStatusRelocatorCheckbox = document.getElementById('jira-status-relocator-enabled-checkbox');
         const jiraDomainInput = document.getElementById('jira-domain');
 
         if (buttonTitleInput) {
@@ -900,6 +917,11 @@ class SettingsPageController {
             jiraOmniboxCheckbox.checked = true; // Always enabled due to Chrome limitation
             this.updateToggleSwitch('jira-omnibox-enabled', true);
             this.disableOmniboxToggle();
+        }
+
+        if (jiraStatusRelocatorCheckbox) {
+            jiraStatusRelocatorCheckbox.checked = this.currentSettings.jiraStatusRelocatorEnabled;
+            this.updateToggleSwitch('jira-status-relocator-enabled', this.currentSettings.jiraStatusRelocatorEnabled);
         }
 
         if (jiraDomainInput) {

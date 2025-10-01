@@ -385,6 +385,25 @@ if (isExtensionContextValid()) {
             jiraCopyInstance.refreshButton();
           }
         }
+
+        // If Jira status relocator setting changed, initialize or cleanup relocator
+        if (changes.jiraStatusRelocatorEnabled) {
+          if (window.location.hostname.includes('atlassian.net') && jiraCopyInstance) {
+            if (changes.jiraStatusRelocatorEnabled.newValue) {
+              // Initialize status relocator if enabled
+              if (!jiraCopyInstance.statusRelocator) {
+                jiraCopyInstance.statusRelocator = new JiraStatusRelocator();
+                jiraCopyInstance.statusRelocator.initialize();
+              }
+            } else {
+              // Cleanup status relocator if disabled
+              if (jiraCopyInstance.statusRelocator) {
+                jiraCopyInstance.statusRelocator.cleanup();
+                jiraCopyInstance.statusRelocator = null;
+              }
+            }
+          }
+        }
       }
     });
   } catch (error) {

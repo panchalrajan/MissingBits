@@ -46,6 +46,7 @@ class SettingsManager {
             // Jira settings
             jiraCopyPrimaryEnabled: true,
             jiraCopyDropdownEnabled: true,
+            jiraStatusRelocatorEnabled: true,
             copyIssueTemplate: `<a href="<url>" target="_blank">[<key>] - <title></a>`,
             copyIssueButtonTitle: "Copy",
             customTemplate: "{{hyperlink_start}}[{{ticket_id:default}}] - {{ticket_title:default}}{{hyperlink_end}}",
