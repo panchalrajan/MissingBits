@@ -24,11 +24,21 @@ class JiraStatusRelocator {
     moveButton() {
         if (this.isProcessed) return;
 
-        const originalContainer = document.querySelector('[data-testid="ref-spotlight-target-status-and-approval-spotlight"]');
+        // Try multiple selectors for different Jira versions
+        let originalContainer =
+            // New structure (your current account)
+            document.querySelector('[data-testid="issue.views.issue-base.foundation.status.status-field-wrapper"]') ||
+            // Old structure (previous working account)
+            document.querySelector('[data-testid="ref-spotlight-target-status-and-approval-spotlight"]');
+
         const targetLocation = document.querySelector('[data-testid="issue.views.issue-base.context.status-and-approvals-wrapper.status-and-approval"] [data-testid="issue.views.issue-base.foundation.status.actions-wrapper"]');
 
         if (!originalContainer || !targetLocation) {
-            console.log("❌ JiraStatusRelocator: Required elements not found");
+            console.log("❌ JiraStatusRelocator: Required elements not found", {
+                originalContainer: !!originalContainer,
+                targetLocation: !!targetLocation,
+                statusButton: !!document.querySelector('#issue\\.fields\\.status-view\\.status-button')
+            });
             setTimeout(() => this.moveButton(), 1000);
             return;
         }
