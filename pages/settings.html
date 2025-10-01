@@ -772,10 +772,6 @@
         </main>
     </div>
 
-    <script src="../modules/dom-utils.js"></script>
-    <script src="../modules/toggle-manager.js"></script>
-    <script src="../modules/navigation-manager.js"></script>
-    <script src="../modules/settings-form-handler.js"></script>
     <!-- Template Editor Modal -->
     <div class="modal-overlay" id="template-editor-modal">
         <div class="modal-content template-editor-modal">
@@ -944,17 +940,12 @@
         </div>
     </div>
 
+    <!-- Extension pages need their own script imports (content_scripts only apply to web pages) -->
     <script src="../src/core/settings-manager.js"></script>
-    <script src="../src/core/dom-utils.js"></script>
     <script src="../src/core/custom-confirm.js"></script>
     <script src="../src/core/toast.js"></script>
     <script src="../src/core/modal.js"></script>
-    <script src="../src/core/base-manager.js"></script>
-    <script src="../src/core/filter-utils.js"></script>
-    <script src="../src/core/keyboard-shortcut.js"></script>
     <script src="../src/core/ui-components.js"></script>
-    <script src="../src/core/settings-form-handler.js"></script>
-    <script src="../src/shared/toggle-manager.js"></script>
     <script src="components/template-formatter.js"></script>
     <script src="components/template-renderer.js"></script>
     <script src="components/template-editor.js"></script>
