@@ -797,6 +797,7 @@ class SettingsPageController {
         const jiraCopyPrimaryCheckbox = document.getElementById('jira-copy-primary-enabled-checkbox');
         const jiraCopyDropdownCheckbox = document.getElementById('jira-copy-dropdown-enabled-checkbox');
         const jiraOmniboxCheckbox = document.getElementById('jira-omnibox-enabled-checkbox');
+        const jiraStatusRelocatorCheckbox = document.getElementById('jira-status-relocator-enabled-checkbox');
         const jiraDomainInput = document.getElementById('jira-domain');
 
         if (buttonTitleInput) {
@@ -916,6 +917,11 @@ class SettingsPageController {
             jiraOmniboxCheckbox.checked = true; // Always enabled due to Chrome limitation
             this.updateToggleSwitch('jira-omnibox-enabled', true);
             this.disableOmniboxToggle();
+        }
+
+        if (jiraStatusRelocatorCheckbox) {
+            jiraStatusRelocatorCheckbox.checked = this.currentSettings.jiraStatusRelocatorEnabled;
+            this.updateToggleSwitch('jira-status-relocator-enabled', this.currentSettings.jiraStatusRelocatorEnabled);
         }
 
         if (jiraDomainInput) {
