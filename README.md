@@ -3,7 +3,7 @@
 > All-in-one productivity toolkit for GitHub, Jira, and Amplitude - streamlining your development workflow
 
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Web%20Store-blue)](https://chromewebstore.google.com/detail/missing-bits/aoamccioffindnejoppjmiboeicigaif)
-[![Version](https://img.shields.io/badge/version-1.2.0-green)](#changelog)
+[![Version](https://img.shields.io/badge/version-1.3.0-green)](#changelog)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE.md)
 
 ## 🚀 Features
@@ -14,16 +14,16 @@
 - **📈 Conversation Expansion**: Expand all conversations in pull requests and issues
 - **⬆️ Scroll to Top**: Quick navigation button for long pages
 - **🌙 Timeline Cleaner**: Hide resolved comments and clean up PR timelines
+- **👥 Team Copy**: Copy team member names with one click from GitHub team pages
 
 ### Jira Integration
 - **📋 Smart Copy**: Copy issue details with customizable templates
-- **🚀 Quick Navigation**: Type `j + TAB` in address bar to quickly navigate to Jira tickets
+- **🚀 Quick Navigation**: Type `j + TAB` in address bar to quickly navigate to Jira tickets *(Chrome only)*
 - **🔗 Quick Actions**: Streamlined workflow for issue management
 - **📊 Data Extraction**: Extract and format issue information
 
 ### Amplitude Integration
 - **📊 Data Copy**: Copy analytics data and insights
-- **⚡ Quick Export**: Export amplitude data in various formats
 
 ## 📦 Installation
 
@@ -68,6 +68,11 @@ Configure which files to hide in GitHub pull requests:
 - **Enable on Issues**: Show scroll button on issue pages
 - **Enable Everywhere**: Show scroll button on all GitHub pages
 
+### Team Copy Settings
+- **Button Visibility**: Toggle the copy team members button on GitHub team pages
+- **Button Title**: Customize the button text (default: "Copy Members Names")
+- **Copy Mode**: Choose between "Display Name and Username" or "Username Only" format
+
 ## 🎮 Usage
 
 ### GitHub File Filtering
@@ -82,10 +87,18 @@ Configure which files to hide in GitHub pull requests:
 3. Expand all conversations with one click
 4. Hide resolved comments to focus on active discussions
 
+### GitHub Team Copy
+1. Navigate to any GitHub organization team page (e.g., `/orgs/myorg/teams/myteam`)
+2. Look for the "Copy Members Names" button on the team page
+3. Click to copy team name and member list to clipboard
+4. Choose copy format in settings: "Display Name and Username" or "Username Only"
+
+<!-- Jira Quick Navigation Section -->
 ### Jira Integration
 1. Navigate to any Jira issue
 2. Use the copy buttons to extract issue information
 3. Customize templates in settings for your workflow
+4. **Quick Navigation** *(Chrome only)*: Type `j + TAB` in browser address bar, then enter ticket number
 
 ### Amplitude Analytics
 1. Navigate to Amplitude dashboards
@@ -93,15 +106,6 @@ Configure which files to hide in GitHub pull requests:
 3. Quick access to formatted analytics data
 
 ## 🏗️ Architecture
-
-### Core Architecture (v1.1.0+)
-- **Base Manager Classes**: Inherited foundation for all platform managers
-- **Button Factory**: Centralized button creation with consistent styling
-- **UI Components**: Reusable UI components across platforms
-- **Settings Manager**: Centralized configuration management
-- **Navigation Manager**: Routing and navigation logic
-- **Filter Utilities**: Shared filtering functionality
-- **Toggle Manager**: Unified state management system
 
 ### Platform Integrations
 - **GitHub Module**: PR/Issue enhancements and file filtering
@@ -130,8 +134,10 @@ missing-bits/
 │   │   ├── github/     # GitHub enhancements
 │   │   ├── jira/       # Jira integrations
 │   │   └── amplitude/  # Amplitude features
-│   └── shared/         # Shared components
+│   ├── shared/         # Shared components
+│   └── styles/         # CSS styles
 ├── pages/              # Extension pages (settings, etc.)
+│   └── components/     # UI components for settings
 ├── icons/              # Extension icons
 ├── manifest.json       # Extension manifest
 └── content.js          # Main content script
@@ -189,7 +195,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 🔗 Links
 
-- [~~Chrome Web Store~~](https://chrome.google.com/webstore) [Coming Soon] 
+- [Chrome Web Store](https://chromewebstore.google.com/detail/missing-bits/aoamccioffindnejoppjmiboeicigaif) 
 - [GitHub Repository](https://github.com/panchalrajan/MissingBits)
 - [~~Documentation~~](https://github.com/panchalrajan/MissingBits/wiki) [Coming Soon]
 - [Issues](https://github.com/panchalrajan/MissingBits/issues)

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2025-10-01
+
+### ✨ **New Features**
+- **👥 GitHub Team Copy**: Copy team member names with one click from GitHub team pages
+
 ## [1.2.0] - 2025-09-29
 
 ### ✨ **New Features**

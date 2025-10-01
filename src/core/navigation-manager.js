@@ -33,7 +33,8 @@ class NavigationManager extends BaseManager {
             { name: 'jira-copy-primary', navSelector: '[data-section="jira-copy-primary"]', contentSelector: '#jira-copy-primary-section' },
             { name: 'jira-copy-dropdown', navSelector: '[data-section="jira-copy-dropdown"]', contentSelector: '#jira-copy-dropdown-section' },
             { name: 'jira-omnibox', navSelector: '[data-section="jira-omnibox"]', contentSelector: '#jira-omnibox-section' },
-            { name: 'copy-json', navSelector: '[data-section="copy-json"]', contentSelector: '#copy-json-section' }
+            { name: 'copy-json', navSelector: '[data-section="copy-json"]', contentSelector: '#copy-json-section' },
+            { name: 'team-copy', navSelector: '[data-section="team-copy"]', contentSelector: '#team-copy-section' }
         ];
 
         sectionConfigs.forEach(config => {

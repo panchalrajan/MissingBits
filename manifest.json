@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Missing Bits",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "All-in-one productivity toolkit for GitHub, Jira, and Amplitude - streamlining your development workflow",
   "author": "Rajan Panchal",
   "homepage_url": "https://github.com/panchalrajan/MissingBits",
@@ -55,6 +55,7 @@
         "src/platforms/github/comment-filter.js",
         "src/platforms/github/resolved-comments.js",
         "src/platforms/github/conversation-expansion.js",
+        "src/platforms/github/team-copy.js",
         "src/platforms/jira/jira-interface.js",
         "src/platforms/jira/jira-data-extractor.js",
         "src/platforms/jira/jira-issue.js",
