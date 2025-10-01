@@ -194,12 +194,12 @@ jobs:
 
             // Add fallback for browser API
             const safariWrapper = \`// Safari-compatible background script
-// Fallback to chrome API if browser API is not available
-if (typeof browser === 'undefined' && typeof chrome !== 'undefined') {
-    globalThis.browser = chrome;
-}
+            // Fallback to chrome API if browser API is not available
+            if (typeof browser === 'undefined' && typeof chrome !== 'undefined') {
+                globalThis.browser = chrome;
+            }
 
-\${safariBackground}\`;
+            \${safariBackground}\`;
 
             fs.writeFileSync('safari-build/background.js', safariWrapper);
             console.log('Safari-compatible background script created');
