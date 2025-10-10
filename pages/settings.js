@@ -386,6 +386,15 @@ class SettingsPageController {
             });
         }
 
+        // LinkedIn Start Withdraw button
+        const linkedinStartWithdrawBtn = document.getElementById('linkedin-start-withdraw');
+        if (linkedinStartWithdrawBtn) {
+            linkedinStartWithdrawBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.startLinkedInWithdrawal();
+            });
+        }
+
         // Team copy checkbox
         const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
         if (teamCopyCheckbox) {
@@ -1479,6 +1488,20 @@ class SettingsPageController {
             toggleItem.style.opacity = '0.5';
             toggleItem.style.pointerEvents = 'none';
         }
+    }
+
+    startLinkedInWithdrawal() {
+        // Store a flag to trigger withdrawal when the page loads
+        chrome.storage.local.set({ triggerLinkedInWithdrawal: true });
+
+        // Open LinkedIn invitation manager in new tab
+        chrome.tabs.create({
+            url: 'https://www.linkedin.com/mynetwork/invitation-manager/sent/',
+            active: true
+        });
+
+        // Show notification (assuming there's a notification system)
+        console.log('Opening LinkedIn and starting withdrawal...');
     }
 }
 

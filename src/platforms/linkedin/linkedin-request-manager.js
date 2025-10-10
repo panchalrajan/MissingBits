@@ -43,7 +43,31 @@ class LinkedInRequestManager extends BaseManager {
         if (this.isInvitationManagerPage()) {
             this.setTimeoutTracked(async () => {
                 await this.createOverlayButton();
+                // Check if we should trigger withdrawal automatically
+                await this.checkForAutoTrigger();
             }, 1000);
+        }
+    }
+
+    async checkForAutoTrigger() {
+        try {
+            const result = await chrome.storage.local.get(['triggerLinkedInWithdrawal']);
+            if (result.triggerLinkedInWithdrawal && this.isInvitationManagerSentPage()) {
+                // Clear the trigger flag
+                await chrome.storage.local.remove(['triggerLinkedInWithdrawal']);
+
+                // Start withdrawal after a short delay to ensure page is loaded
+                this.setTimeoutTracked(async () => {
+                    if (this.overlayButton) {
+                        const button = document.getElementById('linkedin-action-btn');
+                        if (button && !this.isWithdrawing) {
+                            button.click();
+                        }
+                    }
+                }, 2000);
+            }
+        } catch (error) {
+            console.error('Error checking for auto trigger:', error);
         }
     }
 
