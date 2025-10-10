@@ -25,7 +25,8 @@
       "matches": [
         "https://github.com/*",
         "https://*.atlassian.net/*",
-        "https://*.amplitude.com/*"
+        "https://*.amplitude.com/*",
+        "https://*.linkedin.com/*"
       ],
       "css": [
         "src/styles/scroll-to-top.css",
@@ -62,6 +63,7 @@
         "src/platforms/jira/jira-status-relocator.js",
         "src/platforms/jira/jira-copy.js",
         "src/platforms/amplitude/amplitude-copy.js",
+        "src/platforms/linkedin/linkedin-overlay.js",
         "content.js"
       ],
       "run_at": "document_end"
