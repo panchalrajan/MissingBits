@@ -94,12 +94,7 @@ class LinkedInOverlay {
             white-space: nowrap;
         `;
 
-        // Set button text based on page type
-        if (pageType === 'sent') {
-            button.textContent = 'Withdraw Last 10 Requests';
-        } else if (pageType === 'received') {
-            button.textContent = 'Accept All Requests';
-        }
+        button.textContent = pageType === 'sent' ? 'Withdraw Last 10 Requests' : 'Accept All Requests';
 
         // Add hover effects
         button.addEventListener('mouseenter', () => {
@@ -114,13 +109,10 @@ class LinkedInOverlay {
             button.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
         });
 
-        // Add click handler based on page type
         button.addEventListener('click', () => {
             if (pageType === 'sent') {
-                console.log('Withdraw Last 10 Requests button clicked');
                 this.handleWithdrawAction();
             } else if (pageType === 'received') {
-                console.log('Accept All Requests button clicked');
                 this.handleAcceptAllAction();
             }
         });
@@ -187,32 +179,13 @@ class LinkedInOverlay {
     }
 
     async handleWithdrawAction() {
-        console.log('🔥 BUTTON CLICKED! Starting withdraw process...');
-
-        // Update button to show loading state
         this.updateButtonState('loading', 'Loading all invitations...');
 
-        // Test immediate scroll
-        console.log('🔥 About to scroll...');
-        window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth'
-        });
-        console.log('🔥 Scroll command sent!');
-
         try {
-            // First, load all invitations by simulating user scrolling
             await this.loadAllInvitations();
-
-            // TODO: Next step - find and withdraw last 10 requests
-            console.log('All invitations loaded, ready for withdrawal');
             this.updateButtonState('ready', 'Withdraw Last 10 Requests');
-
         } catch (error) {
-            console.error('Error during withdraw process:', error);
             this.updateButtonState('error', 'Error - Try Again');
-
-            // Reset button after 3 seconds
             setTimeout(() => {
                 this.updateButtonState('ready', 'Withdraw Last 10 Requests');
             }, 3000);
@@ -220,16 +193,11 @@ class LinkedInOverlay {
     }
 
     async loadAllInvitations() {
-        console.log('🔥 loadAllInvitations started - scrolling to complete end');
-
         return new Promise((resolve) => {
             let currentScrollStep = 0;
-            let noScrollCount = 0; // Track how many times we couldn't scroll
+            let noScrollCount = 0;
 
             const scrollToCompleteEnd = () => {
-                console.log(`🔥 Scroll step ${currentScrollStep + 1} - going to end`);
-
-                // Find LinkedIn's scrollable containers
                 const scrollableContainers = [
                     document.querySelector('main'),
                     document.querySelector('.scaffold-layout__main'),
@@ -240,66 +208,51 @@ class LinkedInOverlay {
 
                 let anyScrolled = false;
 
-                scrollableContainers.forEach((container, index) => {
+                scrollableContainers.forEach((container) => {
                     if (container) {
-                        const oldScrollTop = container.scrollTop;
                         const maxScroll = container.scrollHeight - container.clientHeight;
-
-                        // If not at bottom, scroll by 300px
                         if (container.scrollTop < maxScroll - 10) {
                             container.scrollBy({
                                 top: 300,
                                 behavior: 'smooth'
                             });
-                            console.log(`🔥 Container ${index + 1} scrolling by 300px from ${oldScrollTop}`);
                             anyScrolled = true;
                         }
                     }
                 });
 
-                // Also scroll window
                 const windowMaxScroll = document.documentElement.scrollHeight - window.innerHeight;
                 if (window.pageYOffset < windowMaxScroll - 10) {
                     window.scrollBy({
                         top: 750,
                         behavior: 'smooth'
                     });
-                    console.log(`🔥 Window scrolling by 750px`);
                     anyScrolled = true;
                 }
 
                 currentScrollStep++;
 
-                // If nothing scrolled, increment no-scroll counter
                 if (!anyScrolled) {
                     noScrollCount++;
-                    console.log(`🔥 No scroll possible, count: ${noScrollCount}`);
                 } else {
-                    noScrollCount = 0; // Reset if we did scroll
+                    noScrollCount = 0;
                 }
 
-                // If we couldn't scroll for 3 attempts or hit max attempts, we're done
                 if (noScrollCount >= 3 || currentScrollStep >= 200) {
-                    console.log('🔥 Reached complete end! Counting final withdraw buttons...');
-
-                    // Give extra time for final lazy loading
                     setTimeout(() => {
                         const withdrawButtons = Array.from(document.querySelectorAll('button')).filter(btn =>
                             btn.textContent.includes('Withdraw')
                         );
-                        console.log(`🔥 Final count: ${withdrawButtons.length} withdraw buttons`);
                         resolve(withdrawButtons.length);
                     }, 2000);
                     return;
                 }
 
-                // Continue scrolling
                 setTimeout(() => {
                     scrollToCompleteEnd();
                 }, 250);
             };
 
-            // Start scrolling to complete end
             scrollToCompleteEnd();
         });
     }
@@ -333,8 +286,6 @@ class LinkedInOverlay {
 
     handleAcceptAllAction() {
         // TODO: Implement accept all requests functionality
-        console.log('Accepting all requests...');
-        // Placeholder for actual implementation
     }
 
     cleanup() {
@@ -357,10 +308,8 @@ class LinkedInOverlay {
         this.currentPageType = null;
     }
 
-    // Handle page navigation updates
     handlePageUpdate() {
         if (this.isInvitationManagerPage()) {
-            // Always recreate button to ensure correct text/functionality
             this.createOverlayButton();
         } else {
             this.cleanup();
