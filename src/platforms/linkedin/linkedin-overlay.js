@@ -5,6 +5,8 @@ class LinkedInOverlay {
         this.currentPageType = null;
         this.mutationObserver = null;
         this.urlCheckInterval = null;
+        this.isWithdrawing = false;
+        this.cancelWithdraw = false;
     }
 
     async initialize() {
@@ -94,7 +96,7 @@ class LinkedInOverlay {
             white-space: nowrap;
         `;
 
-        button.textContent = pageType === 'sent' ? 'Withdraw Last 10 Requests' : 'Accept All Requests';
+        button.textContent = pageType === 'sent' ? 'Withdraw Oldest 10 Requests' : 'Accept All Requests';
 
         // Add hover effects
         button.addEventListener('mouseenter', () => {
@@ -179,15 +181,42 @@ class LinkedInOverlay {
     }
 
     async handleWithdrawAction() {
+        // If already withdrawing, cancel the process
+        if (this.isWithdrawing) {
+            this.cancelWithdraw = true;
+            this.isWithdrawing = false;
+            this.updateButtonState('ready', 'Withdraw Oldest 10 Requests');
+            return;
+        }
+
         this.updateButtonState('loading', 'Loading all invitations...');
 
         try {
             await this.loadAllInvitations();
-            this.updateButtonState('ready', 'Withdraw Last 10 Requests');
+
+            // Check if canceled during loading
+            if (this.cancelWithdraw) {
+                this.cancelWithdraw = false;
+                this.updateButtonState('ready', 'Withdraw Oldest 10 Requests');
+                return;
+            }
+
+            // Start withdrawal process
+            this.isWithdrawing = true;
+            this.updateButtonState('withdrawing', 'Withdrawing... (tap to cancel)');
+
+            await this.performWithdrawal();
+
+            // Reset state
+            this.isWithdrawing = false;
+            this.updateButtonState('ready', 'Withdraw Oldest 10 Requests');
+
         } catch (error) {
+            this.isWithdrawing = false;
+            this.cancelWithdraw = false;
             this.updateButtonState('error', 'Error - Try Again');
             setTimeout(() => {
-                this.updateButtonState('ready', 'Withdraw Last 10 Requests');
+                this.updateButtonState('ready', 'Withdraw Oldest 10 Requests');
             }, 3000);
         }
     }
@@ -257,6 +286,108 @@ class LinkedInOverlay {
         });
     }
 
+    async performWithdrawal() {
+        // Find all withdraw buttons using data-view-name attribute
+        const withdrawButtons = Array.from(document.querySelectorAll('button[data-view-name="sent-invitations-withdraw-single"]'));
+
+        if (withdrawButtons.length === 0) {
+            throw new Error('No withdraw buttons found');
+        }
+
+        // Determine how many to withdraw (max 10, or all available if less)
+        const withdrawCount = Math.min(10, withdrawButtons.length);
+
+        // Initial random delay to show withdrawing state
+        await new Promise(resolve => setTimeout(resolve, this.getRandomDelay(800, 1500)));
+
+        // Withdraw requests one by one with human-like delays
+        for (let i = 0; i < withdrawCount; i++) {
+            // Check if canceled before each withdrawal
+            if (this.cancelWithdraw) {
+                return;
+            }
+
+            // Update button text to show progress
+            this.updateButtonState('withdrawing', `Withdrawing ${i + 1}/10... (tap to cancel)`);
+
+            // Click the withdraw button (always last available to get oldest requests)
+            const currentButtons = Array.from(document.querySelectorAll('button[data-view-name="sent-invitations-withdraw-single"]'));
+
+            if (currentButtons.length === 0) {
+                break; // No more buttons available
+            }
+
+            const buttonToClick = currentButtons[currentButtons.length - 1]; // Last button = oldest request
+            buttonToClick.click();
+
+            // Handle the confirmation overlay
+            await this.handleConfirmationOverlay();
+
+            // Check if canceled after overlay handling
+            if (this.cancelWithdraw) {
+                return;
+            }
+
+            // Random delay between withdrawals (2-6 seconds) to look human
+            if (i < withdrawCount - 1) { // Don't wait after the last one
+                const delay = this.getRandomDelay(2000, 6000);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+    }
+
+    getRandomDelay(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    async handleConfirmationOverlay() {
+        // Wait for overlay to load (may take some time)
+        let confirmButton = null;
+        let attempts = 0;
+        const maxAttempts = 20; // 10 seconds total
+
+        while (!confirmButton && attempts < maxAttempts) {
+            // Check if canceled during waiting
+            if (this.cancelWithdraw) {
+                return;
+            }
+
+            // Look for the confirmation withdraw button in overlay
+            // Using data-view-name="edge-creation-connect-action" as identifier
+            const overlayWithdrawButtons = Array.from(document.querySelectorAll('div[data-view-name="edge-creation-connect-action"] button')).filter(btn => {
+                const text = btn.innerText || btn.textContent || '';
+                return text.trim() === 'Withdraw';
+            });
+
+            if (overlayWithdrawButtons.length > 0) {
+                confirmButton = overlayWithdrawButtons[0];
+                break;
+            }
+
+            // Wait 500ms before trying again
+            await new Promise(resolve => setTimeout(resolve, 500));
+            attempts++;
+        }
+
+        if (!confirmButton) {
+            throw new Error('Confirmation overlay did not appear or withdraw button not found');
+        }
+
+        // Random delay to simulate human reading the overlay
+        await new Promise(resolve => setTimeout(resolve, this.getRandomDelay(300, 800)));
+
+        // Check if canceled one more time before clicking
+        if (this.cancelWithdraw) {
+            return;
+        }
+
+        // Click the confirmation withdraw button
+        confirmButton.click();
+
+        // Random delay for withdrawal to complete
+        await new Promise(resolve => setTimeout(resolve, this.getRandomDelay(1500, 3000)));
+    }
+
     updateButtonState(state, text) {
         const button = document.getElementById('linkedin-action-btn');
         if (!button) return;
@@ -269,6 +400,11 @@ class LinkedInOverlay {
                 button.style.background = '#666';
                 button.style.cursor = 'not-allowed';
                 button.disabled = true;
+                break;
+            case 'withdrawing':
+                button.style.background = '#ff9800';
+                button.style.cursor = 'pointer';
+                button.disabled = false;
                 break;
             case 'error':
                 button.style.background = '#d32f2f';
@@ -306,6 +442,8 @@ class LinkedInOverlay {
         }
 
         this.currentPageType = null;
+        this.isWithdrawing = false;
+        this.cancelWithdraw = false;
     }
 
     handlePageUpdate() {
