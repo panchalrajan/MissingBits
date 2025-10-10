@@ -4,6 +4,8 @@ class LinkedInConnect extends BaseManager {
         super();
         this.connectButton = null;
         this.lastOverlayState = null;
+        this.isConnecting = false;
+        this.shouldCancel = false;
     }
 
     setupConfigs() {
@@ -168,8 +170,12 @@ class LinkedInConnect extends BaseManager {
             e.preventDefault();
             e.stopPropagation();
 
-            const isDisabled = button.disabled || button.hasAttribute('disabled');
-            if (isDisabled) {
+            if (this.isConnecting) {
+                // Cancel the current operation
+                this.shouldCancel = true;
+                this.updateButtonState('Connect with First 10', false);
+                this.isConnecting = false;
+                console.log('LinkedIn Connect: Cancelled by user');
                 return;
             }
 
@@ -189,40 +195,52 @@ class LinkedInConnect extends BaseManager {
     }
 
     async performConnections() {
+        this.isConnecting = true;
+        this.shouldCancel = false;
+
         const connectButtons = this.findConnectButtons();
 
         if (connectButtons.length === 0) {
-            this.updateButtonState('No connections found', true, '#999');
+            this.updateButtonState('No connections found', false, '#999');
             this.setTimeoutTracked(() => {
                 this.updateButtonState('Connect with First 10', false);
             }, 2000);
+            this.isConnecting = false;
             return;
         }
 
         const buttonsToConnect = connectButtons.slice(0, 10);
 
         for (let i = 0; i < buttonsToConnect.length; i++) {
+            // Check if user cancelled
+            if (this.shouldCancel) {
+                console.log('LinkedIn Connect: Operation cancelled');
+                this.isConnecting = false;
+                return;
+            }
+
             const currentCount = i + 1;
             const totalCount = buttonsToConnect.length;
 
-            this.updateButtonState(`Connecting ${currentCount}/${totalCount}...`, true, '#ff9800');
+            this.updateButtonState(`Connecting ${currentCount}/${totalCount}... (cancel)`, false, '#ff9800');
 
             try {
                 buttonsToConnect[i].click();
 
                 // Quick 0.5 second delay only
                 if (i < buttonsToConnect.length - 1) {
-                    await new Promise(resolve => this.setTimeoutTracked(resolve, 500));
+                    await new Promise(resolve => this.setTimeoutTracked(resolve, 750));
                 }
             } catch (error) {
                 console.error(`Error connecting to person ${currentCount}/${totalCount}:`, error);
             }
         }
 
-        this.updateButtonState('Completed!', true, '#4caf50');
+        this.updateButtonState('Completed!', false, '#4caf50');
         this.setTimeoutTracked(() => {
             this.updateButtonState('Connect with First 10', false);
-        }, 500);
+            this.isConnecting = false;
+        }, 750);
     }
 
     findConnectButtons() {
@@ -245,21 +263,15 @@ class LinkedInConnect extends BaseManager {
 
         button.textContent = text;
 
-        if (disabled) {
-            button.disabled = true;
-            button.setAttribute('disabled', 'true');
-            button.style.cursor = 'not-allowed';
-            button.style.opacity = '0.7';
-        } else {
-            button.disabled = false;
-            button.removeAttribute('disabled');
-            button.style.cursor = 'pointer';
-            button.style.opacity = '1';
-        }
+        // Never actually disable the button - always keep it clickable
+        button.disabled = false;
+        button.removeAttribute('disabled');
+        button.style.cursor = 'pointer';
+        button.style.opacity = '1';
 
         if (color) {
             button.style.background = color;
-        } else if (!disabled) {
+        } else {
             button.style.background = '#0a66c2';
         }
     }
