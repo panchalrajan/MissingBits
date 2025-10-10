@@ -12,8 +12,8 @@ class LinkedInRequestManager {
             return;
         }
 
-        setTimeout(() => {
-            this.createOverlayButton();
+        setTimeout(async () => {
+            await this.createOverlayButton();
         }, 1000);
 
         this.startContentWatcher();
@@ -44,13 +44,22 @@ class LinkedInRequestManager {
         return null;
     }
 
-    createOverlayButton() {
+    async createOverlayButton() {
         if (this.overlayButton) {
             this.overlayButton.remove();
         }
 
         const pageType = this.getCurrentPageType();
         if (!pageType) {
+            return;
+        }
+
+        // Check if button should be shown based on settings
+        const settings = await SettingsManager.load();
+        const shouldShow = (pageType === 'sent' && settings.linkedinAutoWithdrawEnabled) ||
+                          (pageType === 'received' && settings.linkedinAutoAcceptEnabled);
+
+        if (!shouldShow) {
             return;
         }
 
@@ -257,9 +266,9 @@ class LinkedInRequestManager {
         });
     }
 
-    handlePageUpdate() {
+    async handlePageUpdate() {
         if (this.isInvitationManagerPage()) {
-            this.createOverlayButton();
+            await this.createOverlayButton();
         } else {
             this.cleanup();
         }

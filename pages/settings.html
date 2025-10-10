@@ -106,6 +106,31 @@
                     Ticket Status Position
                 </li>
 
+                <!-- LinkedIn Section -->
+                <li class="nav-header">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                    LinkedIn
+                </li>
+                <li class="nav-item" data-section="linkedin-auto-accept">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                    </svg>
+                    Auto Accept
+                </li>
+                <li class="nav-item" data-section="linkedin-auto-withdraw">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18"></path>
+                        <path d="M6 6l12 12"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                    </svg>
+                    Auto Withdraw
+                </li>
+
                 <!-- Amplitude Section -->
                 <li class="nav-header">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -667,6 +692,58 @@
                             </div>
                             <div class="toggle-switch" id="jira-status-relocator-enabled">
                                 <input type="checkbox" id="jira-status-relocator-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LinkedIn Auto Accept Section -->
+            <div class="content-section" id="linkedin-auto-accept-section">
+                <div class="section-header">
+                    <h1>Auto Accept</h1>
+                    <p>Automatically accept LinkedIn connection requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the auto accept button for LinkedIn invitation requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Auto Accept Button</div>
+                                <div class="toggle-description">Display the auto accept button on LinkedIn invitation manager pages</div>
+                            </div>
+                            <div class="toggle-switch" id="linkedin-auto-accept-enabled">
+                                <input type="checkbox" id="linkedin-auto-accept-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LinkedIn Auto Withdraw Section -->
+            <div class="content-section" id="linkedin-auto-withdraw-section">
+                <div class="section-header">
+                    <h1>Auto Withdraw</h1>
+                    <p>Automatically withdraw oldest LinkedIn connection requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the auto withdraw button for LinkedIn invitation requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Auto Withdraw Button</div>
+                                <div class="toggle-description">Display the auto withdraw button on LinkedIn invitation manager pages</div>
+                            </div>
+                            <div class="toggle-switch" id="linkedin-auto-withdraw-enabled">
+                                <input type="checkbox" id="linkedin-auto-withdraw-enabled-checkbox" class="toggle-input">
                             </div>
                         </div>
                     </div>

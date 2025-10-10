@@ -407,6 +407,14 @@ if (isExtensionContextValid()) {
             }
           }
         }
+
+        // If LinkedIn settings changed, update button visibility
+        if (changes.linkedinAutoAcceptEnabled || changes.linkedinAutoWithdrawEnabled) {
+          if (window.location.hostname.includes('linkedin.com') && linkedInOverlayInstance) {
+            // Update button visibility
+            await linkedInOverlayInstance.handlePageUpdate();
+          }
+        }
       }
     });
   } catch (error) {

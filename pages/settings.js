@@ -117,6 +117,19 @@ class SettingsPageController {
                 this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
             }
 
+            // LinkedIn settings
+            const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
+            if (linkedinAutoAcceptCheckbox) {
+                linkedinAutoAcceptCheckbox.checked = this.currentSettings.linkedinAutoAcceptEnabled;
+                this.updateToggleSwitch('linkedin-auto-accept-enabled', this.currentSettings.linkedinAutoAcceptEnabled);
+            }
+
+            const linkedinAutoWithdrawCheckbox = document.getElementById('linkedin-auto-withdraw-enabled-checkbox');
+            if (linkedinAutoWithdrawCheckbox) {
+                linkedinAutoWithdrawCheckbox.checked = this.currentSettings.linkedinAutoWithdrawEnabled;
+                this.updateToggleSwitch('linkedin-auto-withdraw-enabled', this.currentSettings.linkedinAutoWithdrawEnabled);
+            }
+
             const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
             if (teamCopyCheckbox) {
                 teamCopyCheckbox.checked = this.currentSettings.teamCopyEnabled;
@@ -315,6 +328,25 @@ class SettingsPageController {
             copyJsonCheckbox.addEventListener('change', (e) => {
                 this.currentSettings.copyJsonEnabled = e.target.checked;
                 this.updateToggleSwitch('copy-json-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        // LinkedIn settings event listeners
+        const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
+        if (linkedinAutoAcceptCheckbox) {
+            linkedinAutoAcceptCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.linkedinAutoAcceptEnabled = e.target.checked;
+                this.updateToggleSwitch('linkedin-auto-accept-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        const linkedinAutoWithdrawCheckbox = document.getElementById('linkedin-auto-withdraw-enabled-checkbox');
+        if (linkedinAutoWithdrawCheckbox) {
+            linkedinAutoWithdrawCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.linkedinAutoWithdrawEnabled = e.target.checked;
+                this.updateToggleSwitch('linkedin-auto-withdraw-enabled', e.target.checked);
                 this.autoSave();
             });
         }
@@ -899,6 +931,19 @@ class SettingsPageController {
                 radio.checked = radio.value === mode;
             });
             this.updateRadioButtonsVisualState('team-copy-mode');
+        }
+
+        // Update LinkedIn settings
+        const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
+        if (linkedinAutoAcceptCheckbox) {
+            linkedinAutoAcceptCheckbox.checked = this.currentSettings.linkedinAutoAcceptEnabled;
+            this.updateToggleSwitch('linkedin-auto-accept-enabled', this.currentSettings.linkedinAutoAcceptEnabled);
+        }
+
+        const linkedinAutoWithdrawCheckbox = document.getElementById('linkedin-auto-withdraw-enabled-checkbox');
+        if (linkedinAutoWithdrawCheckbox) {
+            linkedinAutoWithdrawCheckbox.checked = this.currentSettings.linkedinAutoWithdrawEnabled;
+            this.updateToggleSwitch('linkedin-auto-withdraw-enabled', this.currentSettings.linkedinAutoWithdrawEnabled);
         }
 
         // Update Jira settings
