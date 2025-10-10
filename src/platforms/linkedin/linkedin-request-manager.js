@@ -101,7 +101,11 @@ class LinkedInRequestManager {
         });
 
         button.addEventListener('click', () => {
-            console.log(`Button clicked for ${pageType} page`);
+            if (pageType === 'sent') {
+                this.loadAllInvitations();
+            } else {
+                console.log(`Button clicked for ${pageType} page`);
+            }
         });
 
         overlay.appendChild(button);
@@ -168,6 +172,89 @@ class LinkedInRequestManager {
         }
 
         this.currentPageType = null;
+    }
+
+    async loadAllInvitations() {
+        return new Promise((resolve) => {
+            let expectedRequestCount = null;
+
+            // Extract expected count from UI text like "People (66)"
+            const getExpectedRequestCount = () => {
+                const pageText = document.body.textContent || '';
+                const match = pageText.match(/People\s*\((\d+)\)/);
+                if (match) {
+                    return parseInt(match[1], 10);
+                }
+                return null;
+            };
+
+            const getCurrentWithdrawCount = () => {
+                const withdrawButtons = document.querySelectorAll('button');
+                let count = 0;
+                withdrawButtons.forEach(btn => {
+                    if (btn.textContent && btn.textContent.toLowerCase().includes('withdraw')) {
+                        count++;
+                    }
+                });
+                return count;
+            };
+
+            const scrollToLoadMore = () => {
+                if (expectedRequestCount === null) {
+                    expectedRequestCount = getExpectedRequestCount();
+                    if (expectedRequestCount === null) {
+                        console.log('Could not find expected request count in UI');
+                    } else {
+                        console.log(`Expected request count: ${expectedRequestCount}`);
+                    }
+                }
+
+                const loadMoreButton = Array.from(document.querySelectorAll('button')).find(btn =>
+                    btn.textContent && btn.textContent.toLowerCase().includes('load more')
+                );
+
+                if (loadMoreButton) {
+                    loadMoreButton.click();
+                    setTimeout(() => {
+                        scrollToLoadMore();
+                    }, 500);
+                    return;
+                }
+
+                const currentWithdrawCount = getCurrentWithdrawCount();
+
+                // Try scrolling main container
+                const mainContainer = document.querySelector('main');
+
+                // Check if withdraw count matches expected count AND we can't scroll anymore
+                const canStillScroll = mainContainer &&
+                    mainContainer.scrollTop < (mainContainer.scrollHeight - mainContainer.clientHeight - 10);
+
+                if (expectedRequestCount !== null && currentWithdrawCount >= expectedRequestCount && !canStillScroll) {
+                    console.log('All requests loaded - withdraw count matches expected count AND reached scroll end');
+                    resolve(currentWithdrawCount);
+                    return;
+                }
+
+                if (mainContainer) {
+                    const maxScroll = mainContainer.scrollHeight - mainContainer.clientHeight;
+                    console.log(`Container scroll: ${mainContainer.scrollTop}/${maxScroll}`);
+                    if (mainContainer.scrollTop < maxScroll - 10) {
+                        mainContainer.scrollBy({
+                            top: 750,
+                            behavior: 'smooth'
+                        }); 
+                        console.log('Scrolled container');
+                    }
+                }
+
+                setTimeout(() => {
+                    scrollToLoadMore();
+                }, 150);
+            };
+
+            scrollToLoadMore();
+        });
     }
 
     handlePageUpdate() {
