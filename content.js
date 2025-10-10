@@ -26,7 +26,7 @@ let jiraCopyInstance = null;
 // GitHub Team copy functionality
 let teamCopyInstance = null;
 
-// LinkedIn overlay functionality
+// LinkedIn request manager functionality
 let linkedInOverlayInstance = null;
 
 function shouldShowScrollToTopButton(settings) {
@@ -459,10 +459,10 @@ async function initializeGitHubHelper() {
       }
     }
 
-    // Initialize LinkedIn overlay functionality on LinkedIn pages
+    // Initialize LinkedIn request manager functionality on LinkedIn pages
     if (window.location.hostname.includes('linkedin.com')) {
       if (!linkedInOverlayInstance) {
-        linkedInOverlayInstance = new LinkedInOverlay();
+        linkedInOverlayInstance = new LinkedInRequestManager();
         window.linkedInOverlayInstance = linkedInOverlayInstance; // Make globally accessible
         await linkedInOverlayInstance.initialize();
       } else {

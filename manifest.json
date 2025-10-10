@@ -63,7 +63,7 @@
         "src/platforms/jira/jira-status-relocator.js",
         "src/platforms/jira/jira-copy.js",
         "src/platforms/amplitude/amplitude-copy.js",
-        "src/platforms/linkedin/linkedin-overlay.js",
+        "src/platforms/linkedin/linkedin-request-manager.js",
         "content.js"
       ],
       "run_at": "document_end"
