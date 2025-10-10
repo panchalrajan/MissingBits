@@ -4,6 +4,8 @@ class LinkedInRequestManager extends BaseManager {
         super();
         this.overlayButton = null;
         this.currentPageType = null;
+        this.isWithdrawing = false;
+        this.shouldCancel = false;
     }
 
     setupConfigs() {
@@ -135,14 +137,22 @@ class LinkedInRequestManager extends BaseManager {
             button.textContent = 'Accept All Requests';
         }
 
-        button.addEventListener('mouseenter', () => {
-            button.style.background = '#004182';
+        this.addEventListenerTracked(button, 'mouseenter', () => {
+            if (this.isWithdrawing) {
+                button.style.background = '#e68900'; // Darker orange when withdrawing
+            } else {
+                button.style.background = '#004182'; // Dark blue when idle
+            }
             button.style.transform = 'translateY(-1px)';
             button.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
         });
 
-        button.addEventListener('mouseleave', () => {
-            button.style.background = '#0a66c2';
+        this.addEventListenerTracked(button, 'mouseleave', () => {
+            if (this.isWithdrawing) {
+                button.style.background = '#ff9800'; // Back to orange when withdrawing
+            } else {
+                button.style.background = '#0a66c2'; // Back to blue when idle
+            }
             button.style.transform = 'translateY(0)';
             button.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
         });
@@ -151,8 +161,12 @@ class LinkedInRequestManager extends BaseManager {
             e.preventDefault();
             e.stopPropagation();
 
-            const isDisabled = button.disabled || button.hasAttribute('disabled');
-            if (isDisabled) {
+            if (this.isWithdrawing) {
+                // Cancel the current operation
+                this.shouldCancel = true;
+                await this.updateButtonText();
+                this.isWithdrawing = false;
+                console.log('LinkedIn Withdraw: Cancelled by user');
                 return;
             }
 
@@ -207,7 +221,7 @@ class LinkedInRequestManager extends BaseManager {
 
         button.textContent = text;
 
-        // Properly handle disabled state
+        // Handle disabled state properly for scrolling, but keep clickable during withdrawing
         if (disabled) {
             button.disabled = true;
             button.setAttribute('disabled', 'true');
@@ -363,6 +377,9 @@ class LinkedInRequestManager extends BaseManager {
     }
 
     async performWithdrawals() {
+        this.isWithdrawing = true;
+        this.shouldCancel = false;
+
         const settings = await SettingsManager.load();
         const withdrawCount = settings.linkedinWithdrawCount || "10";
 
@@ -373,6 +390,7 @@ class LinkedInRequestManager extends BaseManager {
         });
 
         if (withdrawButtons.length === 0) {
+            this.isWithdrawing = false;
             return;
         }
 
@@ -385,10 +403,17 @@ class LinkedInRequestManager extends BaseManager {
         }
 
         for (let i = 0; i < buttonsToWithdraw.length; i++) {
+            // Check if user cancelled
+            if (this.shouldCancel) {
+                console.log('LinkedIn Withdraw: Operation cancelled');
+                this.isWithdrawing = false;
+                return;
+            }
+
             const currentCount = i + 1;
             const totalCount = buttonsToWithdraw.length;
 
-            this.updateButtonState(`Withdrawing ${currentCount}/${totalCount}...`, true, '#ff9800');
+            this.updateButtonState(`Withdrawing ${currentCount}/${totalCount}... (cancel)`, false, '#ff9800');
 
             try {
                 buttonsToWithdraw[i].click();
@@ -402,6 +427,8 @@ class LinkedInRequestManager extends BaseManager {
                 console.error(`Error withdrawing request ${currentCount}/${totalCount}:`, error);
             }
         }
+
+        this.isWithdrawing = false;
     }
 
     async handleWithdrawConfirmation() {
