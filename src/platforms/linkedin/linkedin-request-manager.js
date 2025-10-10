@@ -1,38 +1,66 @@
 // LinkedIn Request Manager - Manages LinkedIn invitation requests
-class LinkedInRequestManager {
+class LinkedInRequestManager extends BaseManager {
     constructor() {
+        super();
         this.overlayButton = null;
         this.currentPageType = null;
-        this.mutationObserver = null;
-        this.urlCheckInterval = null;
     }
 
-    async initialize() {
-        if (!this.isInvitationManagerPage()) {
-            return;
-        }
+    setupConfigs() {
+        this.setConfig('pages', {
+            invitationManager: 'invitation-manager',
+            sent: 'invitation-manager/sent',
+            received: 'invitation-manager/received'
+        });
 
-        setTimeout(async () => {
-            await this.createOverlayButton();
-        }, 1000);
+        this.setConfig('selectors', {
+            withdrawButton: 'button[data-view-name="sent-invitations-withdraw-single"]',
+            confirmButton: 'div[data-view-name="edge-creation-connect-action"] button',
+            mainContainer: 'main',
+            loadMoreButton: 'button'
+        });
+    }
+
+    setupEventListeners() {
+        if (!this.isInvitationManagerPage()) return;
+
+        SettingsManager.subscribe('linkedin-request-manager', (changes) => {
+            if (changes.linkedinAutoAcceptEnabled || changes.linkedinAutoWithdrawEnabled) {
+                this.updateButtonVisibility();
+            }
+            if (changes.linkedinWithdrawCount) {
+                this.updateButtonText();
+            }
+        }, { keys: ['linkedinAutoAcceptEnabled', 'linkedinAutoWithdrawEnabled', 'linkedinWithdrawCount'] });
 
         this.startContentWatcher();
         this.startUrlWatcher();
     }
 
+    onInitialized() {
+        if (this.isInvitationManagerPage()) {
+            this.setTimeoutTracked(async () => {
+                await this.createOverlayButton();
+            }, 1000);
+        }
+    }
+
     isInvitationManagerPage() {
         const url = window.location.href;
-        return url.includes('linkedin.com') && url.includes('invitation-manager');
+        const config = this.getConfig('pages');
+        return url.includes('linkedin.com') && url.includes(config.invitationManager);
     }
 
     isInvitationManagerSentPage() {
         const url = window.location.href;
-        return url.includes('linkedin.com') && url.includes('invitation-manager/sent');
+        const config = this.getConfig('pages');
+        return url.includes('linkedin.com') && url.includes(config.sent);
     }
 
     isInvitationManagerReceivedPage() {
         const url = window.location.href;
-        return url.includes('linkedin.com') && url.includes('invitation-manager/received');
+        const config = this.getConfig('pages');
+        return url.includes('linkedin.com') && url.includes(config.received);
     }
 
     getCurrentPageType() {
@@ -119,7 +147,7 @@ class LinkedInRequestManager {
             button.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
         });
 
-        button.addEventListener('click', async (e) => {
+        this.addEventListenerTracked(button, 'click', async (e) => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -204,7 +232,7 @@ class LinkedInRequestManager {
     startContentWatcher() {
         const targetNode = document.body;
 
-        this.mutationObserver = new MutationObserver((mutations) => {
+        const observer = new MutationObserver((mutations) => {
             let shouldUpdate = false;
 
             mutations.forEach((mutation) => {
@@ -219,20 +247,23 @@ class LinkedInRequestManager {
             });
 
             if (shouldUpdate) {
-                setTimeout(() => {
+                this.setTimeoutTracked(() => {
                     this.handlePageUpdate();
                 }, 300);
             }
         });
 
-        this.mutationObserver.observe(targetNode, {
+        observer.observe(targetNode, {
             childList: true,
             subtree: true
         });
+
+        // Store observer reference for cleanup
+        this.mutationObserver = observer;
     }
 
     startUrlWatcher() {
-        this.urlCheckInterval = setInterval(() => {
+        const intervalId = this.setIntervalTracked(() => {
             const newPageType = this.getCurrentPageType();
             if (newPageType !== this.currentPageType) {
                 this.currentPageType = newPageType;
@@ -241,7 +272,7 @@ class LinkedInRequestManager {
         }, 500);
     }
 
-    cleanup() {
+    onCleanup() {
         if (this.overlayButton) {
             this.overlayButton.remove();
             this.overlayButton = null;
@@ -252,11 +283,7 @@ class LinkedInRequestManager {
             this.mutationObserver = null;
         }
 
-        if (this.urlCheckInterval) {
-            clearInterval(this.urlCheckInterval);
-            this.urlCheckInterval = null;
-        }
-
+        SettingsManager.unsubscribe('linkedin-request-manager');
         this.currentPageType = null;
     }
 
@@ -287,13 +314,13 @@ class LinkedInRequestManager {
                     expectedRequestCount = getExpectedRequestCount();
                 }
 
-                const loadMoreButton = Array.from(document.querySelectorAll('button')).find(btn =>
+                const loadMoreButton = Array.from(this.safeQuerySelectorAll('button')).find(btn =>
                     btn.textContent && btn.textContent.toLowerCase().includes('load more')
                 );
 
                 if (loadMoreButton) {
                     loadMoreButton.click();
-                    setTimeout(scrollToLoadMore, 500);
+                    this.setTimeoutTracked(scrollToLoadMore, 500);
                     return;
                 }
 
@@ -305,7 +332,7 @@ class LinkedInRequestManager {
                     this.updateButtonState(`Scrolling... (${currentWithdrawCount} found)`, true, '#666');
                 }
 
-                const mainContainer = document.querySelector('main');
+                const mainContainer = this.safeQuerySelector(this.getConfig('selectors').mainContainer);
                 const canStillScroll = mainContainer &&
                     mainContainer.scrollTop < (mainContainer.scrollHeight - mainContainer.clientHeight - 10);
 
@@ -324,7 +351,7 @@ class LinkedInRequestManager {
                     }
                 }
 
-                setTimeout(scrollToLoadMore, 150);
+                this.setTimeoutTracked(scrollToLoadMore, 150);
             };
 
             scrollToLoadMore();
@@ -339,7 +366,7 @@ class LinkedInRequestManager {
         const settings = await SettingsManager.load();
         const withdrawCount = settings.linkedinWithdrawCount || "10";
 
-        const withdrawButtons = Array.from(document.querySelectorAll('button')).filter(btn => {
+        const withdrawButtons = Array.from(this.safeQuerySelectorAll('button')).filter(btn => {
             const textMatch = btn.textContent?.trim().toLowerCase() === 'withdraw';
             const viewMatch = btn.getAttribute('data-view-name') === 'sent-invitations-withdraw-single';
             return textMatch && viewMatch;
@@ -369,7 +396,7 @@ class LinkedInRequestManager {
 
                 if (i < buttonsToWithdraw.length - 1) {
                     const delay = this.getRandomDelay();
-                    await new Promise(resolve => setTimeout(resolve, delay));
+                    await new Promise(resolve => this.setTimeoutTracked(resolve, delay));
                 }
             } catch (error) {
                 console.error(`Error withdrawing request ${currentCount}/${totalCount}:`, error);
@@ -382,7 +409,7 @@ class LinkedInRequestManager {
         const maxAttempts = 20;
 
         while (attempts < maxAttempts) {
-            const confirmButtons = Array.from(document.querySelectorAll('button')).filter(btn => {
+            const confirmButtons = Array.from(this.safeQuerySelectorAll('button')).filter(btn => {
                 const textMatch = btn.textContent?.trim().toLowerCase() === 'withdraw';
                 const parentMatch = btn.closest('div[data-view-name="edge-creation-connect-action"]');
                 const ariaMatch = btn.getAttribute('aria-label')?.toLowerCase().startsWith('withdrawn invitation sent to');
@@ -391,15 +418,19 @@ class LinkedInRequestManager {
 
             if (confirmButtons.length > 0) {
                 confirmButtons[0].click();
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                await new Promise(resolve => this.setTimeoutTracked(resolve, 1500));
                 return;
             }
 
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => this.setTimeoutTracked(resolve, 500));
             attempts++;
         }
 
         throw new Error('Confirmation dialog not found or timeout reached');
+    }
+
+    async updateButtonVisibility() {
+        await this.createOverlayButton();
     }
 
     async handlePageUpdate() {

@@ -479,7 +479,6 @@ async function initializeGitHubHelper() {
     if (window.location.hostname.includes('linkedin.com')) {
       if (!linkedInOverlayInstance) {
         linkedInOverlayInstance = new LinkedInRequestManager();
-        window.linkedInOverlayInstance = linkedInOverlayInstance; // Make globally accessible
         await linkedInOverlayInstance.initialize();
       } else {
         // Handle page navigation updates
