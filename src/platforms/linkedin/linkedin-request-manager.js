@@ -95,7 +95,17 @@ class LinkedInRequestManager {
             white-space: nowrap;
         `;
 
-        button.textContent = pageType === 'sent' ? 'Withdraw Oldest 10 Requests' : 'Accept All Requests';
+        // Set button text based on page type and withdraw count setting
+        if (pageType === 'sent') {
+            const withdrawCount = settings.linkedinWithdrawCount || "10";
+            if (withdrawCount === "all") {
+                button.textContent = 'Withdraw All Requests';
+            } else {
+                button.textContent = `Withdraw Oldest ${withdrawCount} Requests`;
+            }
+        } else {
+            button.textContent = 'Accept All Requests';
+        }
 
         button.addEventListener('mouseenter', () => {
             button.style.background = '#004182';
@@ -109,9 +119,35 @@ class LinkedInRequestManager {
             button.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
         });
 
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log('Button clicked, checking state...');
+            const isDisabled = button.disabled || button.hasAttribute('disabled');
+            console.log('Button disabled:', isDisabled);
+
+            if (isDisabled) {
+                console.log('Button is disabled, ignoring click');
+                return;
+            }
+
             if (pageType === 'sent') {
-                this.loadAllInvitations();
+                console.log('Starting withdrawal process...');
+                // Show scrolling state
+                this.updateButtonState('Scrolling...', true, '#666');
+
+                try {
+                    await this.loadAllInvitations();
+                    console.log('Scrolling completed, restoring button...');
+                    // Reset to normal state after scrolling
+                    await this.updateButtonText();
+                    console.log('Button restored');
+                } catch (error) {
+                    console.error('Error loading invitations:', error);
+                    // Reset to normal state on error
+                    await this.updateButtonText();
+                }
             } else {
                 console.log(`Button clicked for ${pageType} page`);
             }
@@ -121,6 +157,59 @@ class LinkedInRequestManager {
         document.body.appendChild(overlay);
 
         this.overlayButton = overlay;
+    }
+
+    async updateButtonText() {
+        const button = document.getElementById('linkedin-action-btn');
+        if (!button) return;
+
+        const pageType = this.getCurrentPageType();
+        if (!pageType) return;
+
+        const settings = await SettingsManager.load();
+
+        let buttonText = '';
+        if (pageType === 'sent') {
+            const withdrawCount = settings.linkedinWithdrawCount || "10";
+            if (withdrawCount === "all") {
+                buttonText = 'Withdraw All Requests';
+            } else {
+                buttonText = `Withdraw Oldest ${withdrawCount} Requests`;
+            }
+        } else {
+            buttonText = 'Accept All Requests';
+        }
+
+        // Use updateButtonState to restore normal state
+        this.updateButtonState(buttonText, false);
+    }
+
+    updateButtonState(text, disabled = false, color = null) {
+        const button = document.getElementById('linkedin-action-btn');
+        if (!button) return;
+
+        button.textContent = text;
+
+        // Properly handle disabled state
+        if (disabled) {
+            button.disabled = true;
+            button.setAttribute('disabled', 'true');
+            button.style.cursor = 'not-allowed';
+            button.style.opacity = '0.7';
+            button.style.pointerEvents = 'none';
+        } else {
+            button.disabled = false;
+            button.removeAttribute('disabled');
+            button.style.cursor = 'pointer';
+            button.style.opacity = '1';
+            button.style.pointerEvents = 'auto';
+        }
+
+        if (color) {
+            button.style.background = color;
+        } else if (!disabled) {
+            button.style.background = '#0a66c2';
+        }
     }
 
     startContentWatcher() {
@@ -231,6 +320,13 @@ class LinkedInRequestManager {
                 }
 
                 const currentWithdrawCount = getCurrentWithdrawCount();
+
+                // Update button text with progress
+                if (expectedRequestCount) {
+                    this.updateButtonState(`Scrolling... (${currentWithdrawCount}/${expectedRequestCount})`, true, '#666');
+                } else {
+                    this.updateButtonState(`Scrolling... (${currentWithdrawCount} found)`, true, '#666');
+                }
 
                 // Try scrolling main container
                 const mainContainer = document.querySelector('main');

@@ -130,6 +130,15 @@ class SettingsPageController {
                 this.updateToggleSwitch('linkedin-auto-withdraw-enabled', this.currentSettings.linkedinAutoWithdrawEnabled);
             }
 
+            const linkedinWithdrawCountRadios = document.querySelectorAll('input[name="linkedin-withdraw-count"]');
+            if (linkedinWithdrawCountRadios.length > 0) {
+                const count = this.currentSettings.linkedinWithdrawCount || "10";
+                linkedinWithdrawCountRadios.forEach(radio => {
+                    radio.checked = radio.value === count;
+                });
+                this.updateRadioButtonsVisualState('linkedin-withdraw-count');
+            }
+
             const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
             if (teamCopyCheckbox) {
                 teamCopyCheckbox.checked = this.currentSettings.teamCopyEnabled;
@@ -350,6 +359,17 @@ class SettingsPageController {
                 this.autoSave();
             });
         }
+
+        const linkedinWithdrawCountRadios = document.querySelectorAll('input[name="linkedin-withdraw-count"]');
+        linkedinWithdrawCountRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.linkedinWithdrawCount = e.target.value;
+                    this.updateRadioButtonsVisualState('linkedin-withdraw-count');
+                    this.autoSave();
+                }
+            });
+        });
 
         // Team copy checkbox
         const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
@@ -944,6 +964,15 @@ class SettingsPageController {
         if (linkedinAutoWithdrawCheckbox) {
             linkedinAutoWithdrawCheckbox.checked = this.currentSettings.linkedinAutoWithdrawEnabled;
             this.updateToggleSwitch('linkedin-auto-withdraw-enabled', this.currentSettings.linkedinAutoWithdrawEnabled);
+        }
+
+        const linkedinWithdrawCountRadios = document.querySelectorAll('input[name="linkedin-withdraw-count"]');
+        if (linkedinWithdrawCountRadios.length > 0) {
+            const count = this.currentSettings.linkedinWithdrawCount || "10";
+            linkedinWithdrawCountRadios.forEach(radio => {
+                radio.checked = radio.value === count;
+            });
+            this.updateRadioButtonsVisualState('linkedin-withdraw-count');
         }
 
         // Update Jira settings

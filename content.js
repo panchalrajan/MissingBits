@@ -408,11 +408,19 @@ if (isExtensionContextValid()) {
           }
         }
 
-        // If LinkedIn settings changed, update button visibility
+        // If LinkedIn settings changed, update button visibility and text
         if (changes.linkedinAutoAcceptEnabled || changes.linkedinAutoWithdrawEnabled) {
           if (window.location.hostname.includes('linkedin.com') && linkedInOverlayInstance) {
-            // Update button visibility
+            // Update button visibility (requires full button recreation)
             await linkedInOverlayInstance.handlePageUpdate();
+          }
+        }
+
+        // If only withdraw count changed, just update button text
+        if (changes.linkedinWithdrawCount && !changes.linkedinAutoAcceptEnabled && !changes.linkedinAutoWithdrawEnabled) {
+          if (window.location.hostname.includes('linkedin.com') && linkedInOverlayInstance) {
+            // Just update button text without recreating
+            await linkedInOverlayInstance.updateButtonText();
           }
         }
       }
