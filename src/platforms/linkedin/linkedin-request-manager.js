@@ -123,33 +123,22 @@ class LinkedInRequestManager {
             e.preventDefault();
             e.stopPropagation();
 
-            console.log('Button clicked, checking state...');
             const isDisabled = button.disabled || button.hasAttribute('disabled');
-            console.log('Button disabled:', isDisabled);
-
             if (isDisabled) {
-                console.log('Button is disabled, ignoring click');
                 return;
             }
 
             if (pageType === 'sent') {
-                console.log('Starting withdrawal process...');
-                // Show scrolling state
                 this.updateButtonState('Scrolling...', true, '#666');
 
                 try {
                     await this.loadAllInvitations();
-                    console.log('Scrolling completed, restoring button...');
-                    // Reset to normal state after scrolling
+                    await this.performWithdrawals();
                     await this.updateButtonText();
-                    console.log('Button restored');
                 } catch (error) {
-                    console.error('Error loading invitations:', error);
-                    // Reset to normal state on error
+                    console.error('Error during withdrawal process:', error);
                     await this.updateButtonText();
                 }
-            } else {
-                console.log(`Button clicked for ${pageType} page`);
             }
         });
 
@@ -221,10 +210,9 @@ class LinkedInRequestManager {
             mutations.forEach((mutation) => {
                 if (mutation.type === 'childList') {
                     mutation.addedNodes.forEach((node) => {
-                        if (node.nodeType === Node.ELEMENT_NODE) {
-                            if (node.classList &&  node.classList.contains('artdeco-tab')) {
-                                shouldUpdate = true;
-                            }
+                        if (node.nodeType === Node.ELEMENT_NODE &&
+                            node.classList?.contains('artdeco-tab')) {
+                            shouldUpdate = true;
                         }
                     });
                 }
@@ -280,10 +268,7 @@ class LinkedInRequestManager {
             const getExpectedRequestCount = () => {
                 const pageText = document.body.textContent || '';
                 const match = pageText.match(/People\s*\((\d+)\)/);
-                if (match) {
-                    return parseInt(match[1], 10);
-                }
-                return null;
+                return match ? parseInt(match[1], 10) : null;
             };
 
             const getCurrentWithdrawCount = () => {
@@ -300,11 +285,6 @@ class LinkedInRequestManager {
             const scrollToLoadMore = () => {
                 if (expectedRequestCount === null) {
                     expectedRequestCount = getExpectedRequestCount();
-                    if (expectedRequestCount === null) {
-                        console.log('Could not find expected request count in UI');
-                    } else {
-                        console.log(`Expected request count: ${expectedRequestCount}`);
-                    }
                 }
 
                 const loadMoreButton = Array.from(document.querySelectorAll('button')).find(btn =>
@@ -313,53 +293,113 @@ class LinkedInRequestManager {
 
                 if (loadMoreButton) {
                     loadMoreButton.click();
-                    setTimeout(() => {
-                        scrollToLoadMore();
-                    }, 500);
+                    setTimeout(scrollToLoadMore, 500);
                     return;
                 }
 
                 const currentWithdrawCount = getCurrentWithdrawCount();
 
-                // Update button text with progress
                 if (expectedRequestCount) {
                     this.updateButtonState(`Scrolling... (${currentWithdrawCount}/${expectedRequestCount})`, true, '#666');
                 } else {
                     this.updateButtonState(`Scrolling... (${currentWithdrawCount} found)`, true, '#666');
                 }
 
-                // Try scrolling main container
                 const mainContainer = document.querySelector('main');
-
-                // Check if withdraw count matches expected count AND we can't scroll anymore
                 const canStillScroll = mainContainer &&
                     mainContainer.scrollTop < (mainContainer.scrollHeight - mainContainer.clientHeight - 10);
 
                 if (expectedRequestCount !== null && currentWithdrawCount >= expectedRequestCount && !canStillScroll) {
-                    console.log('All requests loaded - withdraw count matches expected count AND reached scroll end');
                     resolve(currentWithdrawCount);
                     return;
                 }
 
                 if (mainContainer) {
                     const maxScroll = mainContainer.scrollHeight - mainContainer.clientHeight;
-                    console.log(`Container scroll: ${mainContainer.scrollTop}/${maxScroll}`);
                     if (mainContainer.scrollTop < maxScroll - 10) {
                         mainContainer.scrollBy({
                             top: 750,
                             behavior: 'smooth'
-                        }); 
-                        console.log('Scrolled container');
+                        });
                     }
                 }
 
-                setTimeout(() => {
-                    scrollToLoadMore();
-                }, 150);
+                setTimeout(scrollToLoadMore, 150);
             };
 
             scrollToLoadMore();
         });
+    }
+
+    getRandomDelay() {
+        return Math.random() * 500 + 1000;
+    }
+
+    async performWithdrawals() {
+        const settings = await SettingsManager.load();
+        const withdrawCount = settings.linkedinWithdrawCount || "10";
+
+        const withdrawButtons = Array.from(document.querySelectorAll('button')).filter(btn => {
+            const textMatch = btn.textContent?.trim().toLowerCase() === 'withdraw';
+            const viewMatch = btn.getAttribute('data-view-name') === 'sent-invitations-withdraw-single';
+            return textMatch && viewMatch;
+        });
+
+        if (withdrawButtons.length === 0) {
+            return;
+        }
+
+        let buttonsToWithdraw;
+        if (withdrawCount === "all") {
+            buttonsToWithdraw = withdrawButtons.reverse();
+        } else {
+            const count = parseInt(withdrawCount, 10);
+            buttonsToWithdraw = withdrawButtons.slice(-Math.min(count, withdrawButtons.length)).reverse();
+        }
+
+        for (let i = 0; i < buttonsToWithdraw.length; i++) {
+            const currentCount = i + 1;
+            const totalCount = buttonsToWithdraw.length;
+
+            this.updateButtonState(`Withdrawing ${currentCount}/${totalCount}...`, true, '#ff9800');
+
+            try {
+                buttonsToWithdraw[i].click();
+                await this.handleWithdrawConfirmation();
+
+                if (i < buttonsToWithdraw.length - 1) {
+                    const delay = this.getRandomDelay();
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            } catch (error) {
+                console.error(`Error withdrawing request ${currentCount}/${totalCount}:`, error);
+            }
+        }
+    }
+
+    async handleWithdrawConfirmation() {
+        let attempts = 0;
+        const maxAttempts = 20;
+
+        while (attempts < maxAttempts) {
+            const confirmButtons = Array.from(document.querySelectorAll('button')).filter(btn => {
+                const textMatch = btn.textContent?.trim().toLowerCase() === 'withdraw';
+                const parentMatch = btn.closest('div[data-view-name="edge-creation-connect-action"]');
+                const ariaMatch = btn.getAttribute('aria-label')?.toLowerCase().startsWith('withdrawn invitation sent to');
+                return textMatch && parentMatch && ariaMatch;
+            });
+
+            if (confirmButtons.length > 0) {
+                confirmButtons[0].click();
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                return;
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 500));
+            attempts++;
+        }
+
+        throw new Error('Confirmation dialog not found or timeout reached');
     }
 
     async handlePageUpdate() {
