@@ -40,6 +40,7 @@ class SettingsManager {
             linkedinAutoAcceptEnabled: true,
             linkedinAutoWithdrawEnabled: true,
             linkedinWithdrawCount: "10",
+            linkedinAutoConnectEnabled: true,
             // GitHub Team Copy settings
             teamCopyEnabled: true,
             teamCopyButtonTitle: "Copy Members Names",

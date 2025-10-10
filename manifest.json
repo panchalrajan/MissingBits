@@ -64,6 +64,7 @@
         "src/platforms/jira/jira-copy.js",
         "src/platforms/amplitude/amplitude-copy.js",
         "src/platforms/linkedin/linkedin-request-manager.js",
+        "src/platforms/linkedin/linkedin-connect.js",
         "content.js"
       ],
       "run_at": "document_end"

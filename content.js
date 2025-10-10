@@ -29,6 +29,9 @@ let teamCopyInstance = null;
 // LinkedIn request manager functionality
 let linkedInOverlayInstance = null;
 
+// LinkedIn connect functionality
+let linkedInConnectInstance = null;
+
 function shouldShowScrollToTopButton(settings) {
   // If everywhere is enabled, show on all GitHub pages
   if (settings.scrollToTopEverywhere) {
@@ -423,6 +426,13 @@ if (isExtensionContextValid()) {
             await linkedInOverlayInstance.updateButtonText();
           }
         }
+
+        // If LinkedIn connect settings changed, update button visibility
+        if (changes.linkedinAutoConnectEnabled) {
+          if (window.location.hostname.includes('linkedin.com') && linkedInConnectInstance) {
+            await linkedInConnectInstance.handlePageUpdate();
+          }
+        }
       }
     });
   } catch (error) {
@@ -483,6 +493,15 @@ async function initializeGitHubHelper() {
       } else {
         // Handle page navigation updates
         linkedInOverlayInstance.handlePageUpdate();
+      }
+
+      // Initialize LinkedIn connect functionality
+      if (!linkedInConnectInstance) {
+        linkedInConnectInstance = new LinkedInConnect();
+        await linkedInConnectInstance.initialize();
+      } else {
+        // Handle page navigation updates
+        linkedInConnectInstance.handlePageUpdate();
       }
     }
   } else {

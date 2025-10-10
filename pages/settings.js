@@ -139,6 +139,12 @@ class SettingsPageController {
                 this.updateRadioButtonsVisualState('linkedin-withdraw-count');
             }
 
+            const linkedinAutoConnectCheckbox = document.getElementById('linkedin-auto-connect-enabled-checkbox');
+            if (linkedinAutoConnectCheckbox) {
+                linkedinAutoConnectCheckbox.checked = this.currentSettings.linkedinAutoConnectEnabled;
+                this.updateToggleSwitch('linkedin-auto-connect-enabled', this.currentSettings.linkedinAutoConnectEnabled);
+            }
+
             const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
             if (teamCopyCheckbox) {
                 teamCopyCheckbox.checked = this.currentSettings.teamCopyEnabled;
@@ -370,6 +376,15 @@ class SettingsPageController {
                 }
             });
         });
+
+        const linkedinAutoConnectCheckbox = document.getElementById('linkedin-auto-connect-enabled-checkbox');
+        if (linkedinAutoConnectCheckbox) {
+            linkedinAutoConnectCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.linkedinAutoConnectEnabled = e.target.checked;
+                this.updateToggleSwitch('linkedin-auto-connect-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
 
         // Team copy checkbox
         const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
@@ -973,6 +988,12 @@ class SettingsPageController {
                 radio.checked = radio.value === count;
             });
             this.updateRadioButtonsVisualState('linkedin-withdraw-count');
+        }
+
+        const linkedinAutoConnectCheckbox = document.getElementById('linkedin-auto-connect-enabled-checkbox');
+        if (linkedinAutoConnectCheckbox) {
+            linkedinAutoConnectCheckbox.checked = this.currentSettings.linkedinAutoConnectEnabled;
+            this.updateToggleSwitch('linkedin-auto-connect-enabled', this.currentSettings.linkedinAutoConnectEnabled);
         }
 
         // Update Jira settings
