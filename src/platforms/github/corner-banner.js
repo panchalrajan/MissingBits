@@ -40,13 +40,13 @@ class GitHubCornerBanner extends BaseManager {
             }
             if (changes.cornerBannerPosition) {
                 this.currentSettings.cornerBannerPosition = changes.cornerBannerPosition.newValue;
-                this.updateRibbonClasses();
+                this.updateRibbonPosition();
             }
-            if (changes.cornerBannerStyle) {
-                this.currentSettings.cornerBannerStyle = changes.cornerBannerStyle.newValue;
-                this.updateRibbonClasses();
+            if (changes.cornerBannerColor) {
+                this.currentSettings.cornerBannerColor = changes.cornerBannerColor.newValue;
+                this.updateRibbonColor();
             }
-        }, { keys: ['cornerBannerEnabled', 'cornerBannerPosition', 'cornerBannerStyle'] });
+        }, { keys: ['cornerBannerEnabled', 'cornerBannerPosition', 'cornerBannerColor'] });
     }
 
     /**
@@ -196,17 +196,15 @@ class GitHubCornerBanner extends BaseManager {
         ribbon.setAttribute('aria-label', 'You have unread notifications');
         ribbon.setAttribute('title', 'Click to view notifications');
 
-        // Apply position and style classes
+        // Apply position class
         const position = this.currentSettings.cornerBannerPosition || 'top-left';
-        const style = this.currentSettings.cornerBannerStyle || 'ribbon';
-
         if (position === 'top-right') {
             ribbon.classList.add('position-top-right');
         }
 
-        if (style === 'triangle') {
-            ribbon.classList.add('style-triangle');
-        }
+        // Apply color class
+        const color = this.currentSettings.cornerBannerColor || 'green';
+        ribbon.classList.add(`color-${color}`);
 
         // Add ribbon text
         const text = document.createElement('span');
@@ -224,25 +222,31 @@ class GitHubCornerBanner extends BaseManager {
     }
 
     /**
-     * Update ribbon classes when settings change
+     * Update ribbon position when settings change
      */
-    updateRibbonClasses() {
+    updateRibbonPosition() {
         if (!this.ribbon) return;
 
         const position = this.currentSettings.cornerBannerPosition || 'top-left';
-        const style = this.currentSettings.cornerBannerStyle || 'ribbon';
 
         // Update position class
         this.ribbon.classList.remove('position-top-left', 'position-top-right');
         if (position === 'top-right') {
             this.ribbon.classList.add('position-top-right');
         }
+    }
 
-        // Update style class
-        this.ribbon.classList.remove('style-ribbon', 'style-triangle');
-        if (style === 'triangle') {
-            this.ribbon.classList.add('style-triangle');
-        }
+    /**
+     * Update ribbon color when settings change
+     */
+    updateRibbonColor() {
+        if (!this.ribbon) return;
+
+        const color = this.currentSettings.cornerBannerColor || 'green';
+
+        // Update color class
+        this.ribbon.classList.remove('color-green', 'color-red', 'color-blue');
+        this.ribbon.classList.add(`color-${color}`);
     }
 
     /**

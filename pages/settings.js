@@ -132,13 +132,13 @@ class SettingsPageController {
                 this.updateRadioButtonsVisualState('corner-banner-position');
             }
 
-            const cornerBannerStyleRadios = document.querySelectorAll('input[name="corner-banner-style"]');
-            if (cornerBannerStyleRadios.length > 0) {
-                const style = this.currentSettings.cornerBannerStyle || 'ribbon';
-                cornerBannerStyleRadios.forEach(radio => {
-                    radio.checked = radio.value === style;
+            const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');
+            if (cornerBannerColorRadios.length > 0) {
+                const color = this.currentSettings.cornerBannerColor || 'green';
+                cornerBannerColorRadios.forEach(radio => {
+                    radio.checked = radio.value === color;
                 });
-                this.updateRadioButtonsVisualState('corner-banner-style');
+                this.updateRadioButtonsVisualState('corner-banner-color');
             }
 
             // LinkedIn settings
@@ -403,13 +403,13 @@ class SettingsPageController {
             });
         });
 
-        // Corner banner style radio buttons
-        const cornerBannerStyleRadios = document.querySelectorAll('input[name="corner-banner-style"]');
-        cornerBannerStyleRadios.forEach(radio => {
+        // Corner banner color radio buttons
+        const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');
+        cornerBannerColorRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.checked) {
-                    this.currentSettings.cornerBannerStyle = e.target.value;
-                    this.updateRadioButtonsVisualState('corner-banner-style');
+                    this.currentSettings.cornerBannerColor = e.target.value;
+                    this.updateRadioButtonsVisualState('corner-banner-color');
                     this.autoSave();
                 }
             });
@@ -1069,13 +1069,13 @@ class SettingsPageController {
             this.updateRadioButtonsVisualState('corner-banner-position');
         }
 
-        const cornerBannerStyleRadios = document.querySelectorAll('input[name="corner-banner-style"]');
-        if (cornerBannerStyleRadios.length > 0) {
-            const style = this.currentSettings.cornerBannerStyle || 'ribbon';
-            cornerBannerStyleRadios.forEach(radio => {
-                radio.checked = radio.value === style;
+        const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');
+        if (cornerBannerColorRadios.length > 0) {
+            const color = this.currentSettings.cornerBannerColor || 'green';
+            cornerBannerColorRadios.forEach(radio => {
+                radio.checked = radio.value === color;
             });
-            this.updateRadioButtonsVisualState('corner-banner-style');
+            this.updateRadioButtonsVisualState('corner-banner-color');
         }
 
         // Update Team Copy settings
