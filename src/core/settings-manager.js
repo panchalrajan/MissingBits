@@ -36,6 +36,12 @@ class SettingsManager {
             scrollToTopIssue: true,
             scrollToTopPosition: "bottom-right",
             copyJsonEnabled: true,
+            // LinkedIn settings
+            linkedinAutoAcceptEnabled: true,
+            linkedinAcceptCount: "10",
+            linkedinAutoWithdrawEnabled: true,
+            linkedinWithdrawCount: "10",
+            linkedinAutoConnectEnabled: true,
             // GitHub Team Copy settings
             teamCopyEnabled: true,
             teamCopyButtonTitle: "Copy Members Names",

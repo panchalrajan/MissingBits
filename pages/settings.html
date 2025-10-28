@@ -106,6 +106,39 @@
                     Ticket Status Position
                 </li>
 
+                <!-- LinkedIn Section -->
+                <li class="nav-header">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                    LinkedIn
+                </li>
+                <li class="nav-item" data-section="linkedin-auto-accept">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                    </svg>
+                    Auto Accept
+                </li>
+                <li class="nav-item" data-section="linkedin-auto-withdraw">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18"></path>
+                        <path d="M6 6l12 12"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                    </svg>
+                    Auto Withdraw
+                </li>
+                <li class="nav-item" data-section="linkedin-auto-connect">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        <path d="M12 5.57a8 8 0 0 1 0 12.86"></path>
+                        <path d="M8 9a16 16 0 0 1 0 6"></path>
+                    </svg>
+                    Auto Connect
+                </li>
+
                 <!-- Amplitude Section -->
                 <li class="nav-header">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -667,6 +700,256 @@
                             </div>
                             <div class="toggle-switch" id="jira-status-relocator-enabled">
                                 <input type="checkbox" id="jira-status-relocator-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LinkedIn Auto Accept Section -->
+            <div class="content-section" id="linkedin-auto-accept-section">
+                <div class="section-header">
+                    <h1>Auto Accept</h1>
+                    <p>Automatically accept LinkedIn connection requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the auto accept button for LinkedIn invitation requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Auto Accept Button</div>
+                                <div class="toggle-description">Display the auto accept button on LinkedIn invitation manager pages</div>
+                            </div>
+                            <div class="toggle-switch" id="linkedin-auto-accept-enabled">
+                                <input type="checkbox" id="linkedin-auto-accept-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                        <p>Start accepting connection requests directly from settings</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="quick-action-item">
+                            <div class="quick-action-content">
+                                <div class="quick-action-label">Start Accepting Directly</div>
+                                <div class="quick-action-description">Opens LinkedIn invitation manager and automatically starts accepting connection requests</div>
+                            </div>
+                            <div class="quick-action-button">
+                                <button id="linkedin-start-accept" class="add-button">
+                                    <svg class="add-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M7 17L17 7"></path>
+                                        <path d="M7 7h10v10"></path>
+                                    </svg>
+                                    Start Accepting
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Accept Count</h3>
+                        <p>Choose how many connection requests to accept at once</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">10 requests</div>
+                                <div class="radio-description">Accept 10 connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-accept-count-10" name="linkedin-accept-count" value="10" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">20 requests</div>
+                                <div class="radio-description">Accept 20 connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-accept-count-20" name="linkedin-accept-count" value="20" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">50 requests</div>
+                                <div class="radio-description">Accept 50 connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-accept-count-50" name="linkedin-accept-count" value="50" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">All requests</div>
+                                <div class="radio-description">Accept all available connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-accept-count-all" name="linkedin-accept-count" value="all" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- LinkedIn Auto Withdraw Section -->
+            <div class="content-section" id="linkedin-auto-withdraw-section">
+                <div class="section-header">
+                    <h1>Auto Withdraw</h1>
+                    <p>Automatically withdraw oldest LinkedIn connection requests</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the auto withdraw button for LinkedIn invitation requests</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Auto Withdraw Button</div>
+                                <div class="toggle-description">Display the auto withdraw button on LinkedIn invitation manager pages</div>
+                            </div>
+                            <div class="toggle-switch" id="linkedin-auto-withdraw-enabled">
+                                <input type="checkbox" id="linkedin-auto-withdraw-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                        <p>Start withdrawal process directly from settings</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="quick-action-item">
+                            <div class="quick-action-content">
+                                <div class="quick-action-label">Start Withdrawing Directly</div>
+                                <div class="quick-action-description">Opens LinkedIn invitation manager and automatically starts the withdrawal process</div>
+                            </div>
+                            <div class="quick-action-button">
+                                <button id="linkedin-start-withdraw" class="add-button">
+                                    <svg class="add-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M7 17L17 7"></path>
+                                        <path d="M7 7h10v10"></path>
+                                    </svg>
+                                    Start Withdrawal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Withdraw Count</h3>
+                        <p>Choose how many connection requests to withdraw at once</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">10 requests</div>
+                                <div class="radio-description">Withdraw the oldest 10 connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-withdraw-count-10" name="linkedin-withdraw-count" value="10" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">20 requests</div>
+                                <div class="radio-description">Withdraw the oldest 20 connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-withdraw-count-20" name="linkedin-withdraw-count" value="20" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">50 requests</div>
+                                <div class="radio-description">Withdraw the oldest 50 connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-withdraw-count-50" name="linkedin-withdraw-count" value="50" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">All requests</div>
+                                <div class="radio-description">Withdraw all available connection requests</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="linkedin-withdraw-count-all" name="linkedin-withdraw-count" value="all" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- LinkedIn Auto Connect Section -->
+            <div class="content-section" id="linkedin-auto-connect-section">
+                <div class="section-header">
+                    <h1>Auto Connect</h1>
+                    <p>Automatically send connection requests on LinkedIn MyNetwork page</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the auto connect button for LinkedIn MyNetwork grow page</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Auto Connect Button</div>
+                                <div class="toggle-description">Display the "Connect with First 10" button on LinkedIn MyNetwork page</div>
+                            </div>
+                            <div class="toggle-switch" id="linkedin-auto-connect-enabled">
+                                <input type="checkbox" id="linkedin-auto-connect-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                        <p>Start connecting directly from settings</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="quick-action-item">
+                            <div class="quick-action-content">
+                                <div class="quick-action-label">Start Connecting Directly</div>
+                                <div class="quick-action-description">Opens LinkedIn MyNetwork grow page and automatically starts connecting with first 10 people</div>
+                            </div>
+                            <div class="quick-action-button">
+                                <button id="linkedin-start-connect" class="add-button">
+                                    <svg class="add-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M7 17L17 7"></path>
+                                        <path d="M7 7h10v10"></path>
+                                    </svg>
+                                    Start Connecting
+                                </button>
                             </div>
                         </div>
                     </div>

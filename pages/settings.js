@@ -117,6 +117,43 @@ class SettingsPageController {
                 this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
             }
 
+            // LinkedIn settings
+            const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
+            if (linkedinAutoAcceptCheckbox) {
+                linkedinAutoAcceptCheckbox.checked = this.currentSettings.linkedinAutoAcceptEnabled;
+                this.updateToggleSwitch('linkedin-auto-accept-enabled', this.currentSettings.linkedinAutoAcceptEnabled);
+            }
+
+            const linkedinAutoWithdrawCheckbox = document.getElementById('linkedin-auto-withdraw-enabled-checkbox');
+            if (linkedinAutoWithdrawCheckbox) {
+                linkedinAutoWithdrawCheckbox.checked = this.currentSettings.linkedinAutoWithdrawEnabled;
+                this.updateToggleSwitch('linkedin-auto-withdraw-enabled', this.currentSettings.linkedinAutoWithdrawEnabled);
+            }
+
+            const linkedinAcceptCountRadios = document.querySelectorAll('input[name="linkedin-accept-count"]');
+            if (linkedinAcceptCountRadios.length > 0) {
+                const count = this.currentSettings.linkedinAcceptCount || "10";
+                linkedinAcceptCountRadios.forEach(radio => {
+                    radio.checked = radio.value === count;
+                });
+                this.updateRadioButtonsVisualState('linkedin-accept-count');
+            }
+
+            const linkedinWithdrawCountRadios = document.querySelectorAll('input[name="linkedin-withdraw-count"]');
+            if (linkedinWithdrawCountRadios.length > 0) {
+                const count = this.currentSettings.linkedinWithdrawCount || "10";
+                linkedinWithdrawCountRadios.forEach(radio => {
+                    radio.checked = radio.value === count;
+                });
+                this.updateRadioButtonsVisualState('linkedin-withdraw-count');
+            }
+
+            const linkedinAutoConnectCheckbox = document.getElementById('linkedin-auto-connect-enabled-checkbox');
+            if (linkedinAutoConnectCheckbox) {
+                linkedinAutoConnectCheckbox.checked = this.currentSettings.linkedinAutoConnectEnabled;
+                this.updateToggleSwitch('linkedin-auto-connect-enabled', this.currentSettings.linkedinAutoConnectEnabled);
+            }
+
             const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
             if (teamCopyCheckbox) {
                 teamCopyCheckbox.checked = this.currentSettings.teamCopyEnabled;
@@ -316,6 +353,83 @@ class SettingsPageController {
                 this.currentSettings.copyJsonEnabled = e.target.checked;
                 this.updateToggleSwitch('copy-json-enabled', e.target.checked);
                 this.autoSave();
+            });
+        }
+
+        // LinkedIn settings event listeners
+        const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
+        if (linkedinAutoAcceptCheckbox) {
+            linkedinAutoAcceptCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.linkedinAutoAcceptEnabled = e.target.checked;
+                this.updateToggleSwitch('linkedin-auto-accept-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        const linkedinAutoWithdrawCheckbox = document.getElementById('linkedin-auto-withdraw-enabled-checkbox');
+        if (linkedinAutoWithdrawCheckbox) {
+            linkedinAutoWithdrawCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.linkedinAutoWithdrawEnabled = e.target.checked;
+                this.updateToggleSwitch('linkedin-auto-withdraw-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        const linkedinAcceptCountRadios = document.querySelectorAll('input[name="linkedin-accept-count"]');
+        linkedinAcceptCountRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.linkedinAcceptCount = e.target.value;
+                    this.updateRadioButtonsVisualState('linkedin-accept-count');
+                    this.autoSave();
+                }
+            });
+        });
+
+        const linkedinWithdrawCountRadios = document.querySelectorAll('input[name="linkedin-withdraw-count"]');
+        linkedinWithdrawCountRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.linkedinWithdrawCount = e.target.value;
+                    this.updateRadioButtonsVisualState('linkedin-withdraw-count');
+                    this.autoSave();
+                }
+            });
+        });
+
+        const linkedinAutoConnectCheckbox = document.getElementById('linkedin-auto-connect-enabled-checkbox');
+        if (linkedinAutoConnectCheckbox) {
+            linkedinAutoConnectCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.linkedinAutoConnectEnabled = e.target.checked;
+                this.updateToggleSwitch('linkedin-auto-connect-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        // LinkedIn Start Accept button
+        const linkedinStartAcceptBtn = document.getElementById('linkedin-start-accept');
+        if (linkedinStartAcceptBtn) {
+            linkedinStartAcceptBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.startLinkedInAccept();
+            });
+        }
+
+        // LinkedIn Start Withdraw button
+        const linkedinStartWithdrawBtn = document.getElementById('linkedin-start-withdraw');
+        if (linkedinStartWithdrawBtn) {
+            linkedinStartWithdrawBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.startLinkedInWithdrawal();
+            });
+        }
+
+        // LinkedIn Start Connect button
+        const linkedinStartConnectBtn = document.getElementById('linkedin-start-connect');
+        if (linkedinStartConnectBtn) {
+            linkedinStartConnectBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.startLinkedInConnect();
             });
         }
 
@@ -901,6 +1015,43 @@ class SettingsPageController {
             this.updateRadioButtonsVisualState('team-copy-mode');
         }
 
+        // Update LinkedIn settings
+        const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
+        if (linkedinAutoAcceptCheckbox) {
+            linkedinAutoAcceptCheckbox.checked = this.currentSettings.linkedinAutoAcceptEnabled;
+            this.updateToggleSwitch('linkedin-auto-accept-enabled', this.currentSettings.linkedinAutoAcceptEnabled);
+        }
+
+        const linkedinAutoWithdrawCheckbox = document.getElementById('linkedin-auto-withdraw-enabled-checkbox');
+        if (linkedinAutoWithdrawCheckbox) {
+            linkedinAutoWithdrawCheckbox.checked = this.currentSettings.linkedinAutoWithdrawEnabled;
+            this.updateToggleSwitch('linkedin-auto-withdraw-enabled', this.currentSettings.linkedinAutoWithdrawEnabled);
+        }
+
+        const linkedinAcceptCountRadios = document.querySelectorAll('input[name="linkedin-accept-count"]');
+        if (linkedinAcceptCountRadios.length > 0) {
+            const count = this.currentSettings.linkedinAcceptCount || "10";
+            linkedinAcceptCountRadios.forEach(radio => {
+                radio.checked = radio.value === count;
+            });
+            this.updateRadioButtonsVisualState('linkedin-accept-count');
+        }
+
+        const linkedinWithdrawCountRadios = document.querySelectorAll('input[name="linkedin-withdraw-count"]');
+        if (linkedinWithdrawCountRadios.length > 0) {
+            const count = this.currentSettings.linkedinWithdrawCount || "10";
+            linkedinWithdrawCountRadios.forEach(radio => {
+                radio.checked = radio.value === count;
+            });
+            this.updateRadioButtonsVisualState('linkedin-withdraw-count');
+        }
+
+        const linkedinAutoConnectCheckbox = document.getElementById('linkedin-auto-connect-enabled-checkbox');
+        if (linkedinAutoConnectCheckbox) {
+            linkedinAutoConnectCheckbox.checked = this.currentSettings.linkedinAutoConnectEnabled;
+            this.updateToggleSwitch('linkedin-auto-connect-enabled', this.currentSettings.linkedinAutoConnectEnabled);
+        }
+
         // Update Jira settings
 
         if (jiraCopyPrimaryCheckbox) {
@@ -1384,6 +1535,48 @@ class SettingsPageController {
             toggleItem.style.opacity = '0.5';
             toggleItem.style.pointerEvents = 'none';
         }
+    }
+
+    startLinkedInAccept() {
+        // Store a flag to trigger auto-accept when the page loads
+        chrome.storage.local.set({ triggerLinkedInAccept: true });
+
+        // Open LinkedIn invitation manager received page in new tab
+        chrome.tabs.create({
+            url: 'https://www.linkedin.com/mynetwork/invitation-manager/received/',
+            active: true
+        });
+
+        // Show notification
+        console.log('Opening LinkedIn and starting acceptance...');
+    }
+
+    startLinkedInWithdrawal() {
+        // Store a flag to trigger withdrawal when the page loads
+        chrome.storage.local.set({ triggerLinkedInWithdrawal: true });
+
+        // Open LinkedIn invitation manager in new tab
+        chrome.tabs.create({
+            url: 'https://www.linkedin.com/mynetwork/invitation-manager/sent/',
+            active: true
+        });
+
+        // Show notification (assuming there's a notification system)
+        console.log('Opening LinkedIn and starting withdrawal...');
+    }
+
+    startLinkedInConnect() {
+        // Store a flag to trigger auto-connect when the page loads
+        chrome.storage.local.set({ triggerLinkedInConnect: true });
+
+        // Open LinkedIn MyNetwork grow page in new tab
+        chrome.tabs.create({
+            url: 'https://www.linkedin.com/mynetwork/grow/',
+            active: true
+        });
+
+        // Show notification
+        console.log('Opening LinkedIn and starting connections...');
     }
 }
 

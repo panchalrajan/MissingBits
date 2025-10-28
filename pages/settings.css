@@ -1754,3 +1754,42 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 135, 90, 0.2);
 }
+
+/* Quick Action Styles */
+.quick-action-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border: 1px solid #dfe1e6;
+    border-radius: 6px;
+    background: #f8f9fa;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.quick-action-item:hover {
+    background: #e4e6ea;
+    border-color: #b3b9c4;
+}
+
+.quick-action-content {
+    flex: 1;
+}
+
+.quick-action-label {
+    font-weight: 500;
+    color: #172b4d;
+    margin-bottom: 4px;
+}
+
+.quick-action-description {
+    font-size: 13px;
+    color: #6b778c;
+    line-height: 1.4;
+}
+
+.quick-action-button {
+    flex-shrink: 0;
+    margin-left: 16px;
+}
