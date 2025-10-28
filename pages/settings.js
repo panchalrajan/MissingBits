@@ -395,6 +395,15 @@ class SettingsPageController {
             });
         }
 
+        // LinkedIn Start Connect button
+        const linkedinStartConnectBtn = document.getElementById('linkedin-start-connect');
+        if (linkedinStartConnectBtn) {
+            linkedinStartConnectBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.startLinkedInConnect();
+            });
+        }
+
         // Team copy checkbox
         const teamCopyCheckbox = document.getElementById('team-copy-enabled-checkbox');
         if (teamCopyCheckbox) {
@@ -1502,6 +1511,20 @@ class SettingsPageController {
 
         // Show notification (assuming there's a notification system)
         console.log('Opening LinkedIn and starting withdrawal...');
+    }
+
+    startLinkedInConnect() {
+        // Store a flag to trigger auto-connect when the page loads
+        chrome.storage.local.set({ triggerLinkedInConnect: true });
+
+        // Open LinkedIn MyNetwork grow page in new tab
+        chrome.tabs.create({
+            url: 'https://www.linkedin.com/mynetwork/grow/',
+            active: true
+        });
+
+        // Show notification
+        console.log('Opening LinkedIn and starting connections...');
     }
 }
 
