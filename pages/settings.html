@@ -60,6 +60,13 @@
                     </svg>
                     Scroll to Top
                 </li>
+                <li class="nav-item" data-section="corner-banner">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    Notification Ribbon
+                </li>
                 <li class="nav-item" data-section="team-copy">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -464,6 +471,139 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Notification Ribbon Section -->
+            <div class="content-section" id="corner-banner-section">
+                <div class="section-header">
+                    <h1>Notification Ribbon</h1>
+                    <p>Show a beautiful corner ribbon for GitHub notifications</p>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Feature Toggle</h3>
+                        <p>Enable or disable the notification ribbon on GitHub pages</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="toggle-item">
+                            <div class="toggle-content">
+                                <div class="toggle-label">Show Notification Ribbon</div>
+                                <div class="toggle-description">Display a corner ribbon when there are unread notifications on GitHub</div>
+                            </div>
+                            <div class="toggle-switch" id="corner-banner-enabled">
+                                <input type="checkbox" id="corner-banner-enabled-checkbox" class="toggle-input">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Ribbon Position</h3>
+                        <p>Choose where the notification ribbon appears</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">Top Left</div>
+                                <div class="radio-description">Position the notification ribbon in the top left corner</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="corner-banner-position-left" name="corner-banner-position" value="top-left" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">Top Right</div>
+                                <div class="radio-description">Position the notification ribbon in the top right corner</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="corner-banner-position-right" name="corner-banner-position" value="top-right" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Ribbon Size</h3>
+                        <p>Choose the size of the notification ribbon</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">Compact</div>
+                                <div class="radio-description">Smaller ribbon (200px wide, 12px text)</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="corner-banner-size-compact" name="corner-banner-size" value="compact" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">Large</div>
+                                <div class="radio-description">Larger ribbon (375px wide, 24px text)</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="corner-banner-size-large" name="corner-banner-size" value="large" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h3>Ribbon Color</h3>
+                        <p>Choose the color of the notification ribbon</p>
+                    </div>
+                    <div class="form-group">
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">
+                                    <span class="color-indicator" style="display: inline-block; width: 16px; height: 16px; border-radius: 50%; background-color: #238636; margin-right: 8px; vertical-align: middle;"></span>
+                                    Green
+                                </div>
+                                <div class="radio-description">GitHub green color (#238636)</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="corner-banner-color-green" name="corner-banner-color" value="green" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">
+                                    <span class="color-indicator" style="display: inline-block; width: 16px; height: 16px; border-radius: 50%; background-color: #f85149; margin-right: 8px; vertical-align: middle;"></span>
+                                    Red
+                                </div>
+                                <div class="radio-description">GitHub red color (#f85149)</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="corner-banner-color-red" name="corner-banner-color" value="red" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                        <div class="radio-item">
+                            <div class="radio-content">
+                                <div class="radio-label">
+                                    <span class="color-indicator" style="display: inline-block; width: 16px; height: 16px; border-radius: 50%; background-color: #4493f8; margin-right: 8px; vertical-align: middle;"></span>
+                                    Blue
+                                </div>
+                                <div class="radio-description">GitHub blue color (#4493f8)</div>
+                            </div>
+                            <div class="radio-control">
+                                <input type="radio" id="corner-banner-color-blue" name="corner-banner-color" value="blue" class="radio-input">
+                                <div class="radio-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Jira Copy Primary Section -->

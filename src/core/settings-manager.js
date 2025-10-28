@@ -35,6 +35,10 @@ class SettingsManager {
             scrollToTopPR: true,
             scrollToTopIssue: true,
             scrollToTopPosition: "bottom-right",
+            cornerBannerEnabled: true,
+            cornerBannerPosition: "top-left",
+            cornerBannerSize: "compact",
+            cornerBannerColor: "green",
             copyJsonEnabled: true,
             // LinkedIn settings
             linkedinAutoAcceptEnabled: true,

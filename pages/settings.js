@@ -117,6 +117,39 @@ class SettingsPageController {
                 this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
             }
 
+            const cornerBannerCheckbox = document.getElementById('corner-banner-enabled-checkbox');
+            if (cornerBannerCheckbox) {
+                cornerBannerCheckbox.checked = this.currentSettings.cornerBannerEnabled;
+                this.updateToggleSwitch('corner-banner-enabled', this.currentSettings.cornerBannerEnabled);
+            }
+
+            const cornerBannerPositionRadios = document.querySelectorAll('input[name="corner-banner-position"]');
+            if (cornerBannerPositionRadios.length > 0) {
+                const position = this.currentSettings.cornerBannerPosition || 'top-left';
+                cornerBannerPositionRadios.forEach(radio => {
+                    radio.checked = radio.value === position;
+                });
+                this.updateRadioButtonsVisualState('corner-banner-position');
+            }
+
+            const cornerBannerSizeRadios = document.querySelectorAll('input[name="corner-banner-size"]');
+            if (cornerBannerSizeRadios.length > 0) {
+                const size = this.currentSettings.cornerBannerSize || 'compact';
+                cornerBannerSizeRadios.forEach(radio => {
+                    radio.checked = radio.value === size;
+                });
+                this.updateRadioButtonsVisualState('corner-banner-size');
+            }
+
+            const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');
+            if (cornerBannerColorRadios.length > 0) {
+                const color = this.currentSettings.cornerBannerColor || 'green';
+                cornerBannerColorRadios.forEach(radio => {
+                    radio.checked = radio.value === color;
+                });
+                this.updateRadioButtonsVisualState('corner-banner-color');
+            }
+
             // LinkedIn settings
             const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
             if (linkedinAutoAcceptCheckbox) {
@@ -355,6 +388,53 @@ class SettingsPageController {
                 this.autoSave();
             });
         }
+
+        // Corner banner checkbox
+        const cornerBannerCheckbox = document.getElementById('corner-banner-enabled-checkbox');
+
+        if (cornerBannerCheckbox) {
+            cornerBannerCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.cornerBannerEnabled = e.target.checked;
+                this.updateToggleSwitch('corner-banner-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        // Corner banner position radio buttons
+        const cornerBannerPositionRadios = document.querySelectorAll('input[name="corner-banner-position"]');
+        cornerBannerPositionRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.cornerBannerPosition = e.target.value;
+                    this.updateRadioButtonsVisualState('corner-banner-position');
+                    this.autoSave();
+                }
+            });
+        });
+
+        // Corner banner size radio buttons
+        const cornerBannerSizeRadios = document.querySelectorAll('input[name="corner-banner-size"]');
+        cornerBannerSizeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.cornerBannerSize = e.target.value;
+                    this.updateRadioButtonsVisualState('corner-banner-size');
+                    this.autoSave();
+                }
+            });
+        });
+
+        // Corner banner color radio buttons
+        const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');
+        cornerBannerColorRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.cornerBannerColor = e.target.value;
+                    this.updateRadioButtonsVisualState('corner-banner-color');
+                    this.autoSave();
+                }
+            });
+        });
 
         // LinkedIn settings event listeners
         const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
@@ -992,6 +1072,40 @@ class SettingsPageController {
         if (copyJsonCheckbox) {
             copyJsonCheckbox.checked = this.currentSettings.copyJsonEnabled;
             this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
+        }
+
+        // Update corner banner settings
+        const cornerBannerCheckbox = document.getElementById('corner-banner-enabled-checkbox');
+        if (cornerBannerCheckbox) {
+            cornerBannerCheckbox.checked = this.currentSettings.cornerBannerEnabled;
+            this.updateToggleSwitch('corner-banner-enabled', this.currentSettings.cornerBannerEnabled);
+        }
+
+        const cornerBannerPositionRadios = document.querySelectorAll('input[name="corner-banner-position"]');
+        if (cornerBannerPositionRadios.length > 0) {
+            const position = this.currentSettings.cornerBannerPosition || 'top-left';
+            cornerBannerPositionRadios.forEach(radio => {
+                radio.checked = radio.value === position;
+            });
+            this.updateRadioButtonsVisualState('corner-banner-position');
+        }
+
+        const cornerBannerSizeRadios = document.querySelectorAll('input[name="corner-banner-size"]');
+        if (cornerBannerSizeRadios.length > 0) {
+            const size = this.currentSettings.cornerBannerSize || 'compact';
+            cornerBannerSizeRadios.forEach(radio => {
+                radio.checked = radio.value === size;
+            });
+            this.updateRadioButtonsVisualState('corner-banner-size');
+        }
+
+        const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');
+        if (cornerBannerColorRadios.length > 0) {
+            const color = this.currentSettings.cornerBannerColor || 'green';
+            cornerBannerColorRadios.forEach(radio => {
+                radio.checked = radio.value === color;
+            });
+            this.updateRadioButtonsVisualState('corner-banner-color');
         }
 
         // Update Team Copy settings

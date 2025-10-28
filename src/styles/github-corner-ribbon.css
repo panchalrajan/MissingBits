@@ -1,0 +1,124 @@
+/* GitHub Corner Ribbon Notification Styles */
+
+/* Base ribbon stripe - default compact size */
+.github-corner-ribbon {
+    position: fixed;
+    top: 35px;
+    left: -50px;
+    width: 200px;
+    padding: 8px 0;
+    background: #238636;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.3px;
+    transform: rotate(-45deg);
+    transform-origin: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease,
+                visibility 0.3s ease,
+                transform 0.3s ease,
+                background-color 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Size variants */
+.github-corner-ribbon.size-compact {
+    top: 35px;
+    left: -50px;
+    width: 200px;
+    padding: 8px 0;
+    font-size: 12px;
+}
+
+.github-corner-ribbon.size-compact.position-top-right {
+    right: -50px;
+    left: auto;
+}
+
+.github-corner-ribbon.size-large {
+    top: 50px;
+    left: -105px;
+    width: 375px;
+    padding: 16px 0;
+    font-size: 24px;
+}
+
+.github-corner-ribbon.size-large.position-top-right {
+    right: -105px;
+    left: auto;
+}
+
+/* Color variants */
+.github-corner-ribbon.color-green {
+    background: #238636;
+}
+
+.github-corner-ribbon.color-green:hover {
+    background: #2ea043;
+}
+
+.github-corner-ribbon.color-red {
+    background: #f85149;
+}
+
+.github-corner-ribbon.color-red:hover {
+    background: #ff6b6b;
+}
+
+.github-corner-ribbon.color-blue {
+    background: #4493f8;
+}
+
+.github-corner-ribbon.color-blue:hover {
+    background: #6cb3ff;
+}
+
+/* Top-right position */
+.github-corner-ribbon.position-top-right {
+    left: auto;
+    right: -50px;
+    transform: rotate(45deg);
+}
+
+.github-corner-ribbon.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.github-corner-ribbon.hidden-on-scroll {
+    opacity: 0;
+    visibility: hidden;
+    transform: rotate(-45deg) translateY(-20px);
+}
+
+.github-corner-ribbon.position-top-right.hidden-on-scroll {
+    transform: rotate(45deg) translateY(-20px);
+}
+
+/* Ribbon text */
+.github-corner-ribbon-text {
+    display: block;
+    white-space: nowrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .github-corner-ribbon {
+        top: 30px;
+        left: -55px;
+        width: 190px;
+        font-size: 11px;
+        padding: 7px 0;
+    }
+
+    .github-corner-ribbon.position-top-right {
+        left: auto;
+        right: -55px;
+    }
+}
