@@ -30,7 +30,8 @@
       ],
       "css": [
         "src/styles/scroll-to-top.css",
-        "src/styles/amplitude-toast.css"
+        "src/styles/amplitude-toast.css",
+        "src/styles/github-corner-ribbon.css"
       ],
       "js": [
         "src/core/settings-manager.js",
@@ -57,6 +58,7 @@
         "src/platforms/github/resolved-comments.js",
         "src/platforms/github/conversation-expansion.js",
         "src/platforms/github/team-copy.js",
+        "src/platforms/github/corner-banner.js",
         "src/platforms/jira/jira-interface.js",
         "src/platforms/jira/jira-data-extractor.js",
         "src/platforms/jira/jira-issue.js",

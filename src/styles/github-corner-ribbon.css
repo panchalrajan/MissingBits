@@ -1,0 +1,190 @@
+/* GitHub Corner Ribbon Notification Styles */
+
+/* Base ribbon stripe (top-left) */
+.github-corner-ribbon {
+    position: fixed;
+    top: 35px;
+    left: -50px;
+    width: 200px;
+    padding: 8px 0;
+    background: #238636;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.3px;
+    transform: rotate(-45deg);
+    transform-origin: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease,
+                visibility 0.3s ease,
+                transform 0.3s ease,
+                background-color 0.2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Top-right position */
+.github-corner-ribbon.position-top-right {
+    left: auto;
+    right: -50px;
+    transform: rotate(45deg);
+}
+
+.github-corner-ribbon.position-top-right.hidden-on-scroll {
+    transform: rotate(45deg) translateY(-20px);
+}
+
+/* Triangle style (top-left) - solid corner fill */
+.github-corner-ribbon.style-triangle {
+    width: 120px;
+    height: 120px;
+    padding: 0;
+    background: linear-gradient(135deg, #238636 0%, #238636 50%, transparent 50%);
+    top: 0;
+    left: 0;
+    transform: none;
+}
+
+/* Triangle style (top-right) - solid corner fill */
+.github-corner-ribbon.style-triangle.position-top-right {
+    background: linear-gradient(225deg, #238636 0%, #238636 50%, transparent 50%);
+    left: auto;
+    right: 0;
+}
+
+/* Triangle text positioning (top-left) */
+.github-corner-ribbon.style-triangle .github-corner-ribbon-text {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    transform: rotate(-45deg);
+    font-size: 11px;
+    width: auto;
+    max-width: 80px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Triangle text positioning (top-right) */
+.github-corner-ribbon.style-triangle.position-top-right .github-corner-ribbon-text {
+    top: 35px;
+    left: auto;
+    right: 16px;
+    transform: rotate(45deg);
+}
+
+.github-corner-ribbon.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.github-corner-ribbon.hidden-on-scroll {
+    opacity: 0;
+    visibility: hidden;
+    transform: rotate(-45deg) translateY(-20px);
+}
+
+/* Ribbon text */
+.github-corner-ribbon-text {
+    display: block;
+    white-space: nowrap;
+}
+
+/* Hover effect */
+.github-corner-ribbon:hover {
+    background: #2ea043;
+}
+
+.github-corner-ribbon.style-triangle:hover {
+    background: linear-gradient(135deg, #2ea043 0%, #2ea043 50%, transparent 50%);
+}
+
+.github-corner-ribbon.style-triangle.position-top-right:hover {
+    background: linear-gradient(225deg, #2ea043 0%, #2ea043 50%, transparent 50%);
+}
+
+/* Light mode support */
+@media (prefers-color-scheme: light) {
+    .github-corner-ribbon {
+        background: #238636;
+    }
+
+    .github-corner-ribbon:hover {
+        background: #2ea043;
+    }
+
+    .github-corner-ribbon.style-triangle {
+        background: linear-gradient(135deg, #238636 0%, #238636 50%, transparent 50%);
+    }
+
+    .github-corner-ribbon.style-triangle.position-top-right {
+        background: linear-gradient(225deg, #238636 0%, #238636 50%, transparent 50%);
+    }
+
+    .github-corner-ribbon.style-triangle:hover {
+        background: linear-gradient(135deg, #2ea043 0%, #2ea043 50%, transparent 50%);
+    }
+
+    .github-corner-ribbon.style-triangle.position-top-right:hover {
+        background: linear-gradient(225deg, #2ea043 0%, #2ea043 50%, transparent 50%);
+    }
+}
+
+/* Dark mode (GitHub default) */
+[data-color-mode="dark"] .github-corner-ribbon {
+    background: #238636;
+}
+
+[data-color-mode="dark"] .github-corner-ribbon:hover {
+    background: #2ea043;
+}
+
+[data-color-mode="dark"] .github-corner-ribbon.style-triangle {
+    background: linear-gradient(135deg, #238636 0%, #238636 50%, transparent 50%);
+}
+
+[data-color-mode="dark"] .github-corner-ribbon.style-triangle.position-top-right {
+    background: linear-gradient(225deg, #238636 0%, #238636 50%, transparent 50%);
+}
+
+[data-color-mode="dark"] .github-corner-ribbon.style-triangle:hover {
+    background: linear-gradient(135deg, #2ea043 0%, #2ea043 50%, transparent 50%);
+}
+
+[data-color-mode="dark"] .github-corner-ribbon.style-triangle.position-top-right:hover {
+    background: linear-gradient(225deg, #2ea043 0%, #2ea043 50%, transparent 50%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .github-corner-ribbon {
+        top: 30px;
+        left: -55px;
+        width: 190px;
+        font-size: 11px;
+        padding: 7px 0;
+    }
+
+    .github-corner-ribbon.position-top-right {
+        right: -55px;
+    }
+
+    .github-corner-ribbon.style-triangle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .github-corner-ribbon.style-triangle.position-top-right {
+        width: 100px;
+        height: 100px;
+    }
+
+    .github-corner-ribbon.style-triangle .github-corner-ribbon-text {
+        font-size: 10px;
+        top: 20px;
+    }
+}

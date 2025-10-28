@@ -26,6 +26,9 @@ let jiraCopyInstance = null;
 // GitHub Team copy functionality
 let teamCopyInstance = null;
 
+// GitHub Corner Banner functionality
+let cornerBannerInstance = null;
+
 // LinkedIn request manager functionality
 let linkedInOverlayInstance = null;
 
@@ -482,6 +485,12 @@ async function initializeGitHubHelper() {
       } else {
         // Handle page navigation updates
         teamCopyInstance.handlePageUpdate();
+      }
+
+      // Initialize GitHub Corner Ribbon functionality
+      if (!cornerBannerInstance) {
+        cornerBannerInstance = new GitHubCornerBanner();
+        await cornerBannerInstance.initialize();
       }
     }
 

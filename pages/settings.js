@@ -117,6 +117,30 @@ class SettingsPageController {
                 this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
             }
 
+            const cornerBannerCheckbox = document.getElementById('corner-banner-enabled-checkbox');
+            if (cornerBannerCheckbox) {
+                cornerBannerCheckbox.checked = this.currentSettings.cornerBannerEnabled;
+                this.updateToggleSwitch('corner-banner-enabled', this.currentSettings.cornerBannerEnabled);
+            }
+
+            const cornerBannerPositionRadios = document.querySelectorAll('input[name="corner-banner-position"]');
+            if (cornerBannerPositionRadios.length > 0) {
+                const position = this.currentSettings.cornerBannerPosition || 'top-left';
+                cornerBannerPositionRadios.forEach(radio => {
+                    radio.checked = radio.value === position;
+                });
+                this.updateRadioButtonsVisualState('corner-banner-position');
+            }
+
+            const cornerBannerStyleRadios = document.querySelectorAll('input[name="corner-banner-style"]');
+            if (cornerBannerStyleRadios.length > 0) {
+                const style = this.currentSettings.cornerBannerStyle || 'ribbon';
+                cornerBannerStyleRadios.forEach(radio => {
+                    radio.checked = radio.value === style;
+                });
+                this.updateRadioButtonsVisualState('corner-banner-style');
+            }
+
             // LinkedIn settings
             const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
             if (linkedinAutoAcceptCheckbox) {
@@ -355,6 +379,41 @@ class SettingsPageController {
                 this.autoSave();
             });
         }
+
+        // Corner banner checkbox
+        const cornerBannerCheckbox = document.getElementById('corner-banner-enabled-checkbox');
+
+        if (cornerBannerCheckbox) {
+            cornerBannerCheckbox.addEventListener('change', (e) => {
+                this.currentSettings.cornerBannerEnabled = e.target.checked;
+                this.updateToggleSwitch('corner-banner-enabled', e.target.checked);
+                this.autoSave();
+            });
+        }
+
+        // Corner banner position radio buttons
+        const cornerBannerPositionRadios = document.querySelectorAll('input[name="corner-banner-position"]');
+        cornerBannerPositionRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.cornerBannerPosition = e.target.value;
+                    this.updateRadioButtonsVisualState('corner-banner-position');
+                    this.autoSave();
+                }
+            });
+        });
+
+        // Corner banner style radio buttons
+        const cornerBannerStyleRadios = document.querySelectorAll('input[name="corner-banner-style"]');
+        cornerBannerStyleRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.cornerBannerStyle = e.target.value;
+                    this.updateRadioButtonsVisualState('corner-banner-style');
+                    this.autoSave();
+                }
+            });
+        });
 
         // LinkedIn settings event listeners
         const linkedinAutoAcceptCheckbox = document.getElementById('linkedin-auto-accept-enabled-checkbox');
@@ -992,6 +1051,31 @@ class SettingsPageController {
         if (copyJsonCheckbox) {
             copyJsonCheckbox.checked = this.currentSettings.copyJsonEnabled;
             this.updateToggleSwitch('copy-json-enabled', this.currentSettings.copyJsonEnabled);
+        }
+
+        // Update corner banner settings
+        const cornerBannerCheckbox = document.getElementById('corner-banner-enabled-checkbox');
+        if (cornerBannerCheckbox) {
+            cornerBannerCheckbox.checked = this.currentSettings.cornerBannerEnabled;
+            this.updateToggleSwitch('corner-banner-enabled', this.currentSettings.cornerBannerEnabled);
+        }
+
+        const cornerBannerPositionRadios = document.querySelectorAll('input[name="corner-banner-position"]');
+        if (cornerBannerPositionRadios.length > 0) {
+            const position = this.currentSettings.cornerBannerPosition || 'top-left';
+            cornerBannerPositionRadios.forEach(radio => {
+                radio.checked = radio.value === position;
+            });
+            this.updateRadioButtonsVisualState('corner-banner-position');
+        }
+
+        const cornerBannerStyleRadios = document.querySelectorAll('input[name="corner-banner-style"]');
+        if (cornerBannerStyleRadios.length > 0) {
+            const style = this.currentSettings.cornerBannerStyle || 'ribbon';
+            cornerBannerStyleRadios.forEach(radio => {
+                radio.checked = radio.value === style;
+            });
+            this.updateRadioButtonsVisualState('corner-banner-style');
         }
 
         // Update Team Copy settings
