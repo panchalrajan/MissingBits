@@ -42,11 +42,15 @@ class GitHubCornerBanner extends BaseManager {
                 this.currentSettings.cornerBannerPosition = changes.cornerBannerPosition.newValue;
                 this.updateRibbonPosition();
             }
+            if (changes.cornerBannerSize) {
+                this.currentSettings.cornerBannerSize = changes.cornerBannerSize.newValue;
+                this.updateRibbonSize();
+            }
             if (changes.cornerBannerColor) {
                 this.currentSettings.cornerBannerColor = changes.cornerBannerColor.newValue;
                 this.updateRibbonColor();
             }
-        }, { keys: ['cornerBannerEnabled', 'cornerBannerPosition', 'cornerBannerColor'] });
+        }, { keys: ['cornerBannerEnabled', 'cornerBannerPosition', 'cornerBannerSize', 'cornerBannerColor'] });
     }
 
     /**
@@ -202,6 +206,10 @@ class GitHubCornerBanner extends BaseManager {
             ribbon.classList.add('position-top-right');
         }
 
+        // Apply size class
+        const size = this.currentSettings.cornerBannerSize || 'compact';
+        ribbon.classList.add(`size-${size}`);
+
         // Apply color class
         const color = this.currentSettings.cornerBannerColor || 'green';
         ribbon.classList.add(`color-${color}`);
@@ -234,6 +242,19 @@ class GitHubCornerBanner extends BaseManager {
         if (position === 'top-right') {
             this.ribbon.classList.add('position-top-right');
         }
+    }
+
+    /**
+     * Update ribbon size when settings change
+     */
+    updateRibbonSize() {
+        if (!this.ribbon) return;
+
+        const size = this.currentSettings.cornerBannerSize || 'compact';
+
+        // Update size class
+        this.ribbon.classList.remove('size-compact', 'size-large');
+        this.ribbon.classList.add(`size-${size}`);
     }
 
     /**

@@ -132,6 +132,15 @@ class SettingsPageController {
                 this.updateRadioButtonsVisualState('corner-banner-position');
             }
 
+            const cornerBannerSizeRadios = document.querySelectorAll('input[name="corner-banner-size"]');
+            if (cornerBannerSizeRadios.length > 0) {
+                const size = this.currentSettings.cornerBannerSize || 'compact';
+                cornerBannerSizeRadios.forEach(radio => {
+                    radio.checked = radio.value === size;
+                });
+                this.updateRadioButtonsVisualState('corner-banner-size');
+            }
+
             const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');
             if (cornerBannerColorRadios.length > 0) {
                 const color = this.currentSettings.cornerBannerColor || 'green';
@@ -398,6 +407,18 @@ class SettingsPageController {
                 if (e.target.checked) {
                     this.currentSettings.cornerBannerPosition = e.target.value;
                     this.updateRadioButtonsVisualState('corner-banner-position');
+                    this.autoSave();
+                }
+            });
+        });
+
+        // Corner banner size radio buttons
+        const cornerBannerSizeRadios = document.querySelectorAll('input[name="corner-banner-size"]');
+        cornerBannerSizeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.currentSettings.cornerBannerSize = e.target.value;
+                    this.updateRadioButtonsVisualState('corner-banner-size');
                     this.autoSave();
                 }
             });
@@ -1067,6 +1088,15 @@ class SettingsPageController {
                 radio.checked = radio.value === position;
             });
             this.updateRadioButtonsVisualState('corner-banner-position');
+        }
+
+        const cornerBannerSizeRadios = document.querySelectorAll('input[name="corner-banner-size"]');
+        if (cornerBannerSizeRadios.length > 0) {
+            const size = this.currentSettings.cornerBannerSize || 'compact';
+            cornerBannerSizeRadios.forEach(radio => {
+                radio.checked = radio.value === size;
+            });
+            this.updateRadioButtonsVisualState('corner-banner-size');
         }
 
         const cornerBannerColorRadios = document.querySelectorAll('input[name="corner-banner-color"]');

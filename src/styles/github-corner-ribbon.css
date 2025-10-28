@@ -1,6 +1,6 @@
 /* GitHub Corner Ribbon Notification Styles */
 
-/* Base ribbon stripe */
+/* Base ribbon stripe - default compact size */
 .github-corner-ribbon {
     position: fixed;
     top: 35px;
@@ -25,6 +25,33 @@
                 background-color 0.2s ease;
     cursor: pointer;
     user-select: none;
+}
+
+/* Size variants */
+.github-corner-ribbon.size-compact {
+    top: 35px;
+    left: -50px;
+    width: 200px;
+    padding: 8px 0;
+    font-size: 12px;
+}
+
+.github-corner-ribbon.size-compact.position-top-right {
+    right: -50px;
+    left: auto;
+}
+
+.github-corner-ribbon.size-large {
+    top: 50px;
+    left: -105px;
+    width: 375px;
+    padding: 16px 0;
+    font-size: 24px;
+}
+
+.github-corner-ribbon.size-large.position-top-right {
+    right: -105px;
+    left: auto;
 }
 
 /* Color variants */
