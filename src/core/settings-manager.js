@@ -38,6 +38,7 @@ class SettingsManager {
             copyJsonEnabled: true,
             // LinkedIn settings
             linkedinAutoAcceptEnabled: true,
+            linkedinAcceptCount: "10",
             linkedinAutoWithdrawEnabled: true,
             linkedinWithdrawCount: "10",
             linkedinAutoConnectEnabled: true,

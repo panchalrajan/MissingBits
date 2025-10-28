@@ -30,10 +30,10 @@ class LinkedInRequestManager extends BaseManager {
             if (changes.linkedinAutoAcceptEnabled || changes.linkedinAutoWithdrawEnabled) {
                 this.updateButtonVisibility();
             }
-            if (changes.linkedinWithdrawCount) {
+            if (changes.linkedinAcceptCount || changes.linkedinWithdrawCount) {
                 this.updateButtonText();
             }
-        }, { keys: ['linkedinAutoAcceptEnabled', 'linkedinAutoWithdrawEnabled', 'linkedinWithdrawCount'] });
+        }, { keys: ['linkedinAutoAcceptEnabled', 'linkedinAutoWithdrawEnabled', 'linkedinAcceptCount', 'linkedinWithdrawCount'] });
 
         this.startContentWatcher();
         this.startUrlWatcher();
@@ -51,12 +51,28 @@ class LinkedInRequestManager extends BaseManager {
 
     async checkForAutoTrigger() {
         try {
-            const result = await chrome.storage.local.get(['triggerLinkedInWithdrawal']);
+            const result = await chrome.storage.local.get(['triggerLinkedInWithdrawal', 'triggerLinkedInAccept']);
+
             if (result.triggerLinkedInWithdrawal && this.isInvitationManagerSentPage()) {
                 // Clear the trigger flag
                 await chrome.storage.local.remove(['triggerLinkedInWithdrawal']);
 
                 // Start withdrawal after a short delay to ensure page is loaded
+                this.setTimeoutTracked(async () => {
+                    if (this.overlayButton) {
+                        const button = document.getElementById('linkedin-action-btn');
+                        if (button && !this.isWithdrawing) {
+                            button.click();
+                        }
+                    }
+                }, 2000);
+            }
+
+            if (result.triggerLinkedInAccept && this.isInvitationManagerReceivedPage()) {
+                // Clear the trigger flag
+                await chrome.storage.local.remove(['triggerLinkedInAccept']);
+
+                // Start accepting after a short delay to ensure page is loaded
                 this.setTimeoutTracked(async () => {
                     if (this.overlayButton) {
                         const button = document.getElementById('linkedin-action-btn');
@@ -149,7 +165,7 @@ class LinkedInRequestManager extends BaseManager {
             white-space: nowrap;
         `;
 
-        // Set button text based on page type and withdraw count setting
+        // Set button text based on page type and count setting
         if (pageType === 'sent') {
             const withdrawCount = settings.linkedinWithdrawCount || "10";
             if (withdrawCount === "all") {
@@ -158,7 +174,12 @@ class LinkedInRequestManager extends BaseManager {
                 button.textContent = `Withdraw Oldest ${withdrawCount} Requests`;
             }
         } else {
-            button.textContent = 'Accept All Requests';
+            const acceptCount = settings.linkedinAcceptCount || "10";
+            if (acceptCount === "all") {
+                button.textContent = 'Accept All Requests';
+            } else {
+                button.textContent = `Accept ${acceptCount} Requests`;
+            }
         }
 
         this.addEventListenerTracked(button, 'mouseenter', () => {
@@ -205,6 +226,17 @@ class LinkedInRequestManager extends BaseManager {
                     console.error('Error during withdrawal process:', error);
                     await this.updateButtonText();
                 }
+            } else if (pageType === 'received') {
+                this.updateButtonState('Scrolling...', true, '#666');
+
+                try {
+                    await this.loadAllInvitations();
+                    await this.performAccepts();
+                    await this.updateButtonText();
+                } catch (error) {
+                    console.error('Error during accept process:', error);
+                    await this.updateButtonText();
+                }
             }
         });
 
@@ -232,7 +264,12 @@ class LinkedInRequestManager extends BaseManager {
                 buttonText = `Withdraw Oldest ${withdrawCount} Requests`;
             }
         } else {
-            buttonText = 'Accept All Requests';
+            const acceptCount = settings.linkedinAcceptCount || "10";
+            if (acceptCount === "all") {
+                buttonText = 'Accept All Requests';
+            } else {
+                buttonText = `Accept ${acceptCount} Requests`;
+            }
         }
 
         // Use updateButtonState to restore normal state
@@ -328,19 +365,30 @@ class LinkedInRequestManager extends BaseManager {
     async loadAllInvitations() {
         return new Promise((resolve) => {
             let expectedRequestCount = null;
+            const pageType = this.getCurrentPageType();
 
-            // Extract expected count from UI text like "People (66)"
+            // Extract expected count from UI text
+            // For sent page: "People (66)"
+            // For received page: "All (66)"
             const getExpectedRequestCount = () => {
                 const pageText = document.body.textContent || '';
-                const match = pageText.match(/People\s*\((\d+)\)/);
+                let match;
+                if (pageType === 'sent') {
+                    match = pageText.match(/People\s*\((\d+)\)/);
+                } else {
+                    match = pageText.match(/All\s*\((\d+)\)/);
+                }
                 return match ? parseInt(match[1], 10) : null;
             };
 
-            const getCurrentWithdrawCount = () => {
-                const withdrawButtons = document.querySelectorAll('button');
+            const getCurrentButtonCount = () => {
+                const buttons = document.querySelectorAll('button');
                 let count = 0;
-                withdrawButtons.forEach(btn => {
-                    if (btn.textContent && btn.textContent.toLowerCase().includes('withdraw')) {
+                buttons.forEach(btn => {
+                    const text = btn.textContent?.toLowerCase();
+                    if (pageType === 'sent' && text && text.includes('withdraw')) {
+                        count++;
+                    } else if (pageType === 'received' && text && text === 'accept') {
                         count++;
                     }
                 });
@@ -362,20 +410,20 @@ class LinkedInRequestManager extends BaseManager {
                     return;
                 }
 
-                const currentWithdrawCount = getCurrentWithdrawCount();
+                const currentButtonCount = getCurrentButtonCount();
 
                 if (expectedRequestCount) {
-                    this.updateButtonState(`Scrolling... (${currentWithdrawCount}/${expectedRequestCount})`, true, '#666');
+                    this.updateButtonState(`Scrolling... (${currentButtonCount}/${expectedRequestCount})`, true, '#666');
                 } else {
-                    this.updateButtonState(`Scrolling... (${currentWithdrawCount} found)`, true, '#666');
+                    this.updateButtonState(`Scrolling... (${currentButtonCount} found)`, true, '#666');
                 }
 
                 const mainContainer = this.safeQuerySelector(this.getConfig('selectors').mainContainer);
                 const canStillScroll = mainContainer &&
                     mainContainer.scrollTop < (mainContainer.scrollHeight - mainContainer.clientHeight - 10);
 
-                if (expectedRequestCount !== null && currentWithdrawCount >= expectedRequestCount && !canStillScroll) {
-                    resolve(currentWithdrawCount);
+                if (expectedRequestCount !== null && currentButtonCount >= expectedRequestCount && !canStillScroll) {
+                    resolve(currentButtonCount);
                     return;
                 }
 
@@ -449,6 +497,60 @@ class LinkedInRequestManager extends BaseManager {
                 }
             } catch (error) {
                 console.error(`Error withdrawing request ${currentCount}/${totalCount}:`, error);
+            }
+        }
+
+        this.isWithdrawing = false;
+    }
+
+    async performAccepts() {
+        this.isWithdrawing = true; // Use same flag for accepting
+        this.shouldCancel = false;
+
+        const settings = await SettingsManager.load();
+        const acceptCount = settings.linkedinAcceptCount || "10";
+
+        const acceptButtons = Array.from(this.safeQuerySelectorAll('button')).filter(btn => {
+            const textMatch = btn.textContent?.trim().toLowerCase() === 'accept';
+            const ariaMatch = btn.getAttribute('aria-label')?.toLowerCase().includes('accept');
+            return textMatch && ariaMatch;
+        });
+
+        if (acceptButtons.length === 0) {
+            this.isWithdrawing = false;
+            return;
+        }
+
+        let buttonsToAccept;
+        if (acceptCount === "all") {
+            buttonsToAccept = acceptButtons;
+        } else {
+            const count = parseInt(acceptCount, 10);
+            buttonsToAccept = acceptButtons.slice(0, Math.min(count, acceptButtons.length));
+        }
+
+        for (let i = 0; i < buttonsToAccept.length; i++) {
+            // Check if user cancelled
+            if (this.shouldCancel) {
+                console.log('LinkedIn Accept: Operation cancelled');
+                this.isWithdrawing = false;
+                return;
+            }
+
+            const currentCount = i + 1;
+            const totalCount = buttonsToAccept.length;
+
+            this.updateButtonState(`Accepting ${currentCount}/${totalCount}... (cancel)`, false, '#4caf50');
+
+            try {
+                buttonsToAccept[i].click();
+
+                if (i < buttonsToAccept.length - 1) {
+                    const delay = this.getRandomDelay();
+                    await new Promise(resolve => this.setTimeoutTracked(resolve, delay));
+                }
+            } catch (error) {
+                console.error(`Error accepting request ${currentCount}/${totalCount}:`, error);
             }
         }
 
